@@ -4,8 +4,8 @@ const Footer = () => {
 
 
     return (
-        <footer className="bottom-0 fixed">
-            hello footer
+        <footer className="w-full py-4 bg-gray-800 text-white text-center">
+            <p>© 2024 Shepora Flowers. All rights reserved.</p>
         </footer>
     )
 }

@@ -5,7 +5,23 @@ const Sidebar = () => {
 
     return (
         <div>
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
 
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
+            Admin Side Bar<br />
         </div>
     )
 }

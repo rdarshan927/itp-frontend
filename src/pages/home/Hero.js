@@ -9,7 +9,7 @@ const Hero = () => {
            <br />
            <button className="primary_btn">client 1</button>
            <button className="secondary_btn">client 2</button>
-           <button className="adminprime_btn">admin 2</button>
+           <button className="adminprime_btn"><a href="manageemprole">admin 2</a></button>
         </div>
     )
 }

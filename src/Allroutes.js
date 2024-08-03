@@ -3,32 +3,32 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { DarkModeProvider } from "./config/darkMode";
 
 import Loading from "./components/Pageloading";
+const Home = lazy(() => import('./pages/home/Home'));
+const ManageEmployeeRole = lazy(() => import('./pages/ManageEmployeeRole/ManageEmployeeRole'));
 
-// import all your pages and components similar to this.
-const Header = lazy(()=>import('./components/Header'));
-const Footer = lazy(()=>import('./components/Footer'));
-const Home = lazy(()=>import('./pages/home/Home'));
-const ManageEmployeeRole = lazy(()=>import('./pages/ManageEmployeeRole/ManageEmployeeRole'));
-// const Check = lazy(()=>import('./pages/Check3'))
-
+const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
+const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
 
 const AllRoutes = () => {
-
     return (
         <BrowserRouter>
             <DarkModeProvider>
                 <Suspense fallback={<Loading />}>
-                    <Header />
                     <Routes>
-                        <Route path='/' element={<Home />} />
-                        <Route path='/manageemprole' element={<ManageEmployeeRole />} />
-                        {/* <Route path='check' element={<Check />} /> */}
+                        {/* Client Routes */}
+                        <Route element={<ClientLayout />}>
+                            <Route path='/' element={<Home />} />
+                        </Route>
+
+                        {/* Admin Routes */}
+                        <Route element={<AdminLayout />}>
+                            <Route path='/manageemprole' element={<ManageEmployeeRole />} />
+                        </Route>
                     </Routes>
-                    <Footer />
                 </Suspense>
             </DarkModeProvider>
         </BrowserRouter>
-    )
+    );
 }
 
-export default AllRoutes
+export default AllRoutes;
