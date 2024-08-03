@@ -1,17 +1,15 @@
 import React from "react";
 
+//import home components
+import Hero from "./Hero";
 
-const Sample =()=> {
+const Home =()=> {
     
     return (
-        <div className="text-center w-screen text-red-600 dark:text-green-400">
-           <p className="text-center"> hi </p> Hello World!
-           <br />
-           <button className="primary_btn">hello</button>
-           <button className="secondary_btn">Hello 2</button>
-           <button className="adminprime_btn">Hello 2</button>
+        <div>
+           <Hero />
         </div>
     )
 }
 
-export default Sample;
+export default Home;
