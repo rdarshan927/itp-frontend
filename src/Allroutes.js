@@ -4,7 +4,7 @@ import { DarkModeProvider } from "./config/darkMode";
 
 import Loading from "./components/Pageloading";
 const Home = lazy(() => import('./pages/home/Home'));
-const ManageEmployeeRole = lazy(() => import('./pages/ManageEmployeeRole/ManageEmployeeRole'));
+const ManageEmployeeRole = lazy(() => import('./pages/admin/ManageEmployeeRole/ManageEmployeeRole'));
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));

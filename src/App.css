@@ -7,16 +7,20 @@
 
 
 
-.primary_btn {
+.primary-btn {
     @apply text-[16px] uppercase rounded-[16px]  font-semibold tracking-wide bg-[#BACD92] hover:bg-[#c9d5b0] py-1 px-4 text-[#FCFFE0] font-sans dark:text-[#000000]
     
 }
 
-.secondary_btn {
+.secondary-btn {
     @apply text-[16px] uppercase  font-semibold tracking-wide bg-[#BACD92] hover:bg-[#c9d5b0] py-1 px-4 text-[#FCFFE0] font-sans dark:text-[#000000]
 }
 
 
-.adminprime_btn {
+.adminprime-btn {
     @apply text-[16px] uppercase  font-semibold tracking-wide bg-[#75A47F] hover:bg-[#a3c5aa] py-1 px-4 text-[#FFFFFF] font-sans dark:text-[#000000]
+}
+
+.admininput-field {
+    @apply bg-[#C2D39B] font-sans dark:text-[#000000]
 }

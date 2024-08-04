@@ -19,6 +19,12 @@ module.exports = {
         lightY: "#FCFFE0",
         lightG: "#BACD92",
         darkG: "#75A47F",
+        adminLightGreen: "#C2D39B",
+        adminBlack1: "#000000",
+        adminBlack2: "#414141",
+        adminWhite: "#FFFFFF",
+        clientWhite: "#FFFFFF",
+
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
