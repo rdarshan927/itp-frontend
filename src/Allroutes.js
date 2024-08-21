@@ -5,6 +5,7 @@ import { DarkModeProvider } from "./config/darkMode";
 import Loading from "./components/Pageloading";
 const Home = lazy(() => import('./pages/home/Home'));
 const ManageEmployeeRole = lazy(() => import('./pages/admin/ManageEmployeeRole/ManageEmployeeRole'));
+const Register = lazy(() => import('./pages/register/Register'))
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
@@ -17,6 +18,7 @@ const AllRoutes = () => {
                     <Routes>
                         {/* Client Routes */}
                         <Route element={<ClientLayout />}>
+                            <Route path='/register' element={<Register />} />
                             <Route path='/' element={<Home />} />
                         </Route>
 
