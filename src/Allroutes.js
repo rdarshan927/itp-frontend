@@ -5,6 +5,8 @@ import { DarkModeProvider } from "./config/darkMode";
 import Loading from "./components/Pageloading";
 const Home = lazy(() => import('./pages/home/Home'));
 const ManageEmployeeRole = lazy(() => import('./pages/admin/ManageEmployeeRole/ManageEmployeeRole'));
+const Cart = lazy(() => import('./pages/cart/Cart'))
+const PaymentSuccess = lazy(() => import('./pages/cart/PaymentSuccess'))
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
@@ -18,6 +20,8 @@ const AllRoutes = () => {
                         {/* Client Routes */}
                         <Route element={<ClientLayout />}>
                             <Route path='/' element={<Home />} />
+                            <Route path='/cart' element={<Cart />} />
+                            <Route path="/paymentsuccess" element={<PaymentSuccess/>} />
                         </Route>
 
                         {/* Admin Routes */}
