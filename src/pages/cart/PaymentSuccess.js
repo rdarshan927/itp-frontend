@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { api } from '../../config/api';
+// import { api } from '../../config/api';
 
 const PaymentSuccess = () => {
     useEffect(() => {
         const fetchPaymentDetails = async () => {
             // Extract session_id from URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const sessionId = urlParams.get('session_id');
+            // const urlParams = new URLSearchParams(window.location.search);
+            // const sessionId = urlParams.get('session_id');
 
             // if (sessionId) {
             //     try {
