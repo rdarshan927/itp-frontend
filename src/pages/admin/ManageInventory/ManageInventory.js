@@ -1,62 +1,197 @@
+// ManageInventory.js
+
 import React, { useState } from "react";
+import EditResourceItemModal from "./EditResourceItemModal";
 
 const ManageInventory = () => {
   const [inventory, setInventory] = useState([
-    { productID: 1, name: "Product 1", quantity: 10 },
-    { productID: 2, name: "Product 2", quantity: 5 },
-    // Add more products as needed
+    { productID: 1, name: "Product 1", category: "Tools", quantity: 10 },
+    { productID: 2, name: "Product 2", category: "Tools", quantity: 5 },
   ]);
 
+  const [formData, setFormData] = useState({
+    itemCode: "",
+    itemName: "",
+    itemCategory: "",
+    quantity: "",
+  });
+
+  const [errors, setErrors] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [currentEditIndex, setCurrentEditIndex] = useState(null); // State to track which item is being edited
+  const [editData, setEditData] = useState({ name: "", category: "", quantity: "" }); // State for editing form data
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const validateForm = () => {
+    let formErrors = {};
+    if (!formData.itemCode) formErrors.itemCode = "Item Code is required";
+    if (!formData.itemName) formErrors.itemName = "Item Name is required";
+    if (!formData.itemCategory)
+      formErrors.itemCategory = "Item Category is required";
+    if (!formData.quantity || isNaN(formData.quantity))
+      formErrors.quantity = "Quantity must be a number";
+    return formErrors;
+  };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      setInventory([
+        ...inventory,
+        {
+          productID: inventory.length + 1,
+          name: formData.itemName,
+          category: formData.itemCategory,
+          quantity: parseInt(formData.quantity),
+        },
+      ]);
+      setFormData({
+        itemCode: "",
+        itemName: "",
+        itemCategory: "",
+        quantity: "",
+      });
+      setErrors({});
+    } else {
+      setErrors(formErrors);
+    }
+  };
+
   const handleEdit = (index) => {
-    // Handle edit functionality here
-    console.log("Edit item at index:", index);
+    setCurrentEditIndex(index);
+    setEditData(inventory[index]);
+    setIsModalOpen(true); // Open modal
   };
 
   const handleDelete = (index) => {
-    // Handle delete functionality here
     setInventory(inventory.filter((_, i) => i !== index));
   };
 
-  return (
-    <div className="p-6">
-      <div className="text-2xl font-semibold mb-6">Inventory Management</div>
+  const handleModalSave = () => {
+    const updatedInventory = [...inventory];
+    updatedInventory[currentEditIndex] = editData;
+    setInventory(updatedInventory);
+    setIsModalOpen(false); // Close modal
+  };
 
-      <div className="display-flex justify-content-space-between">
-        <div className="text-lg font-semibold mb-3">
-          Current Stock - Sales Inventory
+  return (
+    <div>
+      <div className="p-6 bg-darkG text-white rounded-lg">
+        <div>
+          <div className="text-2xl font-semibold mb-6">Resource Inventory</div>
+          <form onSubmit={handleAdd} className="grid grid-cols-3 gap-4 mb-6">
+            <div>
+              <label className="block mb-1">Item Code</label>
+              <input
+                type="text"
+                name="itemCode"
+                value={formData.itemCode}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+              />
+              {errors.itemCode && (
+                <p className="text-red-500 text-sm">{errors.itemCode}</p>
+              )}
+            </div>
+            <div>
+              <label className="block mb-1">Item Name</label>
+              <input
+                type="text"
+                name="itemName"
+                value={formData.itemName}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+              />
+              {errors.itemName && (
+                <p className="text-red-500 text-sm">{errors.itemName}</p>
+              )}
+            </div>
+            <div></div>
+            <div>
+              <label className="block mb-1">Item Category</label>
+              <input
+                type="text"
+                name="itemCategory"
+                value={formData.itemCategory}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+              />
+              {errors.itemCategory && (
+                <p className="text-red-500 text-sm">{errors.itemCategory}</p>
+              )}
+            </div>
+            <div>
+              <label className="block mb-1">Quantity</label>
+              <input
+                type="number"
+                name="quantity"
+                value={formData.quantity}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+              />
+              {errors.quantity && (
+                <p className="text-red-500 text-sm">{errors.quantity}</p>
+              )}
+            </div>
+            <div className="flex justify-center items-end">
+              <button
+                type="submit"
+                className="col-span-2 bg-lightG text-white px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition"
+              >
+                ADD
+              </button>
+            </div>
+          </form>
         </div>
-        <button>Add New</button>
+      </div>
+      <div className="text-lg font-semibold mb-3 mt-5">
+        Current Stock - Resource Inventory
       </div>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white dark:bg-zinc-800 border border-gray-300 rounded">
+        <table className="min-w-full border-separate border-spacing-y-3">
           <thead>
-            <tr className="bg-[#75A47F] text-left">
+            <tr className="text-left">
               <th className="px-4 py-2 border-b">#</th>
-              <th className="px-4 py-2 border-b">Product ID</th>
-              <th className="px-4 py-2 border-b">Name</th>
+              <th className="px-4 py-2 border-b">Item Code</th>
+              <th className="px-4 py-2 border-b">Item Name</th>
+              <th className="px-4 py-2 border-b">Item Category</th>
               <th className="px-4 py-2 border-b">Quantity</th>
               <th className="px-4 py-2 border-b">Actions</th>
             </tr>
           </thead>
           <tbody>
             {inventory.map((item, index) => (
-              <tr
-                key={index}
-                className="hover:bg-[#c9d5b0] dark:hover:bg-[#a3c5aa]"
-              >
-                <td className="px-4 py-2 border-b">{index + 1}</td>
-                <td className="px-4 py-2 border-b">{item.productID}</td>
-                <td className="px-4 py-2 border-b">{item.name}</td>
-                <td className="px-4 py-2 border-b">{item.quantity}</td>
-                <td className="px-4 py-2 border-b">
+              <tr key={index}>
+                <td className="px-4 py-2 border-b bg-lightG rounded-s-xl">
+                  {index + 1}
+                </td>
+                <td className="px-4 py-2 border-b bg-lightG">
+                  {item.itemCode}
+                </td>
+                <td className="px-4 py-2 border-b bg-lightG">{item.name}</td>
+                <td className="px-4 py-2 border-b bg-lightG">
+                  {item.category}
+                </td>
+                <td className="px-4 py-2 border-b bg-lightG">
+                  {item.quantity}
+                </td>
+                <td className="px-4 py-2 border-b bg-lightG rounded-e-xl">
                   <button
-                    className="bg-blue-500 text-white px-3 py-1 rounded-md mr-2 hover:bg-blue-600"
+                    className="text-[16px] uppercase rounded-[16px] font-semibold tracking-wide bg-[#F5DAD2] hover:bg-[#f1c0b1] py-1 px-4 text-[#FCFFE0] font-sans dark:text-[#000000]"
                     onClick={() => handleEdit(index)}
                   >
                     Edit
                   </button>
                   <button
-                    className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                    className="text-[16px] uppercase rounded-[16px] font-semibold tracking-wide bg-[#F5DAD2] hover:bg-[#f1c0b1] py-1 px-4 text-[#FCFFE0] font-sans dark:text-[#000000] ml-2"
                     onClick={() => handleDelete(index)}
                   >
                     Delete
@@ -67,6 +202,14 @@ const ManageInventory = () => {
           </tbody>
         </table>
       </div>
+      {isModalOpen && (
+        <EditResourceItemModal
+          editData={editData}
+          setEditData={setEditData}
+          handleModalSave={handleModalSave}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
     </div>
   );
 };
