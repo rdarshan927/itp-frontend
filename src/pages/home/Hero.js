@@ -1,6 +1,7 @@
 import React from "react";
 
 const Hero = () => {
+    const storedEmail = localStorage.getItem('useremail');
 
 
     return (
@@ -10,6 +11,7 @@ const Hero = () => {
            <button className="primary-btn">client 1</button>
            <button className="secondary-btn">client 2</button>
            <button className="adminprime-btn"><a href="manageemprole">admin 2</a></button>
+           {storedEmail}
         </div>
     )
 }

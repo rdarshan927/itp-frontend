@@ -1,13 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { handleError, handleSuccess } from '../../utils';
+import { ToastContainer } from 'react-toastify';
 
-//import home components
-import Hero from "./Hero";
+function Home() {
+    const [loggedInUser, setLoggedInUser] = useState('');
+    const [products, setProducts] = useState('');
+    const navigate = useNavigate();
+    useEffect(() => {
+        setLoggedInUser(localStorage.getItem('loggedInUser'))
+    }, [])
 
-const Home =()=> {
+    const handleLogout = (e) => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('loggedInUser');
+        handleSuccess('User Loggedout');
+        setTimeout(() => {
+            navigate('/login');
+        }, 1000)
+    }
+
+    
+
+
     
     return (
         <div>
-           <Hero />
+            <h1>Welcome {loggedInUser}</h1>
+            <button onClick={handleLogout}>Logout</button>
+            <div>
+                {
+                    products && products?.map((item, index) => (
+                        <ul key={index}>
+                            <span>{item.name} : {item.price}</span>
+                        </ul>
+                    ))
+                }
+            </div>
+            <ToastContainer />
         </div>
     )
 }
