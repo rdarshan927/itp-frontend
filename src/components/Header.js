@@ -6,7 +6,7 @@ const Header = () => {
     const { darkMode, toggleDarkMode } = useDarkMode();
 
     return (
-        <div className="w-screen h-7 bg-slate-500">
+        <div className="w-full h-7 bg-slate-500">
             This is header
             <button 
                 onClick={toggleDarkMode} 
