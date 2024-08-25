@@ -7,10 +7,12 @@ const Cart = () => {
     const [carts, setCarts] = useState([]);
     const [total, setTotal] = useState(0);
 
+    const userEmail = localStorage.getItem('useremail')
+
     useEffect(() => {
         const fetchCarts = async () => {
             try {
-                const response = await api.get('/api/cart/get');
+                const response = await api.get('/api/cart/get', userEmail);
                 setCarts(response.data);
                 console.log('Fetched carts:', response.data);
             } catch(error) {
