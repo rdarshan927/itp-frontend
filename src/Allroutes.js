@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Loading from "./components/Pageloading";
 const Home = lazy(() => import('./pages/home/Home'));
 const ManageEmployeeRole = lazy(() => import('./pages/admin/ManageEmployeeRole/ManageEmployeeRole'));
+const Cart = lazy(() => import('./pages/cart/Cart'))
+const PaymentSuccess = lazy(() => import('./pages/cart/PaymentSuccess'))
 const Register = lazy(() => import('./pages/register/Register'))
 const Login = lazy(() => import('./pages/login/Login'));
 
@@ -21,6 +23,8 @@ const AllRoutes = () => {
                     <Routes>
                         {/* Client Routes */}
                         <Route element={<ClientLayout />}>
+                            <Route path='/cart' element={<Cart />} />
+                            <Route path="/paymentsuccess" element={<PaymentSuccess/>} />
                             <Route path='/register' element={<Register />} />
                             <Route path="/login" element={<Login/>}/>
                             <Route path='/' element={
