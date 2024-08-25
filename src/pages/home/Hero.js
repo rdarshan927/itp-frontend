@@ -19,7 +19,7 @@ const Hero = () => {
                 </div>
             </div>
             
-            <div className="bg-white dark:bg-[#292828] flex mm:h-36 md:h-28 w-[90%] mx-[5%] justify-around items-center transition-colors duration-300 absolute bottom-0 transform translate-y-1/2 md:space-x-2 flex-wrap rounded-xl z-20">
+            <div className="bg-white dark:bg-[#292828] flex mm:h-36 md:h-28 w-[90%] mx-[5%] justify-around items-center transition-colors duration-300 absolute bottom-0 transform translate-y-1/2 md:space-x-2 flex-wrap rounded-xl shadow-md dark:shadow-gray-700 z-20">
                 <div className="text-center flex-1 min-w-[80px]">
                     <img src="./Images/hero/free-shipping.png" alt="Free Shipping" className="md:h-16 sm:h-14 xs:h-8 h-8 mx-auto" />
                     <span className="mm:text-xl md:text-lg sm:text-base text-xs">Free Shipping</span>
