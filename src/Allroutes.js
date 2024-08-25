@@ -23,7 +23,6 @@ const AllRoutes = () => {
                     <Routes>
                         {/* Client Routes */}
                         <Route element={<ClientLayout />}>
-                            <Route path='/' element={<Home />} />
                             <Route path='/cart' element={<Cart />} />
                             <Route path="/paymentsuccess" element={<PaymentSuccess/>} />
                             <Route path='/register' element={<Register />} />
