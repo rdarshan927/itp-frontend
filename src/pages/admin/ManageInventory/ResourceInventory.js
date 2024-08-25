@@ -1,9 +1,7 @@
-// ManageInventory.js
-
 import React, { useState } from "react";
 import EditResourceItemModal from "./EditResourceItemModal";
 
-const ManageInventory = () => {
+const ResourceInventory = () => {
   const [inventory, setInventory] = useState([
     { productID: 1, name: "Product 1", category: "Tools", quantity: 10 },
     { productID: 2, name: "Product 2", category: "Tools", quantity: 5 },
@@ -19,7 +17,11 @@ const ManageInventory = () => {
   const [errors, setErrors] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const [currentEditIndex, setCurrentEditIndex] = useState(null); // State to track which item is being edited
-  const [editData, setEditData] = useState({ name: "", category: "", quantity: "" }); // State for editing form data
+  const [editData, setEditData] = useState({
+    name: "",
+    category: "",
+    quantity: "",
+  }); // State for editing form data
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,7 +74,12 @@ const ManageInventory = () => {
   };
 
   const handleDelete = (index) => {
-    setInventory(inventory.filter((_, i) => i !== index));
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (confirmDelete) {
+      setInventory(inventory.filter((_, i) => i !== index));
+    }
   };
 
   const handleModalSave = () => {
@@ -214,4 +221,4 @@ const ManageInventory = () => {
   );
 };
 
-export default ManageInventory;
+export default ResourceInventory;
