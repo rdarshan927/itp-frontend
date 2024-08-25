@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Loading from "./components/Pageloading";
 const Home = lazy(() => import('./pages/home/Home'));
 const ManageEmployeeRole = lazy(() => import('./pages/admin/ManageEmployeeRole/ManageEmployeeRole'));
+const Register = lazy(() => import('./pages/register/Register'))
 const Login = lazy(() => import('./pages/login/Login'));
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
@@ -20,6 +21,7 @@ const AllRoutes = () => {
                     <Routes>
                         {/* Client Routes */}
                         <Route element={<ClientLayout />}>
+                            <Route path='/register' element={<Register />} />
                             <Route path="/login" element={<Login/>}/>
                             <Route path='/' element={
                                 <ClientPrivateRoute>
