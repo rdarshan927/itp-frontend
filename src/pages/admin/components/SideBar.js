@@ -4,7 +4,7 @@ const Sidebar = () => {
 
 
     return (
-        <div>
+        <div className="p-3">
             Admin Side Bar<br />
             Admin Side Bar<br />
             Admin Side Bar<br />
