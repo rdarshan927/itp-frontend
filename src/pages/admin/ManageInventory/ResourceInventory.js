@@ -1,27 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EditResourceItemModal from "./EditResourceItemModal";
+import { api } from "../../../config/api";
 
 const ResourceInventory = () => {
-  const [inventory, setInventory] = useState([
-    { productID: 1, name: "Product 1", category: "Tools", quantity: 10 },
-    { productID: 2, name: "Product 2", category: "Tools", quantity: 5 },
-  ]);
-
+  const [inventory, setInventory] = useState([]);
   const [formData, setFormData] = useState({
     itemCode: "",
     itemName: "",
     itemCategory: "",
     quantity: "",
   });
-
   const [errors, setErrors] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
-  const [currentEditIndex, setCurrentEditIndex] = useState(null); // State to track which item is being edited
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentEditIndex, setCurrentEditIndex] = useState(null);
   const [editData, setEditData] = useState({
+    productID: "",
     name: "",
     category: "",
     quantity: "",
-  }); // State for editing form data
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,26 +39,42 @@ const ResourceInventory = () => {
     return formErrors;
   };
 
-  const handleAdd = (e) => {
+  const getItems = async () => {
+    try {
+      const response = await api.get("/api/inventory/getresourceitems");
+      setInventory(response.data);
+      console.log("Fetched Resource Items:", response.data);
+    } catch (error) {
+      console.error("There was an error while fetching data!", error);
+    }
+  };
+
+  useEffect(() => {
+    getItems();
+  }, []);
+
+  const handleAdd = async (e) => {
     e.preventDefault();
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
-      setInventory([
-        ...inventory,
-        {
-          productID: inventory.length + 1,
+      try {
+        const response = await api.post("/api/inventory/addresourceitem", {
+          productID: formData.itemCode,
           name: formData.itemName,
           category: formData.itemCategory,
           quantity: parseInt(formData.quantity),
-        },
-      ]);
-      setFormData({
-        itemCode: "",
-        itemName: "",
-        itemCategory: "",
-        quantity: "",
-      });
-      setErrors({});
+        });
+        getItems();
+        setFormData({
+          itemCode: "",
+          itemName: "",
+          itemCategory: "",
+          quantity: "",
+        });
+        setErrors({});
+      } catch (error) {
+        console.error("Error adding resource item:", error);
+      }
     } else {
       setErrors(formErrors);
     }
@@ -70,23 +83,39 @@ const ResourceInventory = () => {
   const handleEdit = (index) => {
     setCurrentEditIndex(index);
     setEditData(inventory[index]);
-    setIsModalOpen(true); // Open modal
+    setIsModalOpen(true);
   };
 
-  const handleDelete = (index) => {
+  const handleDelete = async (index) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this item?"
     );
     if (confirmDelete) {
-      setInventory(inventory.filter((_, i) => i !== index));
+      try {
+        const itemID = inventory[index].productID;
+        await api.delete(`/api/inventory/deleteresourceitem/${itemID}`);
+        getItems();
+      } catch (error) {
+        console.error("Error deleting resource item:", error);
+      }
     }
   };
 
-  const handleModalSave = () => {
-    const updatedInventory = [...inventory];
-    updatedInventory[currentEditIndex] = editData;
-    setInventory(updatedInventory);
-    setIsModalOpen(false); // Close modal
+  const handleModalSave = async () => {
+    try {
+      await api.patch(
+        `/api/inventory/updateresourceitem/${editData.productID}`,
+        {
+          name: editData.name,
+          category: editData.category,
+          quantity: parseInt(editData.quantity),
+        }
+      );
+      getItems();
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error updating resource item:", error);
+    }
   };
 
   return (
@@ -181,7 +210,7 @@ const ResourceInventory = () => {
                   {index + 1}
                 </td>
                 <td className="px-4 py-2 border-b bg-lightG">
-                  {item.itemCode}
+                  {item.productID}
                 </td>
                 <td className="px-4 py-2 border-b bg-lightG">{item.name}</td>
                 <td className="px-4 py-2 border-b bg-lightG">
