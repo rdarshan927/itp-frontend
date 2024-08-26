@@ -10,6 +10,8 @@ const Cart = lazy(() => import('./pages/cart/Cart'))
 const PaymentSuccess = lazy(() => import('./pages/cart/PaymentSuccess'))
 const Register = lazy(() => import('./pages/register/Register'))
 const Login = lazy(() => import('./pages/login/Login'));
+const ResourceInventory = lazy(() => import('./pages/admin/ManageInventory/ResourceInventory'));
+const SalesInventory = lazy(() => import('./pages/admin/ManageInventory/SalesInventory'));
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
@@ -37,6 +39,8 @@ const AllRoutes = () => {
                         {/* Admin Routes */}
                         <Route element={<AdminLayout />}>
                             <Route path='/manageemprole' element={<ManageEmployeeRole />} />
+                            <Route path='/ResourceInventory' element={<ResourceInventory />} />
+                            <Route path='/SalesInventory' element={<SalesInventory />} />
                         </Route>
                     </Routes>
                 </Suspense>
