@@ -1,5 +1,5 @@
 import { React, useState } from 'react';
-import { api, weatherapi } from '../../config/api'
+import { api, weatherapi } from '../../../config/api'
 
 const ManageEmployeeRole = () => {
     const [roleID, setRoleID] = useState('');
@@ -55,7 +55,7 @@ const ManageEmployeeRole = () => {
                             value={roleID}
                             onChange = { (e) => setRoleID(e.target.value) }
                             placeholder='Enter Role ID'
-                            className=''
+                            className='admininput-field'
                         />
                     </div>
 
@@ -67,7 +67,7 @@ const ManageEmployeeRole = () => {
                             value={roleName}
                             onChange={ (e) => setRoleName(e.target.value) }
                             placeholder='Enter Role Name'
-                            className=''
+                            className='admininput-field'
                         />
                     </div>
 
@@ -79,7 +79,7 @@ const ManageEmployeeRole = () => {
                             value={basicSalary}
                             onChange={ (e) => setBasicSalary(e.target.value)}
                             placeholder='Enter the Basic Salary'
-                            className=''
+                            className='admininput-field'
                         />
                     </div>
 
