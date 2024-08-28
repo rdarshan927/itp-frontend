@@ -4,7 +4,7 @@ const Hero = () => {
 
 
     return (
-        <div className="text-center w-screen text-red-600 dark:text-green-400">
+        <div className="text-center w-full text-red-600 dark:text-green-400">
            <p className="text-center"> hi </p> Hello World!
            <br />
            <button className="primary-btn">client 1</button>
