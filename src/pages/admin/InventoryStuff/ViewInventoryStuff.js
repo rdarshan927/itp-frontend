@@ -7,8 +7,9 @@ const ViewInventoryStuff = () => {
     useEffect(() => {
         const fetchInventoryStuff = async () => {
             try {
-                const response = await api.get('/api/inventorystuff/getall');
-                setStuffEntries(response.data);
+                const response = await api.get('/inventorystuff/get'); // Ensure this matches your backend route
+                setStuffEntries(response.data.inventoryStuffs || []); // Adjust based on backend response structure
+                console.log(response.data, "response.data");
             } catch (error) {
                 console.error('Failed to fetch inventory stuff:', error);
             }
@@ -20,12 +21,12 @@ const ViewInventoryStuff = () => {
     const handleEdit = (index) => {
         const stuffEntry = stuffEntries[index];
         // Implement logic to populate the form in AddInventoryStuff.js with this data
-        removeStuff(stuffEntry._id);
+        alert(`Edit functionality for ${stuffEntry.stuffName} is under development!`);
     };
 
     const removeStuff = async (id) => {
         try {
-            await api.delete(`/inventorystuff/delete/${id}`);
+            await api.delete(`/inventorystuff/delete/${id}`); // Ensure the route matches the backend
             setStuffEntries(stuffEntries.filter(stuff => stuff._id !== id));
         } catch (error) {
             console.error('Failed to delete inventory stuff:', error);
@@ -35,40 +36,37 @@ const ViewInventoryStuff = () => {
     return (
         <div className="bg-[#BACD92] mt-5 p-3">
             <h2 className="font-bold text-white mb-4 text-center text-5xl">Inventory Stuff Entries</h2>
-            <div className='flex items-center w-11/12 mb-3'>
-                <div className='w-1/5 text-center text-xl font-bold text-white'>Stuff ID</div>
-                <div className='w-1/5 text-center text-xl font-bold text-white'>Stuff Name</div>
-                <div className='w-1/5 text-center text-xl font-bold text-white'>Price</div>
-                <div className='w-1/5 text-center text-xl font-bold text-white'>Amount</div>
-                <div className='w-1/5 text-center text-xl font-bold text-white'>Total Price</div>
-            </div>
-            <ul>
-                {stuffEntries.map((stuff, index) => (
-                    <li key={stuff._id} className="flex items-center justify-between mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
-                        <div className="flex-1 text-white flex items-center">
-                            <div className="w-1/5 px-2 text-center text-2xl">{stuff.staffId}</div>
-                            <div className="w-1/5 px-2 text-center text-2xl">{stuff.staffName}</div>
-                            <div className="w-1/5 px-2 text-center text-2xl">{stuff.price}</div>
-                            <div className="w-1/5 px-2 text-center text-2xl">{stuff.amount}</div>
-                            <div className="w-1/5 px-2 text-center text-2xl">{stuff.totalPrice}</div>
-                        </div>
-                        <div className="flex space-x-2">
-                            <button 
-                                className="bg-yellow-400 text-white text-sm px-3 py-1 rounded hover:bg-yellow-500"
-                                onClick={() => handleEdit(index)}
-                            >
-                                Edit
-                            </button>
-                            <button 
-                                className="bg-red-400 text-white text-sm px-3 py-1 rounded hover:bg-red-500"
-                                onClick={() => removeStuff(stuff._id)}
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            {stuffEntries.length === 0 ? (
+                <p className="text-center text-white text-2xl">No inventory items available.</p>
+            ) : (
+                <ul>
+                    {stuffEntries.map((stuff, index) => (
+                        <li key={stuff._id} className="flex items-center justify-between mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
+                            <div className="flex-1 text-white flex items-center">
+                                <div className="w-1/5 px-2 text-center text-2xl">{stuff.stuffID}</div>
+                                <div className="w-1/5 px-2 text-center text-2xl">{stuff.stuffName}</div>
+                                <div className="w-1/5 px-2 text-center text-2xl">{stuff.price}</div>
+                                <div className="w-1/5 px-2 text-center text-2xl">{stuff.amount}</div>
+                                <div className="w-1/5 px-2 text-center text-2xl">{stuff.totalPrice}</div>
+                            </div>
+                            <div className="flex space-x-2">
+                                <button 
+                                    className="bg-yellow-400 text-white text-sm px-3 py-1 rounded hover:bg-yellow-500"
+                                    onClick={() => handleEdit(index)}
+                                >
+                                    Edit
+                                </button>
+                                <button 
+                                    className="bg-red-400 text-white text-sm px-3 py-1 rounded hover:bg-red-500"
+                                    onClick={() => removeStuff(stuff._id)}
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }
