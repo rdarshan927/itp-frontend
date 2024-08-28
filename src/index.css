@@ -8,7 +8,7 @@ body {
 }
 
 .dark body {
-  @apply bg-[#292828] text-white;
+  @apply bg-[#292828] text-white transition-colors duration-300;
 }
 
 /* Add more dark mode styles as needed */

@@ -11,8 +11,10 @@ module.exports = {
         'xs': '480px',
         'sm': '640px',
         'md': '768px',
+        'mdmm': '840px',
         'mm': '947px',
         'lg': '1024px',
+        'xlg': '1200px'
       },
       colors: {
         lightP: "#F5DAD2",
