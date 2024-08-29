@@ -1,17 +1,22 @@
-// src/components/OrderTable.js
+
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const order = () => {
-    // const [salaryId, setSalaryId] = useState('');
-    // const [userId, setUserId] = useState('');
-    // const [baseSalary, setBaseSalary] = useState('');
-    // const [allowances, setAllowances] = useState('');
-    // const [epf, setEpf] = useState('');
-    // const [etf, setEtf] = useState('');
-    // const [otHours, setOtHours] = useState('10');
-    // const [totalSalary, setTotalSalary] = useState('');
-    // const [salaries, setSalaries] = useState([]);
+function Orders() {
+    const [orders, setOrders] = useState([]);
 
+    useEffect(() => {
+        fetchOrders();
+    }, []);
+
+    const fetchOrders = async () => {
+        try {
+            const response = await axios.get('/api/orders');
+            setOrders(response.data);
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        }
+    };
     
 
     return (
@@ -51,5 +56,5 @@ const order = () => {
     );
 }
 
-export default order;
+export default Orders;
 

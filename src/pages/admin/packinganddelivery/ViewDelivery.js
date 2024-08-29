@@ -2,15 +2,16 @@
 import React, { useEffect, useState } from "react";
 
 const viewdelivery = () => {
-    // const [salaryId, setSalaryId] = useState('');
-    // const [userId, setUserId] = useState('');
-    // const [baseSalary, setBaseSalary] = useState('');
-    // const [allowances, setAllowances] = useState('');
-    // const [epf, setEpf] = useState('');
-    // const [etf, setEtf] = useState('');
-    // const [otHours, setOtHours] = useState('10');
-    // const [totalSalary, setTotalSalary] = useState('');
-    // const [salaries, setSalaries] = useState([]);
+    //const [orderId, setOrderId] = useState('');
+    //const [receivercontact, setReceiverContact] = useState('');
+    //const [receivername, setReceiverName] = useState('');
+    //const [sendermail, setSenderMail] = useState('');
+    //const [receiveraddress, setReceiverAddress] = useState('');
+    //const [packingdate, setPackingDate] = useState('');
+    //const [packing, setPacking] = useState([]);
+
+    //const [isEditing, setIsEditing] = useState(false);
+    //const [editIndex, setEditIndex] = useState(null);
 
     
 

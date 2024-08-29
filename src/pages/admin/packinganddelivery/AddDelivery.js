@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+//import axios from "axios";
+import { api } from "../../../config/api";
 
-function adddelivery() {
+function AddDelivery() {
     // State hooks for each input field and salary list
     const [orderId, setOrderId] = useState("");
     const [receiverContactNo, setReceiverContactNo] = useState("");
@@ -20,21 +22,26 @@ function adddelivery() {
         };
 
         try {
-            const response = await axios.post("http://localhost:5000/api/deliveries", newDelivery);
+            const response = await api.post("/api/deliveries", newDelivery);
             console.log("Delivery added:", response.data);
             // Clear the form or show a success message
         } catch (error) {
             console.error("There was an error adding the delivery:", error);
         }
     };
+
+    const addDelivery = async () => {
+    };
     return (
         <>
             <div className="bg-darkG p-6">
-                <h1 className="text-5xl font-bold text-white mb-6 text-center">Add Delivery Details</h1>
+               
+               
                 <form className='relative left-56'>
                     
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
+                           
                             <label htmlFor="salaryId" className="block text-2xl text-white font-bold mb-2">Order ID:</label>
                             <input 
                                 type="text" 
@@ -104,7 +111,7 @@ function adddelivery() {
                                 id="receiverAddress" 
                                 className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl" 
                                 value={receiverAddress}
-                                onChange={(e) => setDeliverersName(e.target.value)}
+                                onChange={(e) => setDelivererName(e.target.value)}
                                 required
                             />
                         </div>
@@ -113,7 +120,7 @@ function adddelivery() {
                     <button 
                         type="button" 
                         className="bg-lightG text-white font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0] "
-                        onClick={adddelivery}
+                        onClick={addDelivery}
                     >
                         ADD
                     </button>
@@ -125,4 +132,4 @@ function adddelivery() {
     );
 
 }
-export default adddelivery;
+export default AddDelivery;

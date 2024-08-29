@@ -7,6 +7,7 @@ import ViewPacking from "./ViewPacking";
 const Packing = () => {
     return (
         <div>
+           
             <AddPacking />
             <ViewPacking />
         </div>

@@ -12,6 +12,9 @@ const Register = lazy(() => import('./pages/register/Register'))
 const Login = lazy(() => import('./pages/login/Login'));
 const ResourceInventory = lazy(() => import('./pages/admin/ManageInventory/ResourceInventory'));
 const SalesInventory = lazy(() => import('./pages/admin/ManageInventory/SalesInventory'));
+const Packing = lazy(() => import('./pages/admin/packinganddelivery/Packing'));
+const Order = lazy(() => import('./pages/admin/packinganddelivery/Order'));
+const Delivery = lazy(() => import('./pages/admin/packinganddelivery/Delivery'));
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
