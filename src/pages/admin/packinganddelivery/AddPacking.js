@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../../config/api";
-import axios from "axios";
 
 function AddPacking() {
     const [orderId, setOrderId] = useState('');
@@ -9,13 +8,14 @@ function AddPacking() {
     const [senderemail, setSenderEmail] = useState('');
     const [receiveraddress, setReceiverAddress] = useState('');
     const [packingdate, setPackingDate] = useState('');
-    const [currentStatus, setCurrentStatus] = useState('Packing');
+    const [currentstatus, setCurrentStatus] = useState('Packing');
     const [packing, setPacking] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
-    
-   
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
     useEffect(() => {
-        //fetchPacking();
+        fetchPacking();
     }, []);
 
     const fetchPacking = async () => {
@@ -27,8 +27,11 @@ function AddPacking() {
         }
     };
 
-    const handleAddPacking = async () => {
-        //event.preventDefault();
+    const handleAddPacking = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+        setLoading(true);
+        setError('');
+
         const PackingData = {
             orderId,
             receivercontact,
@@ -36,9 +39,7 @@ function AddPacking() {
             senderemail,
             receiveraddress,
             packingdate,
-            currentStatus,
-           // qrcode,
-           //cc
+            currentstatus,
         };
 
         try {
@@ -56,9 +57,11 @@ function AddPacking() {
             setReceiverAddress('');
             setPackingDate('');
             setCurrentStatus('Packing');
-          //  setQRCode('');
         } catch (error) {
             console.error('There was an error!', error);
+            setError('Failed to add packing details. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -68,7 +71,7 @@ function AddPacking() {
                 <h1 className="text-5xl font-bold text-white mb-6 text-center">
                     {isEditing ? "Edit Packing Details" : "Add Packing Details"}
                 </h1>
-                <form className="relative left-56">
+                <form className="relative left-56" onSubmit={handleAddPacking}>
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
                             <label htmlFor="orderId" className="block text-2xl text-white font-bold mb-2">Order ID:</label>
@@ -109,7 +112,7 @@ function AddPacking() {
                         <div className="w-1/3 pl-2">
                             <label htmlFor="sendermail" className="block text-2xl text-white font-bold mb-2">Sender Email:</label>
                             <input
-                                type="text"
+                                type="email"
                                 id="sendermail"
                                 className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
                                 value={senderemail}
@@ -145,32 +148,29 @@ function AddPacking() {
                         </div>
                     </div>
 
-                        <div className="flex mb-4">
+                    <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                        <label htmlFor="currentstatus" className="block text-2xl text-white font-bold mb-2">Current Status:</label>
-                                    <select
-                                        id="currentstatus"
-                                        className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
-                                        value={currentStatus}
-                                        onChange={(e) => setCurrentStatus(e.target.value)}
-                                    >
-                                        <option value="Packing">Packing</option>
-                                        <option value="Hand Over to Delivery">Hand Over to Delivery</option>
-                                    </select>
-                            
+                            <label htmlFor="currentstatus" className="block text-2xl text-white font-bold mb-2">Current Status:</label>
+                            <select
+                                id="currentstatus"
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
+                                value={currentstatus}
+                                onChange={(e) => setCurrentStatus(e.target.value)}
+                            >
+                                <option value="Packing">Packing</option>
+                                <option value="Hand Over to Delivery">Hand Over to Delivery</option>
+                            </select>
                         </div>
-                        
                     </div>
-                       
-                        
-                    
+
+                    {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
 
                     <button
-                        //type="submit"
+                        type="submit" 
                         className="bg-lightG text-white font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0]"
-                        onClick={() => handleAddPacking()}
+                        disabled={loading}
                     >
-                        ADD
+                        {loading ? "Adding..." : "ADD"}
                     </button>
                 </form>
             </div>

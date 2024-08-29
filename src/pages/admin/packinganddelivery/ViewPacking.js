@@ -68,7 +68,7 @@ const ViewPacking = () => {
 
     const handleDelete = async (index) => {
         try {
-            await api.delete(`/api/packing/${packing[index]._id}`);
+            await api.delete(`/api/packing/delete/${packing[index]._id}`);
             fetchPacking();
         } catch (error) {
             console.error('Error deleting order:', error);
@@ -108,7 +108,7 @@ const ViewPacking = () => {
                             <div className="w-1/4 px-2 text-center text-2xl">{selectedPacking.orderId}</div>
                             <div className="w-1/4 px-2 text-center text-2xl">{selectedPacking.packingdate.split('T')[0]}</div>
                             <div className="w-1/4 px-2 text-center text-2xl">
-                                {selectedPacking.currentstatus || " Packing" }</div>
+                                {selectedPacking.currentstatus}</div>
                             <div className="w-1/4 px-2 text-center text-2xl">
                                 {selectedPacking.qrcode} 
                                 <button className="bg-[#BACD92] text-black text-sm px-4 py-2 rounded-full hover:bg-green-700">
