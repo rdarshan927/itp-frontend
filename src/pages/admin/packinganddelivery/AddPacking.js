@@ -38,6 +38,7 @@ function AddPacking() {
             packingdate,
             currentStatus,
            // qrcode,
+           //cc
         };
 
         try {
