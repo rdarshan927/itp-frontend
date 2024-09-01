@@ -2,21 +2,34 @@ import React, { useEffect, useState } from "react";
 import { api } from '../../config/api';
 import {loadStripe} from '@stripe/stripe-js'
 import { MdDelete } from 'react-icons/md';
+import AddCartBtn from "./AddCartBtn";
 
 const Cart = () => {
     const [carts, setCarts] = useState([]);
     const [total, setTotal] = useState(0);
+    const [deliveryAddress, setDeliveryAddress] = useState('No address have been set!')
+    const [receiverPhone, setReceiverPhone] = useState('No receiver phone number set!')
 
     const userEmail = localStorage.getItem('useremail')
 
     useEffect(() => {
         const fetchCarts = async () => {
             try {
-                const response = await api.get('/api/cart/get', userEmail);
+                const response = await api.get(`/api/cart/get/${userEmail}`);
                 setCarts(response.data);
                 console.log('Fetched carts:', response.data);
             } catch(error) {
                 console.error('There was an error while fetching data!', error);
+            }
+
+            try {
+                const response = await api.get(`/api/cart/get/delivery/${userEmail}`);
+                setDeliveryAddress(response.data[0].deliveryAddress);
+                setReceiverPhone(response.data[0].receiverPhoneNumber);
+                console.log(deliveryAddress);
+                console.log(receiverPhone)
+            } catch(error) {
+                console.log(error)
             }
         }
 
@@ -102,7 +115,7 @@ const Cart = () => {
         }
 
         try{
-            const response = await api.post(`/api/paid`, body)
+            const response = await api.post(`/api/paid/${userEmail}`, body)
             if (!response.status || response.status < 200 || response.status >= 300) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -162,35 +175,78 @@ const Cart = () => {
                     </div>
 
                     <div className="bg-darkG p-4 rounded-lg lg:min-h-[250px] lg:h-auto my-4">
-                        <h2 className="font-semibold text-lg">Order Summary</h2>
-                        <p> Default Delivery Address</p>
-                        <p> sample address here </p>
+                        <h2 className="font-semibold text-lg"> Receiver Details </h2>
+                        <p> Default Receiver Mobile No </p>
+                        <p> {receiverPhone} </p>
+                        <p> Default Delivery Address </p>
+                        <p> {deliveryAddress} </p>
                         
                     </div>
                 </div>
 
                 {/* Cart Items */}
-                <div className="lg:order-1 col-span-1 lg:col-span-3 p-4 rounded-lg">
-                    {carts.map((cart) => (
-                        <div className="flex justify-between items-center bg-darkG p-4 rounded-md mb-4" key={cart._id}>
-                            <div className="flex items-center w-2/5">
-                                <img src="https://avatars.githubusercontent.com/u/64832773?v=4" alt="Product" className="w-16 h-16 mr-4 rounded-md flex-shrink-0" />
-                                <div>
-                                    <p className="font-semibold truncate w-[120px]">{cart.productName}</p>
-                                    <p className="text-sm">Rs. {cart.price}</p>
+                <div className="lg:order-1 col-span-1 lg:col-span-3 p-4 rounded-lg sm:flex hidden">
+                    <table className="w-full">
+                    <thead>
+                        <tr className="text-left text-lg font-bold" colSpan={4}>
+                            <th className="px-4">Product</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th className="mm:w-16 w-28 lg:w-28"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {carts.map((cart) => (
+                        <tr key={cart._id} className="text-xs  text-center">
+                            <td colSpan={4}>
+                                <div className="flex justify-between items-center bg-darkG p-4 rounded-md">
+                                    <div className="flex items-center">
+                                        <img src="https://avatars.githubusercontent.com/u/64832773?v=4" alt="Product" className="w-16 h-16 mr-4 rounded-md flex-shrink-0" />
+                                    <div>
+                                        <p className="font-semibold">{cart.productName}</p>
+                                        <p>Rs. {cart.price}</p>
+                                    </div>
+                                    </div>
+                                    <div className="flex items-center justify-center bg-clientWhite rounded-xl w-18 py-1 px-2 font-semibold">
+                                        <button className="text-black px-2 rounded-l-md" onClick={() => handleDecrease(cart)}>-</button>
+                                        <span className="px-1 text-black">{cart.quantity}</span>
+                                        <button className="text-black px-2 rounded-r-md" onClick={() => handleIncrease(cart)}>+</button>
+                                    </div>
+                                    <p>Rs. {cart.price * cart.quantity}</p>
+                                    <button className="text-white-600" onClick={() => handleDelete(cart)}><MdDelete size={30} /></button>
                                 </div>
+                            </td>
+                        </tr>
+                        ))}
+                    </tbody>
+                    </table>
+
+                </div>
+
+                <div className="lg:order-1 col-span-1 lg:col-span-3 p-1 rounded-lg sm:hidden flex w-full">
+                    <div className="p-1 rounded-lg w-full">
+                        {carts.map((cart) => (
+                            <div className="flex justify-between items-center bg-darkG p-4 rounded-md mb-4 w-full" key={cart._id}>
+                                <div className="flex items-center ">
+                                    <img src="https://avatars.githubusercontent.com/u/64832773?v=4" alt="Product" className="w-16 h-16 mr-4 rounded-md flex-shrink-0" />
+                                    <div className="flex-grow">
+                                        <p className="font-semibold truncate">{cart.productName}</p>
+                                        <p className="text-xs">Rs. {cart.price}</p>
+                                        <p>Rs. {cart.price * cart.quantity}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-center bg-clientWhite rounded-xl sm:mx-4 text-sm"> 
+                                    <button className="text-black px-2 rounded-l-md" onClick={() => handleDecrease(cart)}> - </button>
+                                    <span className="px-2 py-1 text-black">{cart.quantity}</span>
+                                    <button className="text-black px-2 rounded-r-md" onClick={() => handleIncrease(cart)}> + </button>
+                                </div>
+                                <button className="text-red-600 sm:ml-4" onClick={() => handleDelete(cart)}> <MdDelete size={30} /> </button>
                             </div>
-                            <div className="flex items-center w-2/12 justify-center bg-clientWhite rounded-xl"> 
-                                <button className=" text-black px-2 rounded-l-md" onClick={() => handleDecrease(cart)}>-</button>
-                                <span className="px-4 text-black">{cart.quantity}</span>
-                                <button className=" text-black px-2 rounded-r-md" onClick={() => handleIncrease(cart)}>+</button>
-                            </div>
-                            <p className="font-semibold w-1/5 text-right">Rs. {cart.price * cart.quantity}</p> 
-                            <button className="text-red-600" onClick={() => handleDelete(cart)}><MdDelete size={30} /></button>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
+            <AddCartBtn addedCart={"hello"} />
         </section>
     )
 }
