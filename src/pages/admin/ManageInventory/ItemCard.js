@@ -1,0 +1,146 @@
+import React, { useState } from "react";
+import { api } from "../../../config/api";
+
+const ItemCard = ({ item, getItems }) => {
+  const [editMode, setEditMode] = useState(false);
+  const [editData, setEditData] = useState({
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity,
+    imageData: item.imageData,
+  });
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (confirmDelete) {
+      try {
+        await api.delete(`/api/inventory/deletesalesitem/${item.productID}`);
+        getItems();
+      } catch (error) {
+        console.error("Error deleting item:", error);
+      }
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    if (files && files[0]) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Update the form state with the Base64 encoded string
+        setEditData((prev) => ({ ...prev, imageData: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setEditData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const response = await api.patch(
+        `/api/inventory/updatesalesitem/${item.productID}`,
+        {
+          name: editData.name,
+          quantity: parseInt(editData.quantity),
+          price: parseFloat(editData.price),
+          imageData: editData.imageData,
+        }
+      );
+      console.log("Updated Item:", response.data);
+      setEditMode(false);
+      getItems(); // Refresh items to show updated data
+    } catch (error) {
+      console.error("Error updating item:", error);
+    }
+  };
+
+  const editFields = (
+    <>
+      Name:
+      <input
+        type="text"
+        name="name"
+        value={editData.name}
+        onChange={handleInputChange}
+        className="w-full p-2 mb-2 rounded-lg"
+      />
+      Quantity:
+      <input
+        type="number"
+        name="quantity"
+        value={editData.quantity}
+        onChange={handleInputChange}
+        className="w-full p-2 mb-2 rounded-lg"
+      />
+      Price:
+      <input
+        type="text"
+        name="price"
+        value={editData.price}
+        onChange={handleInputChange}
+        className="w-full p-2 mb-2 rounded-lg"
+      />
+      Image:
+      <input
+        type="file"
+        name="image"
+        onChange={handleInputChange}
+        className="w-full p-2 mb-2 rounded-lg"
+      />
+      <button
+        onClick={handleUpdate}
+        className="bg-lightG px-3 py-2 rounded-lg text-white"
+      >
+        Save
+      </button>
+      <button
+        onClick={() => setEditMode(false)}
+        className="bg-red-300 px-3 py-2 ml-2 rounded-lg text-white"
+      >
+        Cancel
+      </button>
+    </>
+  );
+
+  const itemView = (
+    <>
+      <img
+        src={item.imageData || ""}
+        alt={item.name}
+        className="w-full h-60 object-cover rounded-lg mb-4"
+      />
+      <div className="text-center">
+        <h3 className="text-lg font-semibold mb-2">{item.name}</h3>
+        <p>{`Item Code: ${item.productID}`}</p>
+        <p>{`Rs: ${item.price}`}</p>
+        <p>{`Available: ${item.quantity}`}</p>
+        <div className="mt-4">
+          <button
+            className="bg-lightG px-6 py-2 mx-2 rounded-lg text-white"
+            onClick={() => setEditMode(true)}
+          >
+            Edit
+          </button>
+          <button
+            className="bg-red-300 px-3 py-2 mx-2 rounded-lg text-white"
+            onClick={() => handleDelete(item.productID)}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="bg-darkG rounded-lg shadow-md p-4 w-80">
+      {editMode ? editFields : itemView}
+    </div>
+  );
+};
+
+export default ItemCard;

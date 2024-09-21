@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import BouquetForm from "./BouquetForm";
 import FlowerForm from "./FlowerForm";
 import { api } from "../../../config/api";
+import ItemCard from "./ItemCard";
 
 const SalesInventory = () => {
   const [activeTab, setActiveTab] = useState("flowers");
@@ -62,8 +63,12 @@ const SalesInventory = () => {
       <div className="text-xl font-semibold mb-4 ml-8">Flowers</div>
       <div className="grid grid-cols-4 gap-4 ml-4">
         {flowers.map((flower) => (
-           <div className="flex justify-center w-full">
-          <ItemCard key={flower.productID} item={flower} />
+          <div className="flex justify-center w-full">
+            <ItemCard
+              key={flower.productID}
+              item={flower}
+              getItems={getItems}
+            />
           </div>
         ))}
       </div>
@@ -71,7 +76,11 @@ const SalesInventory = () => {
       <div className="grid grid-cols-4 gap-4 ml-4">
         {bouquets.map((bouquet) => (
           <div className="flex justify-center w-full">
-            <ItemCard key={bouquet.productID} item={bouquet} />
+            <ItemCard
+              key={bouquet.productID}
+              item={bouquet}
+              getItems={getItems}
+            />
           </div>
         ))}
       </div>
@@ -80,21 +89,3 @@ const SalesInventory = () => {
 };
 
 export default SalesInventory;
-
-const ItemCard = ({ item }) => {
-  return (
-    <div className="bg-darkG rounded-lg shadow-md p-4 w-80">
-      <img
-        src={item.imageData || ""}
-        alt={item.name}
-        className="w-full h-60 object-cover rounded-lg mb-4"
-      />
-      <div className="text-center">
-        <h3 className="text-lg font-semibold mb-2">{item.name}</h3>
-        <p>{`Item Code: ${item.productID}`}</p>
-        <p>{`Rs: ${item.price}`}</p>
-        <p>{`Available: ${item.quantity}`}</p>
-      </div>
-    </div>
-  );
-};
