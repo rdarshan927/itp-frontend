@@ -1,33 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BouquetForm from "./BouquetForm";
 import FlowerForm from "./FlowerForm";
+import { api } from "../../../config/api";
 
 const SalesInventory = () => {
   const [activeTab, setActiveTab] = useState("flowers");
-  const [bouquets, setBouquets] = useState([
-    { name: "Tulip Heaven", price: "Rs.2000", quantity: 20, image: "path/to/tulip-heaven.jpg" },
-    { name: "Floral Fantacy", price: "Rs.5000", quantity: 10, image: "path/to/floral-fantacy.jpg" },
-    { name: "Romance", price: "Rs.7000", quantity: 30, image: "path/to/romance.jpg" },
-    { name: "Lousia", price: "Rs.15000", quantity: 20, image: "path/to/lousia.jpg" }
-  ]);
-  const [flowers, setFlowers] = useState([
-    { name: "Pink Rose", price: "Rs.500", quantity: 20, image: "path/to/pink-rose.jpg" },
-    { name: "White Daisy", price: "Rs.450", quantity: 15, image: "path/to/white-daisy.jpg" },
-    { name: "Sunflower", price: "Rs.350", quantity: 30, image: "path/to/sunflower.jpg" },
-    { name: "Purple Tulip", price: "Rs.1000", quantity: 40, image: "path/to/purple-tulip.jpg" }
-  ]);
-
-  const addBouquet = (bouquet) => {
-    setBouquets([...bouquets, bouquet]);
-  };
-
-  const addFlower = (flower) => {
-    setFlowers([...flowers, flower]);
-  };
+  const [flowers, setFlowers] = useState([]);
+  const [bouquets, setBouquets] = useState([]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
+  const getItems = async () => {
+    try {
+      const response = await api.get("/api/inventory/getsalesitems");
+      const items = response.data;
+      setFlowers(items.filter((item) => item.category === "flower"));
+      setBouquets(items.filter((item) => item.category === "bouquet"));
+      console.log("Fetched Resource Items:", items);
+    } catch (error) {
+      console.error("There was an error while fetching data!", error);
+    }
+  };
+
+  useEffect(() => {
+    getItems();
+  }, []);
 
   return (
     <>
@@ -52,22 +51,28 @@ const SalesInventory = () => {
               Bouquets
             </button>
           </div>
-          {activeTab === "flowers" && <FlowerForm addFlower={addFlower} />}
-          {activeTab === "bouquets" && <BouquetForm addBouquet={addBouquet} />}
+          {activeTab === "flowers" && <FlowerForm getItems={getItems} />}
+          {activeTab === "bouquets" && <BouquetForm getItems={getItems} />}
         </div>
       </div>
 
-      <div className="text-2xl font-semibold mb-4 mt-4 ml-4">Current Sales Items</div>
+      <div className="text-2xl font-semibold mb-4 mt-4 ml-4">
+        Current Sales Items
+      </div>
       <div className="text-xl font-semibold mb-4 ml-8">Flowers</div>
       <div className="grid grid-cols-4 gap-4 ml-4">
-        {flowers.map(flower => (
-          <ItemCard key={flower.name} item={flower} />
+        {flowers.map((flower) => (
+           <div className="flex justify-center w-full">
+          <ItemCard key={flower.productID} item={flower} />
+          </div>
         ))}
       </div>
       <div className="text-xl font-semibold mb-4 ml-8 mt-8">Bouquets</div>
       <div className="grid grid-cols-4 gap-4 ml-4">
-        {bouquets.map(bouquet => (
-          <ItemCard key={bouquet.name} item={bouquet} />
+        {bouquets.map((bouquet) => (
+          <div className="flex justify-center w-full">
+            <ItemCard key={bouquet.productID} item={bouquet} />
+          </div>
         ))}
       </div>
     </>
@@ -78,15 +83,18 @@ export default SalesInventory;
 
 const ItemCard = ({ item }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
-      <img src={item.image} alt={item.name} className="w-full h-48 object-cover rounded-t-lg mb-4" />
+    <div className="bg-darkG rounded-lg shadow-md p-4 w-80">
+      <img
+        src={item.imageData || ""}
+        alt={item.name}
+        className="w-full h-60 object-cover rounded-lg mb-4"
+      />
       <div className="text-center">
         <h3 className="text-lg font-semibold mb-2">{item.name}</h3>
-        <p className="text-gray-500">{`Price: ${item.price}`}</p>
-        <p className="text-gray-500">{`Available: ${item.quantity}`}</p>
+        <p>{`Item Code: ${item.productID}`}</p>
+        <p>{`Rs: ${item.price}`}</p>
+        <p>{`Available: ${item.quantity}`}</p>
       </div>
     </div>
   );
 };
-
-

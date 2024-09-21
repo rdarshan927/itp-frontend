@@ -1,24 +1,40 @@
 import React, { useState } from "react";
+import { api } from "../../../config/api";
 
-const FlowerForm = ({ addFlower }) => {
+const FlowerForm = ({ getItems }) => {
   const [flowerFormData, setFlowerFormData] = useState({
+    productID: "",
     name: "",
     quantity: "",
     price: "",
-    image: null,
+    image: "",
   });
   const [flowerErrors, setFlowerErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
-    setFlowerFormData({
-      ...flowerFormData,
-      [name]: files ? files[0] : value,
-    });
+    if (files && files[0]) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Update the form state with the Base64 encoded string
+        setFlowerFormData({
+          ...flowerFormData,
+          image: reader.result,
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setFlowerFormData({
+        ...flowerFormData,
+        [name]: value,
+      });
+    }
   };
 
   const validateForm = (formData) => {
     let errors = {};
+    if (!formData.productID) errors.productID = "Item Code is required";
     if (!formData.name) errors.name = "Name is required";
     if (!formData.quantity || isNaN(formData.quantity)) {
       errors.quantity = "Quantity must be a number";
@@ -29,17 +45,33 @@ const FlowerForm = ({ addFlower }) => {
     return errors;
   };
 
-  const handleFlowerAdd = (e) => {
+  const handleFlowerAdd = async (e) => {
     e.preventDefault();
     const errors = validateForm(flowerFormData);
+    console.log(flowerFormData);
     if (Object.keys(errors).length === 0) {
-      addFlower({
-        ...flowerFormData,
-        quantity: parseInt(flowerFormData.quantity),
-        price: parseFloat(flowerFormData.price),
-      });
-      setFlowerFormData({ name: "", quantity: "", price: "", image: null });
-      setFlowerErrors({});
+      try {
+        const response = await api.post("/api/inventory/addsalesitem", {
+          productID: flowerFormData.productID,
+          name: flowerFormData.name,
+          category: "flower",
+          quantity: parseInt(flowerFormData.quantity),
+          price: parseFloat(flowerFormData.price),
+          imageData: flowerFormData.image,
+        });
+        console.log(response);
+        getItems();
+        setFlowerFormData({
+          productID: "",
+          name: "",
+          quantity: "",
+          price: "",
+          image: "",
+        });
+        setFlowerErrors({});
+      } catch (error) {
+        console.error("Error adding flower item:", error);
+      }
     } else {
       setFlowerErrors(errors);
     }
@@ -47,6 +79,19 @@ const FlowerForm = ({ addFlower }) => {
 
   return (
     <form onSubmit={handleFlowerAdd} className="grid grid-cols-3 gap-4 mb-6">
+      <div>
+        <label className="block mb-1">Item Code</label>
+        <input
+          type="text"
+          name="productID"
+          value={flowerFormData.productID}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+        />
+        {flowerErrors.name && (
+          <p className="text-red-500 text-sm">{flowerErrors.productID}</p>
+        )}
+      </div>
       <div>
         <label className="block mb-1">Flower Name</label>
         <input
@@ -73,7 +118,6 @@ const FlowerForm = ({ addFlower }) => {
           <p className="text-red-500 text-sm">{flowerErrors.quantity}</p>
         )}
       </div>
-      <div></div>
       <div>
         <label className="block mb-1">Price</label>
         <input
