@@ -1,237 +1,92 @@
 import React, { useState } from "react";
+import BouquetForm from "./BouquetForm";
+import FlowerForm from "./FlowerForm";
 
 const SalesInventory = () => {
-  // State for Flower Bouquets
-  const [bouquets, setBouquets] = useState([]);
-  const [bouquetFormData, setBouquetFormData] = useState({
-    name: "",
-    quantity: "",
-    price: "",
-    image: null,
-  });
-  const [bouquetErrors, setBouquetErrors] = useState({});
+  const [activeTab, setActiveTab] = useState("flowers");
+  const [bouquets, setBouquets] = useState([
+    { name: "Tulip Heaven", price: "Rs.2000", quantity: 20, image: "path/to/tulip-heaven.jpg" },
+    { name: "Floral Fantacy", price: "Rs.5000", quantity: 10, image: "path/to/floral-fantacy.jpg" },
+    { name: "Romance", price: "Rs.7000", quantity: 30, image: "path/to/romance.jpg" },
+    { name: "Lousia", price: "Rs.15000", quantity: 20, image: "path/to/lousia.jpg" }
+  ]);
+  const [flowers, setFlowers] = useState([
+    { name: "Pink Rose", price: "Rs.500", quantity: 20, image: "path/to/pink-rose.jpg" },
+    { name: "White Daisy", price: "Rs.450", quantity: 15, image: "path/to/white-daisy.jpg" },
+    { name: "Sunflower", price: "Rs.350", quantity: 30, image: "path/to/sunflower.jpg" },
+    { name: "Purple Tulip", price: "Rs.1000", quantity: 40, image: "path/to/purple-tulip.jpg" }
+  ]);
 
-  // State for Flowers
-  const [flowers, setFlowers] = useState([]);
-  const [flowerFormData, setFlowerFormData] = useState({
-    name: "",
-    quantity: "",
-    price: "",
-    image: null,
-  });
-  const [flowerErrors, setFlowerErrors] = useState({});
-
-  // Common handler for input changes
-  const handleInputChange = (e, formType) => {
-    const { name, value, files } = e.target;
-    if (formType === "bouquet") {
-      setBouquetFormData({
-        ...bouquetFormData,
-        [name]: files ? files[0] : value,
-      });
-    } else if (formType === "flower") {
-      setFlowerFormData({
-        ...flowerFormData,
-        [name]: files ? files[0] : value,
-      });
-    }
+  const addBouquet = (bouquet) => {
+    setBouquets([...bouquets, bouquet]);
   };
 
-  // Validation function
-  const validateForm = (formData) => {
-    let errors = {};
-    if (!formData.name) errors.name = "Name is required";
-    if (!formData.quantity || isNaN(formData.quantity)) {
-      errors.quantity = "Quantity must be a number";
-    }
-    if (!formData.price || isNaN(formData.price)) {
-      errors.price = "Price must be a number";
-    }
-    return errors;
+  const addFlower = (flower) => {
+    setFlowers([...flowers, flower]);
   };
 
-  // Handle add for Flower Bouquets
-  const handleBouquetAdd = (e) => {
-    e.preventDefault();
-    const errors = validateForm(bouquetFormData);
-    if (Object.keys(errors).length === 0) {
-      setBouquets([
-        ...bouquets,
-        {
-          ...bouquetFormData,
-          quantity: parseInt(bouquetFormData.quantity),
-          price: parseFloat(bouquetFormData.price),
-        },
-      ]);
-      setBouquetFormData({ name: "", quantity: "", price: "", image: null });
-      setBouquetErrors({});
-    } else {
-      setBouquetErrors(errors);
-    }
-  };
-
-  // Handle add for Flowers
-  const handleFlowerAdd = (e) => {
-    e.preventDefault();
-    const errors = validateForm(flowerFormData);
-    if (Object.keys(errors).length === 0) {
-      setFlowers([
-        ...flowers,
-        {
-          ...flowerFormData,
-          quantity: parseInt(flowerFormData.quantity),
-          price: parseFloat(flowerFormData.price),
-        },
-      ]);
-      setFlowerFormData({ name: "", quantity: "", price: "", image: null });
-      setFlowerErrors({});
-    } else {
-      setFlowerErrors(errors);
-    }
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
   };
 
   return (
     <>
       <div className="p-6 bg-darkG text-white rounded-lg">
-        {/* Flower Bouquets Section */}
         <div className="mb-6">
           <div className="text-2xl font-semibold mb-4">Sales Inventory</div>
-          <div className="text-xl font-semibold mb-2 text-center">Flower Bouquets</div>
-          <form
-            onSubmit={handleBouquetAdd}
-            className="grid grid-cols-3 gap-4 mb-6"
-          >
-            <div>
-              <label className="block mb-1">Bouquet Name</label>
-              <input
-                type="text"
-                name="name"
-                value={bouquetFormData.name}
-                onChange={(e) => handleInputChange(e, "bouquet")}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
-              />
-              {bouquetErrors.name && (
-                <p className="text-red-500 text-sm">{bouquetErrors.name}</p>
-              )}
-            </div>
-            <div>
-              <label className="block mb-1">Quantity</label>
-              <input
-                type="number"
-                name="quantity"
-                value={bouquetFormData.quantity}
-                onChange={(e) => handleInputChange(e, "bouquet")}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
-              />
-              {bouquetErrors.quantity && (
-                <p className="text-red-500 text-sm">{bouquetErrors.quantity}</p>
-              )}
-            </div>
-            <div></div>
-            <div>
-              <label className="block mb-1">Price</label>
-              <input
-                type="text"
-                name="price"
-                value={bouquetFormData.price}
-                onChange={(e) => handleInputChange(e, "bouquet")}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
-              />
-              {bouquetErrors.price && (
-                <p className="text-red-500 text-sm">{bouquetErrors.price}</p>
-              )}
-            </div>
-            <div>
-              <label className="block mb-1">Add Image</label>
-              <input
-                type="file"
-                name="image"
-                onChange={(e) => handleInputChange(e, "bouquet")}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
-              />
-            </div>
-            <div className="flex justify-center items-end">
-              <button
-                type="submit"
-                className="bg-lightG text-white px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition"
-              >
-                ADD
-              </button>
-            </div>
-          </form>
+          <div className="flex space-x-4 mb-6">
+            <button
+              onClick={() => handleTabClick("flowers")}
+              className={`text-xl font-semibold px-4 py-2 rounded-lg hover:bg-[#a3c5aa] ${
+                activeTab === "flowers" ? "bg-lightG" : "bg-transparent"
+              }`}
+            >
+              Flowers
+            </button>
+            <button
+              onClick={() => handleTabClick("bouquets")}
+              className={`text-xl font-semibold px-4 py-2 rounded-lg hover:bg-[#a3c5aa] ${
+                activeTab === "bouquets" ? "bg-lightG" : "bg-transparent"
+              }`}
+            >
+              Bouquets
+            </button>
+          </div>
+          {activeTab === "flowers" && <FlowerForm addFlower={addFlower} />}
+          {activeTab === "bouquets" && <BouquetForm addBouquet={addBouquet} />}
         </div>
       </div>
 
-      {/* Flowers Section */}
-      <div className="p-6 bg-darkG text-white rounded-lg mt-3">
-        <div>
-          <div className="text-xl font-semibold mb-2 text-center">Flowers</div>
-          <form
-            onSubmit={handleFlowerAdd}
-            className="grid grid-cols-3 gap-4 mb-6"
-          >
-            <div>
-              <label className="block mb-1">Flower Name</label>
-              <input
-                type="text"
-                name="name"
-                value={flowerFormData.name}
-                onChange={(e) => handleInputChange(e, "flower")}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
-              />
-              {flowerErrors.name && (
-                <p className="text-red-500 text-sm">{flowerErrors.name}</p>
-              )}
-            </div>
-            <div>
-              <label className="block mb-1">Quantity</label>
-              <input
-                type="number"
-                name="quantity"
-                value={flowerFormData.quantity}
-                onChange={(e) => handleInputChange(e, "flower")}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
-              />
-              {flowerErrors.quantity && (
-                <p className="text-red-500 text-sm">{flowerErrors.quantity}</p>
-              )}
-            </div>
-            <div></div>
-            <div>
-              <label className="block mb-1">Price</label>
-              <input
-                type="text"
-                name="price"
-                value={flowerFormData.price}
-                onChange={(e) => handleInputChange(e, "flower")}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
-              />
-              {flowerErrors.price && (
-                <p className="text-red-500 text-sm">{flowerErrors.price}</p>
-              )}
-            </div>
-            <div>
-              <label className="block mb-1">Add Image</label>
-              <input
-                type="file"
-                name="image"
-                onChange={(e) => handleInputChange(e, "flower")}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
-              />
-            </div>
-            <div className="flex justify-center items-end">
-              <button
-                type="submit"
-                className="bg-lightG text-white px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition"
-              >
-                ADD
-              </button>
-            </div>
-          </form>
-        </div>
+      <div className="text-2xl font-semibold mb-4 mt-4 ml-4">Current Sales Items</div>
+      <div className="text-xl font-semibold mb-4 ml-8">Flowers</div>
+      <div className="grid grid-cols-4 gap-4 ml-4">
+        {flowers.map(flower => (
+          <ItemCard key={flower.name} item={flower} />
+        ))}
+      </div>
+      <div className="text-xl font-semibold mb-4 ml-8 mt-8">Bouquets</div>
+      <div className="grid grid-cols-4 gap-4 ml-4">
+        {bouquets.map(bouquet => (
+          <ItemCard key={bouquet.name} item={bouquet} />
+        ))}
       </div>
     </>
   );
 };
 
 export default SalesInventory;
+
+const ItemCard = ({ item }) => {
+  return (
+    <div className="bg-white rounded-lg shadow-md p-4">
+      <img src={item.image} alt={item.name} className="w-full h-48 object-cover rounded-t-lg mb-4" />
+      <div className="text-center">
+        <h3 className="text-lg font-semibold mb-2">{item.name}</h3>
+        <p className="text-gray-500">{`Price: ${item.price}`}</p>
+        <p className="text-gray-500">{`Available: ${item.quantity}`}</p>
+      </div>
+    </div>
+  );
+};
+
+
