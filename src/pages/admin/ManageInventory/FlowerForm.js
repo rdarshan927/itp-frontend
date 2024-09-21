@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { api } from "../../../config/api";
 
 const FlowerForm = ({ getItems }) => {
@@ -10,6 +10,7 @@ const FlowerForm = ({ getItems }) => {
     image: "",
   });
   const [flowerErrors, setFlowerErrors] = useState({});
+  const fileInputRef = useRef(null);
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
@@ -68,6 +69,9 @@ const FlowerForm = ({ getItems }) => {
           price: "",
           image: "",
         });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ""; // Reset the file input
+        }
         setFlowerErrors({});
       } catch (error) {
         console.error("Error adding flower item:", error);

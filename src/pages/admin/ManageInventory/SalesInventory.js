@@ -31,7 +31,7 @@ const SalesInventory = () => {
 
   return (
     <>
-      <div className="p-6 bg-darkG text-white rounded-lg">
+      <div className="p-6 bg-darkG text-black rounded-lg">
         <div className="mb-6">
           <div className="text-2xl font-semibold mb-4">Sales Inventory</div>
           <div className="flex space-x-4 mb-6">
@@ -72,7 +72,8 @@ const SalesInventory = () => {
           </div>
         ))}
       </div>
-      <div className="text-xl font-semibold mb-4 ml-8 mt-8">Bouquets</div>
+      <hr className="mt-10"></hr>
+      <div className="text-xl font-semibold mb-4 ml-8 mt-5">Bouquets</div>
       <div className="grid grid-cols-4 gap-4 ml-4">
         {bouquets.map((bouquet) => (
           <div className="flex justify-center w-full">

@@ -120,7 +120,7 @@ const ResourceInventory = () => {
 
   return (
     <div>
-      <div className="p-6 bg-darkG text-white rounded-lg">
+      <div className="p-6 bg-darkG text-black rounded-lg">
         <div>
           <div className="text-2xl font-semibold mb-6">Resource Inventory</div>
           <form onSubmit={handleAdd} className="grid grid-cols-3 gap-4 mb-6">
@@ -180,7 +180,7 @@ const ResourceInventory = () => {
             <div className="flex justify-center items-end">
               <button
                 type="submit"
-                className="col-span-2 bg-lightG text-white px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition"
+                className="col-span-2 bg-lightG text-black px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition"
               >
                 ADD
               </button>
@@ -221,13 +221,13 @@ const ResourceInventory = () => {
                 </td>
                 <td className="px-4 py-2 border-b bg-lightG rounded-e-xl">
                   <button
-                    className="text-[16px] uppercase rounded-[16px] font-semibold tracking-wide bg-[#F5DAD2] hover:bg-[#f1c0b1] py-1 px-4 text-[#FCFFE0] font-sans dark:text-[#000000]"
+                    className="text-[16px] uppercase rounded-[16px] font-semibold tracking-wide bg-[#F5DAD2] hover:bg-[#f1c0b1] py-1 px-4 font-sans dark:text-[#000000]"
                     onClick={() => handleEdit(index)}
                   >
                     Edit
                   </button>
                   <button
-                    className="text-[16px] uppercase rounded-[16px] font-semibold tracking-wide bg-[#F5DAD2] hover:bg-[#f1c0b1] py-1 px-4 text-[#FCFFE0] font-sans dark:text-[#000000] ml-2"
+                    className="text-[16px] uppercase rounded-[16px] font-semibold tracking-wide bg-[#F5DAD2] hover:bg-[#f1c0b1] py-1 px-4  font-sans dark:text-[#000000] ml-2"
                     onClick={() => handleDelete(index)}
                   >
                     Delete

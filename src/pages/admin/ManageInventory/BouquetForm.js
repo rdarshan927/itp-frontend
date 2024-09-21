@@ -1,24 +1,41 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { api } from "../../../config/api";
 
-const BouquetForm = ({ addBouquet }) => {
+const BouquetForm = ({ getItems }) => {
   const [bouquetFormData, setBouquetFormData] = useState({
+    productID: "",
     name: "",
     quantity: "",
     price: "",
     image: null,
   });
   const [bouquetErrors, setBouquetErrors] = useState({});
+  const fileInputRef = useRef(null);
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
-    setBouquetFormData({
-      ...bouquetFormData,
-      [name]: files ? files[0] : value,
-    });
+    if (files && files[0]) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Update the form state with the Base64 encoded string
+        setBouquetFormData({
+          ...bouquetFormData,
+          image: reader.result,
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setBouquetFormData({
+        ...bouquetFormData,
+        [name]: value,
+      });
+    }
   };
 
-  const validateForm = (formData) => {
+  const validateForm = async (formData) => {
     let errors = {};
+    if (!formData.productID) errors.productID = "Item Code is required";
     if (!formData.name) errors.name = "Name is required";
     if (!formData.quantity || isNaN(formData.quantity)) {
       errors.quantity = "Quantity must be a number";
@@ -29,17 +46,36 @@ const BouquetForm = ({ addBouquet }) => {
     return errors;
   };
 
-  const handleBouquetAdd = (e) => {
+  const handleBouquetAdd = async (e) => {
     e.preventDefault();
     const errors = validateForm(bouquetFormData);
+    console.log(bouquetFormData);
     if (Object.keys(errors).length === 0) {
-      addBouquet({
-        ...bouquetFormData,
-        quantity: parseInt(bouquetFormData.quantity),
-        price: parseFloat(bouquetFormData.price),
-      });
-      setBouquetFormData({ name: "", quantity: "", price: "", image: null });
-      setBouquetErrors({});
+      try {
+        const response = await api.post("/api/inventory/addsalesitem", {
+          productID: bouquetFormData.productID,
+          name: bouquetFormData.name,
+          category: "bouquet",
+          quantity: parseInt(bouquetFormData.quantity),
+          price: parseFloat(bouquetFormData.price),
+          imageData: bouquetFormData.image,
+        });
+        console.log(response);
+        getItems();
+        setBouquetFormData({
+          productID: "",
+          name: "",
+          quantity: "",
+          price: "",
+          image: "",
+        });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ""; // Reset the file input
+        }
+        setBouquetErrors({});
+      } catch (error) {
+        console.error("Error adding bouquet item:", error);
+      }
     } else {
       setBouquetErrors(errors);
     }
@@ -47,6 +83,19 @@ const BouquetForm = ({ addBouquet }) => {
 
   return (
     <form onSubmit={handleBouquetAdd} className="grid grid-cols-3 gap-4 mb-6">
+      <div>
+        <label className="block mb-1">Item Code</label>
+        <input
+          type="text"
+          name="productID"
+          value={bouquetFormData.productID}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+        />
+        {bouquetErrors.name && (
+          <p className="text-red-500 text-sm">{bouquetErrors.productID}</p>
+        )}
+      </div>
       <div>
         <label className="block mb-1">Bouquet Name</label>
         <input
@@ -73,7 +122,6 @@ const BouquetForm = ({ addBouquet }) => {
           <p className="text-red-500 text-sm">{bouquetErrors.quantity}</p>
         )}
       </div>
-      <div></div>
       <div>
         <label className="block mb-1">Price</label>
         <input
