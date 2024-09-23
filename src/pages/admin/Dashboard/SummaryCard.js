@@ -10,7 +10,7 @@ function FinancialDashboard() {
     useEffect(() => {
         const fetchFinancialData = async () => {
             try {
-                const response = await axios.get('/api/financial-data'); // Update this endpoint to your actual API
+                const response = await axios.get('/api/financial-data'); 
                 setTotalRevenue(response.data.totalRevenue);
                 setTotalExpenses(response.data.totalExpenses);
             } catch (error) {
