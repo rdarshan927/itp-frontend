@@ -29,7 +29,7 @@ function AddInventoryStuff() {
         };
 
         try {
-            await api.post('/inventorystuff/create', newInventoryStuff); // Ensure this matches your backend route
+            await api.post('/api/inventorystuff/create', newInventoryStuff); // Ensure this matches your backend route
             alert('Inventory stuff added successfully!');
             // Reset the form
             setStuffID('');

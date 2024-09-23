@@ -14,14 +14,15 @@ function AddSalary() {
 
     // Calculate EPF, ETF, and Total Salary whenever baseSalary, allowances, or otHours change
     useEffect(() => {
-        const epfValue = (baseSalary * 0.15).toFixed(2);
+        const epfEmpolyerValue = (baseSalary * 0.15).toFixed(2);
+        const epfEmployeeValue = (baseSalary * 0.08).toFixed(2);
+        const epfValue = (parseFloat(epfEmpolyerValue) + parseFloat(epfEmployeeValue)).toFixed(2);
         const etfValue = (baseSalary * 0.03).toFixed(2);
         const otPay = (otHours * 500).toFixed(2);
         const total = (
             parseFloat(baseSalary) +
-            parseFloat(allowances) +
-            parseFloat(epfValue) +
-            parseFloat(etfValue) +
+            parseFloat(allowances) -
+            parseFloat(epfEmployeeValue) +
             parseFloat(otPay)
         ).toFixed(2);
 

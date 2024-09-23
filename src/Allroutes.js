@@ -16,6 +16,7 @@ const ResourceInventory = lazy(() => import('./pages/admin/ManageInventory/Resou
 const SalesInventory = lazy(() => import('./pages/admin/ManageInventory/SalesInventory'));
 const Salary = lazy(() => import('./pages/admin/Salary/Salary'));
 const InventoryStuff = lazy(() => import('./pages/admin/InventoryStuff/InventoryStuff'));
+const Dashboard = lazy(() => import('./pages/admin/Dashboard/Dashboard'));
 
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
@@ -48,6 +49,7 @@ const AllRoutes = () => {
                             <Route path='/SalesInventory' element={<SalesInventory />} />
                             <Route path='/salary' element={<Salary />} />
                             <Route path='/inventorystuff' element={<InventoryStuff />} />
+                            <Route path='/Dashboard' element={<Dashboard/>}/>
                         </Route>
                     </Routes>
                 </Suspense>
