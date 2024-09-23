@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { api } from "../../../config/api"; 
 
 function AddSalary() {
     // State hooks for each input field and salary list
@@ -14,68 +15,73 @@ function AddSalary() {
 
     // Calculate EPF, ETF, and Total Salary whenever baseSalary, allowances, or otHours change
     useEffect(() => {
-        const epfEmpolyerValue = (baseSalary * 0.15).toFixed(2);
-        const epfEmployeeValue = (baseSalary * 0.08).toFixed(2);
-        const epfValue = (parseFloat(epfEmpolyerValue) + parseFloat(epfEmployeeValue)).toFixed(2);
-        const etfValue = (baseSalary * 0.03).toFixed(2);
-        const otPay = (otHours * 500).toFixed(2);
+        const parsedBaseSalary = parseFloat(baseSalary) || 0;
+        const parsedAllowances = parseFloat(allowances) || 0;
+        const parsedOtHours = parseFloat(otHours) || 0;
+
+        // Calculating EPF, ETF, and OT pay
+        const epfEmployer = (parsedBaseSalary * 0.15).toFixed(2);
+        const epfEmployee = (parsedBaseSalary * 0.08).toFixed(2);
+        const totalEpf = (parseFloat(epfEmployer) + parseFloat(epfEmployee)).toFixed(2);
+        const etfValue = (parsedBaseSalary * 0.03).toFixed(2);
+        const otPay = (parsedOtHours * 500).toFixed(2); // Assuming OT hours are paid 500 per hour
+
+        // Calculate Total Salary
         const total = (
-            parseFloat(baseSalary) +
-            parseFloat(allowances) -
-            parseFloat(epfEmployeeValue) +
+            parsedBaseSalary +
+            parsedAllowances -
+            parseFloat(epfEmployee) +
             parseFloat(otPay)
         ).toFixed(2);
 
-        setEpf(epfValue);
+        // Update state
+        setEpf(totalEpf);
         setEtf(etfValue);
         setTotalSalary(total);
-        
-    }, [baseSalary, allowances]);
+
+    }, [baseSalary, allowances, otHours]);
 
     // Handlers for each input field
-    function handleSalaryIdChange(event) {
-        setSalaryId(event.target.value);
-    }
+    const handleSalaryIdChange = (event) => setSalaryId(event.target.value);
+    const handleUserIdChange = (event) => setUserId(event.target.value);
+    const handleBaseSalaryChange = (event) => setBaseSalary(event.target.value);
+    const handleAllowancesChange = (event) => setAllowances(event.target.value);
+    const handleOtHoursChange = (event) => setOtHours(event.target.value);
 
-    function handleUserIdChange(event) {
-        setUserId(event.target.value);
-    }
-
-    function handleBaseSalaryChange(event) {
-        setBaseSalary(event.target.value);
-    }
-
-    function handleAllowancesChange(event) {
-        setAllowances(event.target.value);
-    }
-    
-
-    // Function to handle the submit button click
-    function addSalary() {
+    const addSalary = async () => {
         if (salaryId && userId && baseSalary && allowances && epf && etf && totalSalary) {
             const salaryData = {
-                salaryId,
-                userId,
-                baseSalary,
-                allowances,
+                salaryID: salaryId,
+                userID: userId,
+                basicSalary: baseSalary,
+                allowance: allowances,
                 epf,
                 etf,
-                otHours, // OT Hours will be included in salary data
                 totalSalary
             };
 
-            setSalaries([...salaries, salaryData]);
+            try {
+                await api.post('/api/employeesalary/create', salaryData); // Make API call
+                alert('Salary added successfully!');
 
-            // Clear input fields after submission
-            setSalaryId('');
-            setUserId('');
-            setBaseSalary('');
-            setAllowances('');
-            setEpf('');
-            setEtf('');
-            setTotalSalary('');
+                // Clear input fields after successful submission
+                setSalaryId('');
+                setUserId('');
+                setBaseSalary('');
+                setAllowances('');
+                setEpf('');
+                setEtf('');
+                setOtHours('10');
+                setTotalSalary('');
+
+            } catch (error) {
+                console.error('Failed to add salary:', error);
+                alert('Error adding salary.');
+            }
+        } else {
+            alert('Please fill all the fields!');
         }
-    }
+    };
 
 
     return (
@@ -83,7 +89,7 @@ function AddSalary() {
             <div className="bg-darkG p-6">
                 <h1 className="text-5xl font-bold text-white mb-6 text-center">Add Salary</h1>
                 <form className='relative left-56'>
-                    
+                    {/* Salary ID and User ID */}
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
                             <label htmlFor="salaryId" className="block text-2xl text-white font-bold mb-2">Salary ID:</label>
@@ -109,7 +115,7 @@ function AddSalary() {
                         </div>
                     </div>
 
-                    {/* Flex container to align Base Salary and Allowances side by side */}
+                    {/* Base Salary and Allowances */}
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
                             <label htmlFor="baseSalary" className="block text-2xl text-white font-bold mb-2">Base Salary:</label>
@@ -135,7 +141,7 @@ function AddSalary() {
                         </div>
                     </div>
 
-                    {/* Flex container to align EPF and ETF side by side */}
+                    {/* EPF and ETF */}
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
                             <label htmlFor="epf" className="block text-2xl text-white font-bold mb-2">EPF:</label>
@@ -159,18 +165,32 @@ function AddSalary() {
                         </div>
                     </div>
 
+                    {/* OT Hours */}
+                    <div className="flex mb-4">
+                        <div className="w-1/3 pr-2">
+                            <label htmlFor="otHours" className="block text-2xl text-white font-bold mb-2">OT Hours:</label>
+                            <input 
+                                type="number" 
+                                id="otHours" 
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl" 
+                                value={otHours}
+                                onChange={handleOtHoursChange} 
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    {/* Submit Button */}
                     <button 
                         type="button" 
-                        className="bg-lightG text-white font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0] "
+                        className="bg-lightG text-white font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0]"
                         onClick={addSalary}
                     >
                         Submit
                     </button>
                 </form>
             </div>
-
-            
-        </> 
+        </>
     );
 }
 
