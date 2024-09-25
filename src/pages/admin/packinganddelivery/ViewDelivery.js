@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState } from "react";
 
-const viewdelivery = () => {
-    //const [orderId, setOrderId] = useState('');
+const Viewdelivery = () => {
+    const [orderId, setOrderId] = useState('');
     //const [receivercontact, setReceiverContact] = useState('');
     //const [receivername, setReceiverName] = useState('');
     //const [sendermail, setSenderMail] = useState('');
@@ -20,7 +20,7 @@ const viewdelivery = () => {
                 <h2 className=" font-bold text-white mb-4 text-center text-5xl">Delivered Orders</h2>
                 <div className='flex items-center  w-11/12 mb-3'>
                     <div className='w-1/3 text-center text-xl font-bold text-white'>Order ID</div>
-                    <div className='w-1/3 text-center text-xl font-bold  text-white'>Current Status </div>
+                    <div className='w-1/3 text-center text-xl font-bold  text-white'>Delivery Status </div>
                     <div className='w-1/3 text-center text-xl font-bold  text-white'>Download Receipt </div>
                     <div className='w-1/3 text-center text-xl font-bold  text-white'>Send Email</div>
                     
@@ -61,5 +61,5 @@ const viewdelivery = () => {
     );
 }
 
-export default viewdelivery;
+export default Viewdelivery;
 

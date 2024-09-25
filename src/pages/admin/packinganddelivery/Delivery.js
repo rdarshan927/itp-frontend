@@ -9,7 +9,7 @@ import Search from "./Search";
 const Delivery =() => {
     return (
         <div>
-             <Search />
+         
              <AddDelivery />
              <ViewDelivery />
         </div>

@@ -30,6 +30,23 @@ const ViewPacking = () => {
         }
     };
 
+    const handleQRCodeDownload = async (id, orderId) => {
+        try {
+            const response = await api.get(`/api/packing/qrcode/${id}`, {
+                responseType: 'blob', // Important for binary data
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `packing-qrcode-${orderId}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } catch (error) {
+            console.error('Error downloading QR code PDF:', error);
+        }
+    };
+
 
     const handleUpdatePacking = async () => {
         const updatedPacking = {
@@ -93,46 +110,63 @@ const ViewPacking = () => {
 
     return (
         <div className="bg-[#BACD92] mt-10 p-6">
-            <h2 className="font-bold text-white mb-4 text-center text-5xl">Packed Orders</h2>
+            <h2 className="font-bold text-black mb-4 text-center text-5xl">Packed Orders</h2>
             <div className="flex items-center w-11/12 mb-3">
                 
-                <div className="w-1/4 text-center text-xl font-bold text-white">Order ID</div>
-                <div className="w-1/4 text-center text-xl font-bold text-white">Packing Date</div>
-                <div className="w-1/4 text-center text-xl font-bold text-white">Current Status</div>
-                <div className="w-1/4 text-center text-xl font-bold text-white">Download QR</div>
+                <div className="w-1/4 text-center text-xl font-bold text-black">Order ID</div>
+                <div className="w-1/4 text-center text-xl font-bold text-black">Packing Date</div>
+                <div className="w-1/4 text-center text-xl font-bold text-black">Current Status</div>
+                <div className="w-1/4 text-center text-xl font-bold text-black">Download QR</div>
             </div>
             <ul>
-                {packing.map((selectedPacking, index) => (
-                    <li key={index} className="flex items-center justify-between mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
-                        <div className="flex-1 text-white flex items-center">
-                            <div className="w-1/4 px-2 text-center text-2xl">{selectedPacking.orderId}</div>
-                            <div className="w-1/4 px-2 text-center text-2xl">{selectedPacking.packingdate.split('T')[0]}</div>
-                            <div className="w-1/4 px-2 text-center text-2xl">
-                                {selectedPacking.currentstatus}</div>
-                            <div className="w-1/4 px-2 text-center text-2xl">
-                                {selectedPacking.qrcode} 
-                                <button className="bg-[#BACD92] text-black text-sm px-4 py-2 rounded-full hover:bg-green-700">
-                                    <i className="fas fa-check"></i> QR
-                                </button>
-                            </div>
-                        </div>
-                        <div className="flex space-x-2">
-                            <button 
-                                className="bg-yellow-400 text-white text-sm px-3 py-1 rounded hover:bg-yellow-500"
-                                onClick={() => handleEdit(index)}
-                            >
-                                Edit
-                            </button>
-                            <button 
-                                className="bg-red-400 text-white text-sm px-3 py-1 rounded hover:bg-red-500"
-                                onClick={() => handleDelete(index)}
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+    {packing.map((selectedPacking, index) => (
+        <li key={index} className="flex items-center justify-between mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
+            <div className="flex-1 text-black flex items-center">
+                <div className="w-1/4 px-2 text-center text-2xl">{selectedPacking.orderId}</div>
+                <div className="w-1/4 px-2 text-center text-2xl">{selectedPacking.packingdate.split('T')[0]}</div>
+                <div className="w-1/4 px-2 text-center text-2xl">{selectedPacking.currentstatus}</div>
+                <div className="w-1/4 px-2 text-center text-2xl">
+                    <button 
+                        className="bg-[#BACD92] text-black text-sm px-4 py-2 rounded-full hover:bg-green-700"
+                        onClick={async () => {
+                            try {
+                                const response = await api.get(`/api/packing/qrcode/${selectedPacking._id}`, {
+                                    responseType: 'blob', // Important for binary data
+                                });
+                                const url = window.URL.createObjectURL(new Blob([response.data]));
+                                const link = document.createElement('a');
+                                link.href = url;
+                                link.setAttribute('download', `packing-qrcode-${selectedPacking.orderId}.pdf`);
+                                document.body.appendChild(link);
+                                link.click();
+                                link.remove();
+                            } catch (error) {
+                                console.error('Error downloading QR code PDF:', error);
+                            }
+                        }}
+                    >
+                        <i className="fas fa-check"></i> QR
+                    </button>
+                </div>
+            </div>
+            <div className="flex space-x-2">
+                <button 
+                    className="bg-yellow-400 text-black text-sm px-3 py-1 rounded hover:bg-yellow-500"
+                    onClick={() => handleEdit(index)}
+                >
+                    Edit
+                </button>
+                <button 
+                    className="bg-red-400 text-black text-sm px-3 py-1 rounded hover:bg-red-500"
+                    onClick={() => handleDelete(index)}
+                >
+                    Delete
+                </button>
+            </div>
+        </li>
+    ))}
+</ul>
+
             {/* Popup Modal for Editing */}
             {isEditing && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
