@@ -26,26 +26,29 @@ const AddDelivery = () => {
             setIsModalVisible(false); // Hide modal if no data is found
         }
     };
-
     const handleAddDelivery = async () => {
         const newDelivery = {
             orderId,
             senderEmail,
-            deliveryDate,
+            receivername: receiverName,  // Use the correct field names
+            receiveraddress: receiverAddress,
+            receivercontact: receiverContactNo,
             delivererName,
             currentStatus,
+            deliveryDate,
         };
-
+    
         try {
-            await api.post('/api/deliveries', newDelivery);
+            await api.post('/api/deliveries/add', newDelivery);  // Ensure the correct URL
             console.log("Delivery added successfully");
             alert("Delivery added");
-            // Optionally close the modal after adding
-            setIsModalVisible(false);
+            setIsModalVisible(false); // Close the modal after adding
         } catch (error) {
             console.error("Error adding delivery:", error);
+            alert("Error adding delivery");
         }
     };
+    
 
     return (
         <div>
@@ -114,16 +117,17 @@ const AddDelivery = () => {
                                         disabled
                                     />
                                 </div>
-                                <div className="w-1/3 pl-2">
-                                    <label htmlFor="deliveryDate" className="block text-xl font-bold mb-2">Delivery Date:</label>
-                                    <input
-                                        type="text"
-                                        id="deliveryDate"
-                                        className="w-full rounded-md px-3 py-2 border"
-                                        value={deliveryDate}
-                                        disabled
-                                    />
-                                </div>
+                               <div className="w-1/3 pl-2">
+                            <label htmlFor="deliveryDate" className="block text-xl text-black font-bold mb-2">Delivery Date:</label>
+                            <input
+                                type="date"
+                                id="DeliveryDate"
+                                className="w-full rounded-md px-3 py-2  border"
+                                value={deliveryDate}
+                                onChange={(e) => setDeliveryDate(e.target.value)}
+                                required
+                            />
+                        </div>
                             </div>
 
                             <div className="flex mb-4">
@@ -139,13 +143,17 @@ const AddDelivery = () => {
                                 </div>
                                 <div className="w-1/3 pl-2">
                                     <label htmlFor="currentStatus" className="block text-xl font-bold mb-2">Current Status:</label>
-                                    <input
-                                        type="text"
+                                    <select
+                                       
                                         id="currentStatus"
                                         className="w-full rounded-md px-3 py-2 border"
                                         value={currentStatus}
                                         onChange={(e) => setCurrentStatus(e.target.value)}
-                                    />
+                                        >
+                                        <option value="Delivered">Delivered</option>
+                                        <option value="Order is on the way">Order is on the way</option>
+                                        </select>
+                                    
                                 </div>
                             </div>
 
