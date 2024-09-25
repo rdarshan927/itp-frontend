@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { api } from '../../../config/api';
 import Search from './Search';
 
 const AddDelivery = () => {
@@ -10,21 +10,21 @@ const AddDelivery = () => {
     const [receiverAddress, setReceiverAddress] = useState("");
     const [delivererName, setDelivererName] = useState("");
     const [currentStatus, setCurrentStatus] = useState("");
-    const [deliveryDate, setdeliveryDate] = useState("");
-    const [isFormVisible, setIsFormVisible] = useState(false);
-
-    const [searchQuery, setSearchQuery] = useState("");
-    const [noResults, setNoResults] = useState(false);
+    const [deliveryDate, setDeliveryDate] = useState("");
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const handleSearch = (packingData) => {
-     
-        setOrderId(packingData.orderId);
-        setReceiverContactNo(packingData.receivercontact);
-        setReceiverName(packingData.receivername);
-        setSenderEmail(packingData.senderemail);
-        setReceiverAddress(packingData.receiveraddress);
-        setdeliveryDate(packingData.deliveryDate);
-        setIsFormVisible(true);
+        if (packingData) {
+            setOrderId(packingData.orderId);
+            setReceiverContactNo(packingData.receivercontact);
+            setReceiverName(packingData.receivername);
+            setSenderEmail(packingData.senderemail);
+            setReceiverAddress(packingData.receiveraddress);
+            setDeliveryDate(packingData.deliveryDate);
+            setIsModalVisible(true); // Show modal when data is found
+        } else {
+            setIsModalVisible(false); // Hide modal if no data is found
+        }
     };
 
     const handleAddDelivery = async () => {
@@ -33,13 +33,15 @@ const AddDelivery = () => {
             senderEmail,
             deliveryDate,
             delivererName,
-            currentStatus
+            currentStatus,
         };
 
         try {
-            await axios.post('/api/deliveries', newDelivery);
+            await api.post('/api/deliveries', newDelivery);
             console.log("Delivery added successfully");
             alert("Delivery added");
+            // Optionally close the modal after adding
+            setIsModalVisible(false);
         } catch (error) {
             console.error("Error adding delivery:", error);
         }
@@ -48,119 +50,126 @@ const AddDelivery = () => {
     return (
         <div>
             <Search onSearch={handleSearch} />
-            {isFormVisible && (
-                <form className="relative left-56 mt-6">
-                    <div className="flex mb-4">
-                        <div className="w-1/3 pr-2">
-                            <label htmlFor="orderId" className="block text-2xl text-white font-bold mb-2">Order ID:</label>
-                            <input
-                                type="text"
-                                id="orderId"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
-                                value={orderId}
-                                disabled
-                            />
-                        </div>
-                        <div className="w-1/3 pl-2">
-                            <label htmlFor="receiverContactNo" className="block text-2xl text-white font-bold mb-2">Receiver Contact No:</label>
-                            <input
-                                type="text"
-                                id="receiverContactNo"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
-                                value={receiverContactNo}
-                                disabled
-                            />
-                        </div>
+
+            {/* Modal */}
+            {isModalVisible && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded shadow-lg w-1/2">
+                        <h2 className="text-2xl font-bold mb-4">Add Delivery</h2>
+                        <form>
+                            <div className="flex mb-4">
+                                <div className="w-1/3 pr-2">
+                                    <label htmlFor="orderId" className="block text-xl font-bold mb-2">Order ID:</label>
+                                    <input
+                                        type="text"
+                                        id="orderId"
+                                        className="w-full rounded-md px-3 py-2 border"
+                                        value={orderId}
+                                        disabled
+                                    />
+                                </div>
+                                <div className="w-1/3 pl-2">
+                                    <label htmlFor="receiverContactNo" className="block text-xl font-bold mb-2">Receiver Contact No:</label>
+                                    <input
+                                        type="text"
+                                        id="receiverContactNo"
+                                        className="w-full rounded-md px-3 py-2 border"
+                                        value={receiverContactNo}
+                                        disabled
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex mb-4">
+                                <div className="w-1/3 pr-2">
+                                    <label htmlFor="receiverName" className="block text-xl font-bold mb-2">Receiver Name:</label>
+                                    <input
+                                        type="text"
+                                        id="receiverName"
+                                        className="w-full rounded-md px-3 py-2 border"
+                                        value={receiverName}
+                                        disabled
+                                    />
+                                </div>
+                                <div className="w-1/3 pl-2">
+                                    <label htmlFor="senderEmail" className="block text-xl font-bold mb-2">Sender Email:</label>
+                                    <input
+                                        type="text"
+                                        id="senderEmail"
+                                        className="w-full rounded-md px-3 py-2 border"
+                                        value={senderEmail}
+                                        disabled
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex mb-4">
+                                <div className="w-1/3 pr-2">
+                                    <label htmlFor="receiverAddress" className="block text-xl font-bold mb-2">Receiver Address:</label>
+                                    <input
+                                        type="text"
+                                        id="receiverAddress"
+                                        className="w-full rounded-md px-3 py-2 border"
+                                        value={receiverAddress}
+                                        disabled
+                                    />
+                                </div>
+                                <div className="w-1/3 pl-2">
+                                    <label htmlFor="deliveryDate" className="block text-xl font-bold mb-2">Delivery Date:</label>
+                                    <input
+                                        type="text"
+                                        id="deliveryDate"
+                                        className="w-full rounded-md px-3 py-2 border"
+                                        value={deliveryDate}
+                                        disabled
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex mb-4">
+                                <div className="w-1/3 pr-2">
+                                    <label htmlFor="delivererName" className="block text-xl font-bold mb-2">Deliverer Name:</label>
+                                    <input
+                                        type="text"
+                                        id="delivererName"
+                                        className="w-full rounded-md px-3 py-2 border"
+                                        value={delivererName}
+                                        onChange={(e) => setDelivererName(e.target.value)}
+                                    />
+                                </div>
+                                <div className="w-1/3 pl-2">
+                                    <label htmlFor="currentStatus" className="block text-xl font-bold mb-2">Current Status:</label>
+                                    <input
+                                        type="text"
+                                        id="currentStatus"
+                                        className="w-full rounded-md px-3 py-2 border"
+                                        value={currentStatus}
+                                        onChange={(e) => setCurrentStatus(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <button
+                                type="button"
+                                className="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700 mt-5"
+                                onClick={handleAddDelivery}
+                            >
+                                Add Delivery
+                            </button>
+
+                            <button
+                                type="button"
+                                className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mt-5 ml-4"
+                                onClick={() => setIsModalVisible(false)} // Close modal
+                            >
+                                Close
+                            </button>
+                        </form>
                     </div>
-
-                    <div className="flex mb-4">
-                        <div className="w-1/3 pr-2">
-                            <label htmlFor="receiverName" className="block text-2xl text-white font-bold mb-2">Receiver Name:</label>
-                            <input
-                                type="text"
-                                id="receiverName"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
-                                value={receiverName}
-                                disabled
-                            />
-                        </div>
-                        <div className="w-1/3 pl-2">
-                            <label htmlFor="senderEmail" className="block text-2xl text-white font-bold mb-2">Sender Email:</label>
-                            <input
-                                type="email"
-                                id="senderEmail"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
-                                value={senderEmail}
-                                disabled
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex mb-4">
-                        <div className="w-1/3 pr-2">
-                            <label htmlFor="receiverAddress" className="block text-2xl text-white font-bold mb-2">Receiver Address:</label>
-                            <input
-                                type="text"
-                                id="receiverAddress"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
-                                value={receiverAddress}
-                                disabled
-                            />
-                        </div>
-                        <div className="w-1/3 pl-2">
-                            <label htmlFor="delivererName" className="block text-2xl text-white font-bold mb-2">Deliverer's Name:</label>
-                            <input
-                                type="text"
-                                id="delivererName"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
-                                value={delivererName}
-                                onChange={(e) => setDelivererName(e.target.value)}
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex mb-4">
-
-                    <div className="w-1/3 pl-2">
-                            <label htmlFor="deliveryDate" className="block text-2xl text-black font-bold mb-2">Delivery Date:</label>
-                            <input
-                                type="date"
-                                id="deliveryDate"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
-                                value={deliveryDate}
-                                onChange={(e) => setdeliveryDate(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="w-1/3 pr-2">
-                            <label htmlFor="currentStatus" className="block text-2xl text-white font-bold mb-2">Delivery Status:</label>
-                            <select
-                                id="currentStatus"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
-                                value={currentStatus}
-                                onChange={(e) => setCurrentStatus(e.target.value)}
-                               >
-                                <option value="Packing">Delivered</option>
-                                <option value="Hand Over to Delivery">Order is on the way</option>
-                               </select>
-                            
-                        </div>
-                    </div>
-
-                  
-
-                    <button
-                        type="button"
-                        className="bg-lightG text-white font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0]"
-                        onClick={handleAddDelivery}
-                    >
-                        Add Delivery
-                    </button>
-                </form>
+                </div>
             )}
         </div>
     );
-}
+};
 
 export default AddDelivery;

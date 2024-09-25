@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import axios from 'axios';
+import { api } from '../../../config/api';
 
 function Search({ onSearch }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -12,11 +11,18 @@ function Search({ onSearch }) {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`/api/packings/${searchTerm}`);
-            onSearch(response.data);
+            const response = await api.get(`/api/packing/get/single/${searchTerm}`);
+            if (response.data) {
+                onSearch(response.data);  // Pass response data to parent component
+                setError('');  // Clear error if data is found
+            } else {
+                setError('Order not found');
+                onSearch(null);  // Pass null to hide the form if no data found
+            }
         } catch (error) {
-            setError('Order not found');
+            setError('Error fetching packing data');
             console.error('Error fetching packing data:', error);
+            onSearch(null);  // Pass null in case of error
         }
     };
 
@@ -27,11 +33,11 @@ function Search({ onSearch }) {
                     type="text"
                     placeholder="Enter order ID..."
                     value={searchTerm}
-                    onChange={handleSearchChange}
+                    onChange={handleSearchChange}  // Correctly pass function reference
                     className="w-1/4 p-3 rounded-md border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button
-                    onClick={handleSearch}
+                    onClick={handleSearch}  // Correctly pass function reference
                     className="p-3 bg-darkG text-white font-bold rounded-md shadow-md focus:outline-none"
                 >
                     Search
