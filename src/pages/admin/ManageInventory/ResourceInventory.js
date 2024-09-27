@@ -24,10 +24,31 @@ const ResourceInventory = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+
+    // Handle quantity specifically to prevent negative numbers and zero
+    if (name === "quantity") {
+      const intValue = parseInt(value, 10);
+      // Check if the value is a number and greater than 0
+      if (!isNaN(intValue) && intValue > 0) {
+        setFormData({
+          ...formData,
+          [name]: intValue.toString(), // Store it back as a string if needed
+        });
+      } else if (value === "") {
+        // Allow clear to reset the field
+        setFormData({
+          ...formData,
+          [name]: "",
+        });
+      }
+      // Do nothing if conditions don't meet, effectively ignoring the input
+    } else {
+      // For other inputs, proceed as normal
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const validateForm = () => {
@@ -36,8 +57,13 @@ const ResourceInventory = () => {
     if (!formData.itemName) formErrors.itemName = "Item Name is required";
     if (!formData.itemCategory)
       formErrors.itemCategory = "Item Category is required";
-    if (!formData.quantity || isNaN(formData.quantity))
+    if (!formData.quantity) {
+      formErrors.quantity = "Quantity is required";
+    } else if (isNaN(formData.quantity)) {
       formErrors.quantity = "Quantity must be a number";
+    } else if (parseInt(formData.quantity) < 1) {
+      formErrors.quantity = "Quantity must be 1 or more";
+    }
     return formErrors;
   };
 
@@ -54,16 +80,6 @@ const ResourceInventory = () => {
   useEffect(() => {
     getItems();
   }, []);
-
-  const getRecords = async () => {
-    try {
-      const response = await api.get("/api/inventory/getallrecords");
-      setPrintData(response.data); // Set data for printing
-      console.log("Fetched Inventory Records:", response.data);
-    } catch (error) {
-      console.error("There was an error while fetching data!", error);
-    }
-  };
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -130,7 +146,8 @@ const ResourceInventory = () => {
 
   const handleModalSave = async () => {
     try {
-      await api.patch(
+      // Attempt to update the resource item with new data
+      const updateResponse = await api.patch(
         `/api/inventory/updateresourceitem/${editData.productID}`,
         {
           name: editData.name,
@@ -138,8 +155,22 @@ const ResourceInventory = () => {
           quantity: parseInt(editData.quantity),
         }
       );
-      getItems();
-      setIsModalOpen(false);
+      if (updateResponse.status === 200) {
+        // If the update is successful, record the update action
+        await api.post("/api/inventory/addinventoryrecord", {
+          productID: editData.productID,
+          name: editData.name,
+          category: editData.category,
+          quantity: parseInt(editData.quantity),
+          action: "Edit",
+          dateTime: new Date().toISOString(),
+        });
+        console.log("Item updated and record saved.");
+      } else {
+        console.error("Failed to update item.");
+      }
+      getItems(); // Refresh the list after updating
+      setIsModalOpen(false); // Close the modal after saving
     } catch (error) {
       console.error("Error updating resource item:", error);
     }
@@ -180,6 +211,7 @@ const ResourceInventory = () => {
         </thead>
         <tbody>
           ${records
+            .toReversed()
             .map(
               (item, index) => `
             <tr>
