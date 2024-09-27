@@ -8,6 +8,8 @@ const Home = lazy(() => import('./pages/home/Home'));
 const ManageEmployeeRole = lazy(() => import('./pages/admin/ManageEmployeeRole/ManageEmployeeRole'));
 const Register = lazy(() => import('./pages/register/Register'))
 const Login = lazy(() => import('./pages/login/Login'));
+const HarvestAdd = lazy(() => import('./pages/admin/harvest_manager/HarvestAdd'));
+const Table = lazy(() => import('./pages/admin/harvest_manager/Harves_table'));
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
@@ -32,7 +34,9 @@ const AllRoutes = () => {
 
                         {/* Admin Routes */}
                         <Route element={<AdminLayout />}>
-                            <Route path='/manageemprole' element={<ManageEmployeeRole />} />
+                            <Route path='/manageemprole' element={<ManageEmployeeRole />} />   
+                            <Route path='/harvest' element={<HarvestAdd />} />
+                            <Route path='/table' element={<Table />} />
                         </Route>
                     </Routes>
                 </Suspense>
