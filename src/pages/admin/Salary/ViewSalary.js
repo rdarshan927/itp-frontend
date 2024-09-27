@@ -120,43 +120,46 @@ const ViewSalary = () => {
                 </>
             )}
 
-            {isModalOpen && (
+                {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-5 rounded-md shadow-lg">
-                        <h2 className="text-2xl font-bold mb-4">Edit Salary Entry</h2>
-                        {selectedSalary && (
-                            <>
-                                {Object.keys(selectedSalary).map((key) => (
-                                    <div className="mb-2" key={key}>
-                                        <label className="block font-bold mb-1">{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
-                                        <input
-                                            type="text"
-                                            name={key}
-                                            value={selectedSalary[key]}
-                                            onChange={handleChange}
-                                            className="border p-2 w-full"
-                                        />
-                                    </div>
-                                ))}
-                                <div className="flex justify-end space-x-2 mt-4">
-                                    <button
-                                        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-                                        onClick={handleModalClose}
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        className="bg-green-400 text-white px-4 py-2 rounded hover:bg-green-500"
-                                        onClick={handleSave}
-                                    >
-                                        Save
-                                    </button>
-                                </div>
-                            </>
-                        )}
+                    <h2 className="text-2xl font-bold mb-4">Edit Salary Entry</h2>
+                    {selectedSalary && (
+                        <>
+                        {Object.keys(selectedSalary)
+                            .filter(key => key !== '_id' && key !== '__v')  // Exclude '_id' and '__v'
+                            .map((key) => (
+                            <div className="mb-2" key={key}>
+                                <label className="block font-bold mb-1">{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
+                                <input
+                                type="text"
+                                name={key}
+                                value={selectedSalary[key]}
+                                onChange={handleChange}
+                                className="border p-2 w-full"
+                                />
+                            </div>
+                            ))}
+                        <div className="flex justify-end space-x-2 mt-4">
+                            <button
+                            className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+                            onClick={handleModalClose}
+                            >
+                            Cancel
+                            </button>
+                            <button
+                            className="bg-green-400 text-white px-4 py-2 rounded hover:bg-green-500"
+                            onClick={handleSave}
+                            >
+                            Save
+                            </button>
+                        </div>
+                        </>
+                    )}
                     </div>
                 </div>
-            )}
+                )}
+
         </div>
     );
 };
