@@ -11,8 +11,10 @@ module.exports = {
         'xs': '480px',
         'sm': '640px',
         'md': '768px',
+        'mdmm': '840px',
         'mm': '947px',
         'lg': '1024px',
+        'xlg': '1200px'
       },
       colors: {
         lightP: "#F5DAD2",
@@ -24,11 +26,21 @@ module.exports = {
         adminBlack2: "#414141",
         adminWhite: "#FFFFFF",
         clientWhite: "#FFFFFF",
+        
 
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },
+
+      fontSize: {
+        '2xl': '1.5rem',   
+        '3xl': '2rem',     
+        '4xl': '2.5rem',   
+        '5xl': '3rem',     
+        '6xl': '4rem',     
+       
+      }
     },
   },
   plugins: [],

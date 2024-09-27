@@ -1,7 +1,7 @@
 import React from "react";
 import {useState} from "react";
 import{api} from '../../config/api'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { handleError, handleSuccess } from '../../utils';
 import { ToastContainer } from 'react-toastify';
 
@@ -92,13 +92,13 @@ function Login(){
                                 />
                             
                         </div>
-                            <a href="#" className="text-right text-lightG mb-4 block">Forgget Password</a>
+                            <a href="forgot_password" className="text-right text-lightG mb-4 block">Forgot Password</a>
                         
                             <button  type="submit" className="bg-lightG text-white p-3 rounded md:w-96">
                                 Login
                             </button>
                             
-                            <p className="text-center text-lightG mt-4">Dont have an account?<a href="#" className="text-lightG">Sing up</a>
+                            <p className="text-center text-lightG mt-4">Dont have an account?<a href="/register" className="text-lightG">Sign up</a>
                             </p>
                     </form>
                 </div>
@@ -106,7 +106,7 @@ function Login(){
         </div>
             <ToastContainer />
             <div className="w-auto bg-cover bg-center md:flex hidden overflow-hidden">
-                <img src="./images/login_img.jpg" className="h-full w-full object-cover"></img>
+                <img src="./Images/login_img.jpg" className="h-full w-full object-cover" alt="login_Image"></img>
             </div>
 
         
