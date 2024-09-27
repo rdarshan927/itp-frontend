@@ -8,6 +8,8 @@ import Loading from "./components/Pageloading";
 // Lazy loading the components
 const Home = lazy(() => import('./pages/home/Home'));
 const ManageEmployeeRole = lazy(() => import('./pages/admin/ManageEmployeeRole/ManageEmployeeRole'));
+const Invoice = lazy(() => import('./pages/admin/sales/Invoice'))
+const SalesDashboard = lazy(() => import('./pages/admin/sales/SalesDashboard'));
 const Cart = lazy(() => import('./pages/cart/Cart'))
 const PaymentSuccess = lazy(() => import('./pages/cart/PaymentSuccess'))
 const Register = lazy(() => import('./pages/register/Register'))
@@ -45,8 +47,10 @@ const AllRoutes = () => {
                         {/* Admin Routes */}
                         <Route element={<AdminLayout />}>
                             <Route path='/manageemprole' element={<ManageEmployeeRole />} />
+                            <Route path="/sales/invoices" element={<Invoice />} />
                             <Route path='/ResourceInventory' element={<ResourceInventory />} />
                             <Route path='/SalesInventory' element={<SalesInventory />} />
+                            <Route path='sales/dashboard' element={<SalesDashboard />} />
                             <Route path='/salary' element={<Salary />} />
                             <Route path='/inventorystuff' element={<InventoryStuff />} />
                             <Route path='/Dashboard' element={<Dashboard/>}/>
