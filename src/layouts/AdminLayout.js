@@ -10,13 +10,13 @@ const AdminLayout = () => {
     return (
         <>
             <AdminHeader />
-            <div className="flex min-h-screen overflow-hidden">
-                <Sidebar className="w-64" />
-                <div className="flex-grow p-4 overflow-auto break-words whitespace-normal">
+            <div className="flex min-h-screen overflow-hidden ">
+                <Sidebar className="" />
+                <div className=" flex-grow p-3 overflow-hidden break-words whitespace-normal">
                     <Outlet />
                 </div>
             </div>
-            <AdminFooter />
+            {/* <AdminFooter /> */}
         </>
     );
 };

@@ -26,11 +26,21 @@ module.exports = {
         adminBlack2: "#414141",
         adminWhite: "#FFFFFF",
         clientWhite: "#FFFFFF",
+        
 
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },
+
+      fontSize: {
+        '2xl': '1.5rem',   
+        '3xl': '2rem',     
+        '4xl': '2.5rem',   
+        '5xl': '3rem',     
+        '6xl': '4rem',     
+       
+      }
     },
   },
   plugins: [],
