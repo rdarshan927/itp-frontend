@@ -29,6 +29,20 @@ const SalesInventory = () => {
     getItems();
   }, []);
 
+  // const saveRecord = async (data, action) => {
+  //   try {
+  //     await api.post("/api/inventory/addinventoryrecord", {
+  //       productID: data.itemCode,
+  //       name: data.itemName,
+  //       category: data.itemCategory,
+  //       quantity: parseInt(data.quantity),
+  //       action: action,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error recording inventory:", error);
+  //   }
+  // };
+
   return (
     <>
       <div className="p-6 bg-darkG text-black rounded-lg">

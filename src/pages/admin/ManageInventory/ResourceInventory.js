@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EditResourceItemModal from "./EditResourceItemModal";
 import { api } from "../../../config/api";
+import html2pdf from "html2pdf.js";
 
 const ResourceInventory = () => {
   const [inventory, setInventory] = useState([]);
@@ -19,6 +20,7 @@ const ResourceInventory = () => {
     category: "",
     quantity: "",
   });
+  const [printData, setPrintData] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,6 +54,16 @@ const ResourceInventory = () => {
   useEffect(() => {
     getItems();
   }, []);
+
+  const getRecords = async () => {
+    try {
+      const response = await api.get("/api/inventory/getallrecords");
+      setPrintData(response.data); // Set data for printing
+      console.log("Fetched Inventory Records:", response.data);
+    } catch (error) {
+      console.error("There was an error while fetching data!", error);
+    }
+  };
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -91,10 +103,25 @@ const ResourceInventory = () => {
       "Are you sure you want to delete this item?"
     );
     if (confirmDelete) {
+      const item = inventory[index];
       try {
-        const itemID = inventory[index].productID;
-        await api.delete(`/api/inventory/deleteresourceitem/${itemID}`);
-        getItems();
+        const response = await api.delete(
+          `/api/inventory/deleteresourceitem/${item.productID}`
+        );
+        if (response.status === 200) {
+          getItems();
+          console.log("Item deleted successfully and record saved.");
+          await api.post("/api/inventory/addinventoryrecord", {
+            productID: item.productID,
+            name: item.name,
+            category: item.category,
+            quantity: item.quantity,
+            action: "Delete",
+            dateTime: new Date().toISOString(),
+          });
+        } else {
+          console.error("Failed to delete item from inventory.");
+        }
       } catch (error) {
         console.error("Error deleting resource item:", error);
       }
@@ -118,11 +145,107 @@ const ResourceInventory = () => {
     }
   };
 
+  const handleDownload = async () => {
+    try {
+      const response = await api.get("/api/inventory/getallrecords");
+      const records = response.data; // Assume it's an array of items
+      const printableContent = generatePrintableContent(records);
+      downloadReport(printableContent);
+    } catch (error) {
+      console.error("Failed to fetch records for printing", error);
+    }
+  };
+
+  const formatDateTime = (dateTime) => {
+    return dateTime.replace("T", " ").substring(0, 16); // Format to "YYYY-MM-DD HH:MM"
+  };
+
+  const generatePrintableContent = (records) => {
+    const element = document.createElement("div");
+    element.innerHTML = `
+      <div style="text-align: center; margin-bottom: 50px;">
+        <h1 style="font-size: 25px; font-weight: bold;">Resource Inventory Records</h1>
+      </div>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid black; padding: 8px;">#</th>
+            <th style="border: 1px solid black; padding: 8px;">Item Code</th>
+            <th style="border: 1px solid black; padding: 8px;">Item Name</th>
+            <th style="border: 1px solid black; padding: 8px;">Item Category</th>
+            <th style="border: 1px solid black; padding: 8px;">Quantity</th>
+            <th style="border: 1px solid black; padding: 8px;">Date & Time</th>
+            <th style="border: 1px solid black; padding: 8px;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${records
+            .map(
+              (item, index) => `
+            <tr>
+              <td style="border: 1px solid black; padding: 8px;">${
+                index + 1
+              }</td>
+              <td style="border: 1px solid black; padding: 8px;">${
+                item.productID
+              }</td>
+              <td style="border: 1px solid black; padding: 8px;">${
+                item.name
+              }</td>
+              <td style="border: 1px solid black; padding: 8px;">${
+                item.category
+              }</td>
+              <td style="border: 1px solid black; padding: 8px;">${
+                item.quantity
+              }</td>
+              <td style="border: 1px solid black; padding: 8px;">${formatDateTime(
+                item.dateTime
+              )}</td>
+              <td style="border: 1px solid black; padding: 8px;">${
+                item.action
+              }</td>
+            </tr>`
+            )
+            .join("")}
+        </tbody>
+      </table>`;
+    return element;
+  };
+
+  const downloadReport = (element) => {
+    const options = {
+      margin: 1,
+      filename: "inventory_report.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    };
+
+    html2pdf()
+      .set(options)
+      .from(element)
+      .toPdf()
+      .get("pdf")
+      .then(function (pdf) {
+        // Process if necessary
+      })
+      .save();
+  };
+
   return (
     <div>
       <div className="p-6 bg-darkG text-black rounded-lg">
         <div>
-          <div className="text-2xl font-semibold mb-6">Resource Inventory</div>
+          <div className="mb-6 flex justify-between">
+            <div className="text-2xl font-semibold">Resource Inventory</div>
+            <button
+              className="bg-lightG font-bold py-2 text rounded-lg w-52 rounded hover:bg-[#c9d5b0]"
+              onClick={handleDownload}
+            >
+              Report Download
+            </button>
+          </div>
+
           <form onSubmit={handleAdd} className="grid grid-cols-3 gap-4 mb-6">
             <div>
               <label className="block mb-1">Item Code</label>
