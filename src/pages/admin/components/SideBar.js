@@ -14,13 +14,13 @@ const Sidebar = () => {
     const adminButtons = {
         "Sales Manager": [
             { label: "Dashboard", path: "/sales/dashboard" },
-            { label: "Invoices", path: "/sales/invoices" },
-            { label: "Reports", path: "/sales-reports" }
+            { label: "Invoices", path: "/sales/invoices" }
         ],
         "Financial Manager": [
             { label: "Dashboard", path: "/Dashboard" },
             { label: "Salary", path: "/salary" },
-            { label: "Financial Reports", path: "/financial-reports" }
+            { label: "Inventory Stuff", path: "/inventorystuff" },
+            
         ],
         "Harvest Manager": [
             { label: "Dashboard", path: "/harvest-dashboard" },
@@ -59,7 +59,7 @@ const Sidebar = () => {
     };
 
     return (
-        <div className="bg-lightG p-3">
+        <div className="bg-lightG p-3 w-80 ">
             <div className="inline-grid relative top-20">
                 {admin && adminButtons[admin]?.map(({ label, path }, index) => (
                     <button

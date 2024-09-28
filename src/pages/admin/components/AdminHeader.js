@@ -20,16 +20,16 @@ const AdminHeader = () => {
   };
 
   return (
-    <div className="bg-darkG">
-      <div className="flex justify-between items-center p-6">
+    <div className="bg-darkG py-2">
+      <div className="flex justify-end items-center p-2">
         <h1 className="text-white text-3xl font-bold">Admin Portal</h1>
-        <img src="/image/boy.png" alt="User Avatar" className="w-16 h-16" />
+        <img src="/image/boy.png" alt="User Avatar" className="w-16 h-16 mr-4 ml-4" />
       </div>
       <div className="flex justify-center mt-4 space-x-4">
         {admins.map((admin) => (
           <button
             key={admin}
-            className="bg-lightG hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-lightG hover:bg-blue-700 text-white font-bold py-2 px-4 rounded "
             onClick={() => handleAdminLogin(admin)}
           >
             {admin}
