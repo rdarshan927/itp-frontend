@@ -23,7 +23,7 @@ function AddInventoryStuff() {
         const validationErrors = {};
 
         const stuffIDPattern = /^[A-Za-z]{2}\d{3}$/; // Example : AB123
-        const stuffNamePattern = /^[A-Za-z\s]{10,20}$/; //  10-20 letters
+        const stuffNamePattern = /^[A-Za-z\s]{2,20}$/;
         const pricePattern = /^\d+(\.\d{1,2})?$/; // Only numbers with 2 decimal places
         const amountPattern = /^\d+$/; // Only positive integers
 
@@ -34,7 +34,7 @@ function AddInventoryStuff() {
 
         // Validate stuffName
         if (!stuffName.match(stuffNamePattern)) {
-            validationErrors.stuffName = 'Stuff name must be 2-50 letters.';
+            validationErrors.stuffName = 'Stuff name must be 2-20 letters.';
         }
 
         // Validate price
@@ -94,12 +94,12 @@ function AddInventoryStuff() {
             <h1 className="text-5xl font-bold text-white mb-6 text-center">Add Inventory Stuff</h1>
             <form className="mx-auto max-w-3xl" onSubmit={handleSubmit}>
                 <div className="flex flex-wrap mb-4">
-                    <div className="w-full md:w-1/2 pr-2 mb-4 md:mb-0">
+                    <div className="w-full md:w-1/2 pr-2 mb-4 md:mb-0 ">
                         <label htmlFor="stuffID" className="block text-2xl text-white font-bold mb-2">Stuff ID:</label>
                         <input
                             type="text"
                             id="stuffID"
-                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
+                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl"
                             value={stuffID}
                             onChange={(e) => setStuffID(e.target.value)}
                             required
@@ -110,7 +110,7 @@ function AddInventoryStuff() {
                         <input
                             type="text"
                             id="stuffName"
-                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
+                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl"
                             value={stuffName}
                             onChange={(e) => setStuffName(e.target.value)}
                             required
@@ -125,7 +125,7 @@ function AddInventoryStuff() {
                             type="number"
                             step="0.01"
                             id="price"
-                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
+                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                             required
@@ -136,7 +136,7 @@ function AddInventoryStuff() {
                         <input
                             type="number"
                             id="amount"
-                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
+                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             required
@@ -149,7 +149,7 @@ function AddInventoryStuff() {
                     <input
                         type="text"
                         id="totalPrice"
-                        className="w-full rounded-md px-3 py-2 bg-lightG text-white text-3xl"
+                        className="w-1/2 rounded-md px-3 py-2 bg-lightG text-white text-2xl"
                         value={totalPrice}
                         readOnly
                     />

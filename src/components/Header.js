@@ -39,10 +39,10 @@ const Header = () => {
 
                     {/* Navigation Links */}
                     <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-10 mt-4 md:mt-0">
-                        <a href="#home" className="text-darkG hover:text-lightG text-lg">HOME</a>
-                        <a href="#about" className="text-darkG hover:text-lightG text-lg">FLOWERS</a>
-                        <a href="#services" className="text-darkG hover:text-lightG text-lg">BOUQUET</a>
-                        <a href="#contact" className="text-darkG hover:text-lightG text-lg">CONTACT</a>
+                        <a href="#home" className="text-black font-bold hover:text-lightG text-lg">HOME</a>
+                        <a href="#about" className="text-black font-bold hover:text-lightG text-lg">FLOWERS</a>
+                        <a href="#services" className="text-black font-bold hover:text-lightG text-lg">BOUQUET</a>
+                        <a href="#contact" className="text-black font-bold hover:text-lightG text-lg">CONTACT</a>
                     </div>
 
                     {/* Login and Cart Icons */}
