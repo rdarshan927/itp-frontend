@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
 
+
 function Orders() {
     const [orders, setOrders] = useState([]);
     const ordersRef = useRef(); // Reference for the orders section
@@ -24,7 +25,7 @@ function Orders() {
         const pdfStyle = `
             #orders-pdf {
                 font-family: Arial, sans-serif;
-                font-size: 13px; /* Decreased font size for PDF */
+                font-size: 12px; /* Adjusted font size */
             }
             #orders-pdf table {
                 width: 100%;
@@ -33,28 +34,43 @@ function Orders() {
             }
             #orders-pdf th, #orders-pdf td {
                 border: 1px solid black; /* Add a border around table cells */
-                padding: 12px 20px; /* Adjust padding (top-bottom 12px, left-right 20px) */
-                text-align: center;
-                font-size: 13px; /* Decrease font size for table cells */
+                padding: 8px 10px; /* Adjust padding */
+                text-align: left; /* Align text to left for better readability */
                 background-color: white; /* Ensure background is white */
                 color: black; /* Set text color to black */
             }
             #orders-pdf th {
+                background-color: #BACD92; /* Header background color */
                 color: black; /* Keep text color */
             }
             #orders-pdf tr:nth-child(even) {
-                /* No background color for even rows */
+                background-color: #F7F7F7; /* Light gray for even rows */
             }
             #orders-pdf .pdf-title {
-                font-size: 30px; /* Title font size */
+                font-size: 32px; /* Title font size */
                 text-align: center;
-                margin-bottom: 20px; /* Space between title and table */
+                margin: 20px 0; /* Space between title and table */
                 font-weight: bold; /* Make the title bold */
                 color: black; /* Set text color to black */
             }
+            #orders-pdf .pdf-logo {
+                text-align: center;
+                margin-bottom: 10px; /* Space between logo and title */
+                font-size: 18px; /* Adjust font size for the logo text */
+                font-weight: bold; /* Make the logo text bold */
+                color: black; /* Set logo text color */
+            }
+            #orders-pdf .pdf-footer {
+                font-size: 8px; /* Adjusted font size for footer */
+                color: gray; /* Text color for footer */
+                position: absolute; /* Position at the bottom */
+                bottom: 10px; /* Space from the bottom */
+                right: 10px; /* Space from the right */
+                text-align: right; /* Align text to the right */
+            }
         `;
     
-        // Temporarily apply black-and-white styles only for the PDF generation
+        // Temporarily apply styles for PDF generation
         const styleElement = document.createElement('style');
         styleElement.innerHTML = pdfStyle;
         document.head.appendChild(styleElement);
@@ -63,34 +79,65 @@ function Orders() {
         const clonedOrders = ordersRef.current.cloneNode(true);
         clonedOrders.id = 'orders-pdf'; // Change the ID to apply PDF-specific styles
     
-        // Create a title element
+        // Create and prepend the logo element
+        const logoElement = document.createElement('div');
+        logoElement.className = 'pdf-logo';
+        logoElement.textContent = 'Orders Report'; // Replace with your logo text
+        clonedOrders.insertBefore(logoElement, clonedOrders.firstChild);
+    
+        // Create and prepend the title element
         const titleElement = document.createElement('div');
         titleElement.className = 'pdf-title';
-        titleElement.textContent = 'Orders'; // Set the title text
-    
-        // Prepend the title to the cloned orders
+        titleElement.textContent = 'Sephora Flowers'; // Set the title text
         clonedOrders.insertBefore(titleElement, clonedOrders.firstChild);
     
+        // Create a temporary div for generating the PDF
+        const pdfDiv = document.createElement('div');
+        pdfDiv.appendChild(clonedOrders);
+    
         const opt = {
-            margin: 1,
+            margin: 0.5,
             filename: 'orders.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            jsPDF: {
+                unit: 'in',
+                format: 'letter',
+                orientation: 'portrait',
+                putOnlyUsedFonts: true,
+                autoPaging: true
+            },
+            pagebreak: { mode: 'avoid-all', before: '.pdf-footer' } // Avoid page break before footer
         };
     
         // Generate the PDF from the cloned, styled section
-        html2pdf().from(clonedOrders).set(opt).save().finally(() => {
+        html2pdf().from(pdfDiv).set(opt).toPdf().get('pdf').then((pdf) => {
+            const totalPages = pdf.internal.getNumberOfPages();
+    
+            // Add the footer with page numbers and date to each page
+            for (let i = 1; i <= totalPages; i++) {
+                pdf.setPage(i);
+                pdf.text(`Generated on: ${new Date().toLocaleDateString()} | Page ${i} of ${totalPages}`, 
+                         pdf.internal.pageSize.getWidth() - 1, // Right-aligned
+                         pdf.internal.pageSize.getHeight() - 0.5, { 
+                             align: 'right' 
+                         });
+            }
+    
+            pdf.save('orders.pdf'); // Save the PDF file
+        }).finally(() => {
             // Remove the style element after PDF is generated
             document.head.removeChild(styleElement);
         });
     };
     
 
+
+
     return (
         <div className="bg-[#BACD92] mt-10 p-6">
             <h2 className="font-bold text-black mb-4 text-center text-4xl">Orders</h2> {/* Decrease title font size */}
-            
+
             {/* Use ref on this div to capture it for PDF */}
             <div ref={ordersRef}>
                 <table className="w-full border-collapse mb-3">

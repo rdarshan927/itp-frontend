@@ -33,11 +33,11 @@ function Search({ onSearch }) {
                     type="text"
                     placeholder="Enter order ID..."
                     value={searchTerm}
-                    onChange={handleSearchChange}  // Correctly pass function reference
+                    onChange={handleSearchChange}
                     className="w-1/4 p-3 rounded-md border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button
-                    onClick={handleSearch}  // Correctly pass function reference
+                    onClick={handleSearch}
                     className="p-3 bg-darkG text-white font-bold rounded-md shadow-md focus:outline-none"
                 >
                     Search
