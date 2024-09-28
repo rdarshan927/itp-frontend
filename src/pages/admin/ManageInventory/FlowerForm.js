@@ -12,8 +12,11 @@ const FlowerForm = ({ getItems }) => {
   const [flowerErrors, setFlowerErrors] = useState({});
   const fileInputRef = useRef(null);
 
+  // Handle input changes with validation
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
+
+    // Handle image input
     if (files && files[0]) {
       const file = files[0];
       const reader = new FileReader();
@@ -26,22 +29,57 @@ const FlowerForm = ({ getItems }) => {
       };
       reader.readAsDataURL(file);
     } else {
-      setFlowerFormData({
-        ...flowerFormData,
-        [name]: value,
-      });
+      // Validate and update form data for other inputs
+      if (name === "quantity") {
+        // Allow only positive integers greater than 0, up to 4 digits
+        const quantityPattern = /^[1-9][0-9]*$/;
+        if (
+          value === "" ||
+          (quantityPattern.test(value) && value.length <= 4)
+        ) {
+          setFlowerFormData({
+            ...flowerFormData,
+            [name]: value,
+          });
+        }
+      } else if (name === "price") {
+        // Ensure price is a valid number and not longer than 20 characters
+        const pricePattern = /^[0-9]+(\.[0-9]{1,2})?$/; // Allow up to 2 decimal places
+        if (value === "" || (pricePattern.test(value) && value.length <= 20)) {
+          setFlowerFormData({
+            ...flowerFormData,
+            [name]: value,
+          });
+        }
+      } else {
+        // Limit productID, name to 20 characters
+        if (value.length <= 20) {
+          setFlowerFormData({
+            ...flowerFormData,
+            [name]: value,
+          });
+        }
+      }
     }
   };
 
+  // Prevent unwanted characters in the quantity and price fields
+  const handleKeyDown = (e) => {
+    if (["e", "E", "+", "-", ".", "/"].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  // Validate the form before submission
   const validateForm = (formData) => {
     let errors = {};
     if (!formData.productID) errors.productID = "Item Code is required";
-    if (!formData.name) errors.name = "Name is required";
+    if (!formData.name) errors.name = "Flower Name is required";
     if (!formData.quantity || isNaN(formData.quantity)) {
       errors.quantity = "Quantity must be a number";
     }
     if (!formData.price || isNaN(formData.price)) {
-      errors.price = "Price must be a number";
+      errors.price = "Price must be a valid number";
     }
     return errors;
   };
@@ -92,7 +130,7 @@ const FlowerForm = ({ getItems }) => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
         />
-        {flowerErrors.name && (
+        {flowerErrors.productID && (
           <p className="text-red-500 text-sm">{flowerErrors.productID}</p>
         )}
       </div>
@@ -116,6 +154,7 @@ const FlowerForm = ({ getItems }) => {
           name="quantity"
           value={flowerFormData.quantity}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown} // Prevent unwanted characters
           className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
         />
         {flowerErrors.quantity && (
@@ -129,6 +168,7 @@ const FlowerForm = ({ getItems }) => {
           name="price"
           value={flowerFormData.price}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown} // Prevent unwanted characters
           className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
         />
         {flowerErrors.price && (
