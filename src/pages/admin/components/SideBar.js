@@ -1,21 +1,92 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+    const [admin, setAdmin] = useState(null);
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        // Get the logged-in admin from localStorage
+        const loggedInAdmin = localStorage.getItem("loggedInAdmin");
+        setAdmin(loggedInAdmin);
+    }, []);
+
+    const adminButtons = {
+        "Sales Manager": [
+            { label: "Dashboard", path: "/sales/dashboard" },
+            { label: "Invoices", path: "/sales/invoices" }
+        ],
+        "Financial Manager": [
+            { label: "Dashboard", path: "/Dashboard" },
+            { label: "Salary", path: "/salary" },
+            { label: "Inventory Stuff", path: "/inventorystuff" },
+            
+        ],
+        "Harvest Manager": [
+            { label: "Dashboard", path: "/harvest-dashboard" },
+            { label: "Harvest Schedule", path: "/harvest-schedule" },
+            { label: "Inventory", path: "/harvest-inventory" }
+        ],
+        "Plant Scheduling Manager": [
+            { label: "Dashboard", path: "/plant-schedule-dashboard" },
+            { label: "Plant Schedule", path: "/plant-schedule" },
+            { label: "Reports", path: "/plant-reports" }
+        ],
+        "Stock & Transport Manager": [
+            { label: "Dashboard", path: "/stock-transport-dashboard" },
+            { label: "Stock", path: "/stock" },
+            { label: "Logistics", path: "/logistics" }
+        ],
+        "Disease Manager": [
+            { label: "Dashboard", path: "/disease-dashboard" },
+            { label: "Disease Control", path: "/disease-control" },
+            { label: "Reports", path: "/disease-reports" }
+        ],
+        "Inventory Manager": [
+            { label: "Dashboard", path: "/inventory-dashboard" },
+            { label: "Inventory", path: "/inventory" },
+            { label: "Suppliers", path: "/suppliers" }
+        ],
+        "Employee Manager": [
+            { label: "Dashboard", path: "/employee-dashboard" },
+            { label: "Employee Records", path: "/employee-records" },
+            { label: "Salary", path: "/employee-salary" }
+        ]
+    };
+
+    const handleNavigation = (path) => {
+        navigate(path); // Navigates to the clicked button's path
+    };
 
     return (
-        
-        <div className="bg-lightG p-3 ">
+        <div className="bg-lightG p-3 w-80 ">
             <div className="inline-grid relative top-20">
-                 <button className="text-2xl bg-darkG text-white font-bold py-2 text rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]">Dashboard</button>
-                <button className="text-2xl bg-darkG text-white font-bold py-2 text rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]">Salary</button>
-                <button className="text-2xl bg-darkG text-white font-bold py-2 text rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]">Inventory Stuff</button>
-                <button className="text-2xl bg-darkG text-white font-bold py-2 text rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]">Logout</button>
-
-            
+                {admin && adminButtons[admin]?.map(({ label, path }, index) => (
+                    <button
+                        key={index}
+                        className="text-2xl bg-darkG text-white font-bold py-2 rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]"
+                        onClick={() => handleNavigation(path)}
+                    >
+                        {label}
+                    </button>
+                ))}
+                <button 
+                    className="text-2xl bg-darkG text-white font-bold py-2 rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]" 
+                    onClick={() => handleNavigation("/logout")}
+                >
+                    Logout
+                </button>
             </div>
+            {/* <div className="relative top-96">
+                <button 
+                    className="text-2xl bg-darkG text-white font-bold py-2 rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]" 
+                    onClick={() => handleNavigation("/logout")}
+                >
+                    Logout
+                </button>
+            </div> */}
         </div>
-    )
-}
+    );
+};
 
-export default Sidebar; 
+export default Sidebar;
