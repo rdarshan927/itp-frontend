@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../../config/api";
 
-const Viewdelivery = () => {
+const ViewDelivery = () => {
     const [deliveries, setDeliveries] = useState([]);
     const [editDelivery, setEditDelivery] = useState(null); // For the popup form
     const [deliveryStatus, setDeliveryStatus] = useState('');
@@ -54,25 +54,25 @@ const Viewdelivery = () => {
         <div className="bg-[#BACD92] mt-10 p-6">
             <h2 className="font-bold text-black mb-4 text-center text-5xl">Delivered Orders</h2>
             <div className='flex items-center w-11/12 mb-3'>
-                <div className='w-1/5 text-center text-xl font-bold text-black'>Order ID</div>
-                <div className='w-1/5 text-center text-xl font-bold text-black'>Delivery Status</div>
-                <div className='w-1/5 text-center text-xl font-bold text-black'>Sender Email</div>
-                <div className='w-1/5 text-center text-xl font-bold text-black'>Download Receipt</div>
-                <div className='w-1/5 text-center text-xl font-bold text-black'>Send Email</div>
+                <div className='w-1/5 text-left text-xl font-bold text-black'>Order ID</div>
+                <div className='w-1/5 text-left text-xl font-bold text-black'>Delivery Status</div>
+                <div className='w-1/5 text-left text-xl font-bold text-black'>Sender Email</div>
+                <div className='w-1/5 text-left text-xl font-bold text-black'>Download Receipt</div>
+                <div className='w-1/5 text-left text-xl font-bold text-black'>Send Email</div>
             </div>
             <ul>
                 {deliveries.map((delivery) => (
                     <li key={delivery._id} className="flex items-center justify-between mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
                         <div className="flex-1 flex items-center">
-                            <div className="w-1/5 px-2 text-center text-2xl">{delivery.orderId}</div>
-                            <div className="w-1/5 px-2 text-center text-2xl">{delivery.currentStatus}</div>
-                            <div className="w-1/5 px-2 text-center text-2xl">{delivery.senderEmail}</div>
-                            <div className="w-1/5 px-2 text-center text-2xl">
+                            <div className="w-1/5 text-left px-2 text-2xl">{delivery.orderId}</div>
+                            <div className="w-1/5 text-left px-2 text-2xl">{delivery.currentStatus}</div>
+                            <div className="w-1/5 text-left px-2 text-2xl">{delivery.senderEmail}</div>
+                            <div className="w-1/5 text-left px-2 text-2xl">
                                 <button className="bg-[#BACD92] text-black text-sm px-4 py-2 rounded-full hover:bg-green-700">
                                     <i className="fas fa-download"></i> Download
                                 </button>
                             </div>
-                            <div className="w-1/5 px-2 text-center text-2xl">
+                            <div className="w-1/5 text-left px-2 text-2xl">
                                 <button className="bg-[#BACD92] text-black text-sm px-4 py-2 rounded-full hover:bg-green-700">
                                     <i className="fas fa-paper-plane"></i> Send Email
                                 </button>
@@ -122,7 +122,7 @@ const Viewdelivery = () => {
                                 className="border p-2 mb-4 w-full"
                             >
                                 <option value="Delivered">Delivered</option>
-                                <option value="Pending">Order is on the way</option>
+                                <option value="Order is on the way">Order is on the way</option>
                             </select>
                         </div>
 
@@ -159,4 +159,4 @@ const Viewdelivery = () => {
     );
 }
 
-export default Viewdelivery;
+export default ViewDelivery;

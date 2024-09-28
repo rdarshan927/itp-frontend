@@ -12,6 +12,7 @@ const AddDelivery = () => {
     const [currentStatus, setCurrentStatus] = useState("");
     const [deliveryDate, setDeliveryDate] = useState("");
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [delivererNameError, setDelivererNameError] = useState("");
 
     const handleSearch = (packingData) => {
         if (packingData) {
@@ -26,20 +27,33 @@ const AddDelivery = () => {
             setIsModalVisible(false); // Hide modal if no data is found
         }
     };
+
+    const validateDelivererName = () => {
+        const regex = /^[A-Za-z\s]+$/; // Regex for letters and spaces only
+        if (!regex.test(delivererName)) {
+            setDelivererNameError("Deliverer Name should contain letters only.");
+            return false;
+        }
+        setDelivererNameError(""); // Clear error if valid
+        return true;
+    };
+
     const handleAddDelivery = async () => {
+        if (!validateDelivererName()) return; // Validate before proceeding
+
         const newDelivery = {
             orderId,
             senderEmail,
-            receivername: receiverName,  // Use the correct field names
+            receivername: receiverName,
             receiveraddress: receiverAddress,
             receivercontact: receiverContactNo,
             delivererName,
             currentStatus,
             deliveryDate,
         };
-    
+
         try {
-            await api.post('/api/deliveries/add', newDelivery);  // Ensure the correct URL
+            await api.post('/api/deliveries/add', newDelivery); // Ensure the correct URL
             console.log("Delivery added successfully");
             alert("Delivery added");
             setIsModalVisible(false); // Close the modal after adding
@@ -48,7 +62,6 @@ const AddDelivery = () => {
             alert("Error adding delivery");
         }
     };
-    
 
     return (
         <div>
@@ -118,16 +131,16 @@ const AddDelivery = () => {
                                     />
                                 </div>
                                <div className="w-1/3 pl-2">
-                            <label htmlFor="deliveryDate" className="block text-xl text-black font-bold mb-2">Delivery Date:</label>
-                            <input
-                                type="date"
-                                id="DeliveryDate"
-                                className="w-full rounded-md px-3 py-2  border"
-                                value={deliveryDate}
-                                onChange={(e) => setDeliveryDate(e.target.value)}
-                                required
-                            />
-                        </div>
+                                    <label htmlFor="deliveryDate" className="block text-xl text-black font-bold mb-2">Delivery Date:</label>
+                                    <input
+                                        type="date"
+                                        id="deliveryDate"
+                                        className="w-full rounded-md px-3 py-2 border"
+                                        value={deliveryDate}
+                                        onChange={(e) => setDeliveryDate(e.target.value)}
+                                        required
+                                    />
+                                </div>
                             </div>
 
                             <div className="flex mb-4">
@@ -140,20 +153,19 @@ const AddDelivery = () => {
                                         value={delivererName}
                                         onChange={(e) => setDelivererName(e.target.value)}
                                     />
+                                    {delivererNameError && <div className="text-red-600">{delivererNameError}</div>} {/* Error message */}
                                 </div>
                                 <div className="w-1/3 pl-2">
                                     <label htmlFor="currentStatus" className="block text-xl font-bold mb-2">Current Status:</label>
                                     <select
-                                       
                                         id="currentStatus"
                                         className="w-full rounded-md px-3 py-2 border"
                                         value={currentStatus}
                                         onChange={(e) => setCurrentStatus(e.target.value)}
-                                        >
+                                    >
                                         <option value="Delivered">Delivered</option>
                                         <option value="Order is on the way">Order is on the way</option>
-                                        </select>
-                                    
+                                    </select>
                                 </div>
                             </div>
 

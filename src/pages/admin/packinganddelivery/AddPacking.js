@@ -27,11 +27,49 @@ function AddPacking() {
         }
     };
 
+    const validateForm = () => {
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(senderemail)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+
+        // Validate name (only letters)
+        const nameRegex = /^[A-Za-z\s]+$/;
+        if (!nameRegex.test(receivername)) {
+            alert("Receiver name should contain only letters.");
+            return false;
+        }
+
+        // Validate phone number (exactly 10 digits)
+        const phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test(receivercontact)) {
+            alert("Receiver contact number must be 10 digits.");
+            return false;
+        }
+
+        // Validate Order ID (alphanumeric)
+        const orderIdRegex = /^[A-Za-z0-9]+$/;
+        if (!orderIdRegex.test(orderId)) {
+            alert("Order ID should contain only letters and characters.");
+            return false;
+        }
+
+        return true; // All validations passed
+    };
+
     const handleAddPacking = async (e) => {
         e.preventDefault(); // Prevent default form submission
         setLoading(true);
         setError('');
-
+    
+        // Validate the form before submitting
+        if (!validateForm()) {
+            setLoading(false); // Stop loading if validation fails
+            return;
+        }
+    
         const PackingData = {
             orderId,
             receivercontact,
@@ -41,14 +79,17 @@ function AddPacking() {
             packingdate,
             currentstatus,
         };
-
+    
         try {
             const response = await api.post('/api/packing/add', PackingData);
             console.log(response.data);
-
+    
+            // Show success alert
+            alert(response.data.message); // Display the success message from the backend response
+    
             // Update the state with the new packing data
             setPacking([...packing, PackingData]);
-
+    
             // Clear input fields after submission
             setOrderId('');
             setReceiverContact('');
@@ -64,6 +105,7 @@ function AddPacking() {
             setLoading(false);
         }
     };
+    
 
     return (
         <>
@@ -178,4 +220,4 @@ function AddPacking() {
     );
 }
 
-export default AddPacking;
+export default AddPacking; 
