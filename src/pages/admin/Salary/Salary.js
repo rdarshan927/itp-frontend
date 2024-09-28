@@ -5,7 +5,7 @@ import ViewSalary from "./ViewSalary";
 
 const Salary = () => {
     return (
-        <div className="">
+        <div className="h-full">
             <AddSalary />
             <ViewSalary />
         </div>
