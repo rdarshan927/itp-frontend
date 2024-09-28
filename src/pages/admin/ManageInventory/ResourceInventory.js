@@ -53,7 +53,8 @@ const ResourceInventory = () => {
     }
   };
 
-  const validateForm = () => {
+  //after clicking the add button
+    const validateForm = () => {
     let formErrors = {};
     if (!formData.itemCode) formErrors.itemCode = "Item Code is required";
     if (!formData.itemName) formErrors.itemName = "Item Name is required";
@@ -94,7 +95,7 @@ const ResourceInventory = () => {
           category: formData.itemCategory,
           quantity: parseInt(formData.quantity),
         });
-        await api.post("/api/inventory/addinventoryrecord", {
+        await api.post("/api/inventory/addinventoryrecord", {           //report
           productID: formData.itemCode,
           name: formData.itemName,
           category: formData.itemCategory,
@@ -201,6 +202,7 @@ const ResourceInventory = () => {
     return dateTime.replace("T", " ").substring(0, 16); // Format to "YYYY-MM-DD HH:MM"
   };
 
+  //report
   const generatePrintableContent = (records) => {
     const element = document.createElement("div");
     element.innerHTML = `
