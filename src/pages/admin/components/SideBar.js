@@ -4,26 +4,22 @@ const Sidebar = () => {
 
 
     return (
-        <div className="p-3">
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
+        <div className="bg-lightG p-3 ">
+            <div className="inline-grid relative top-48">
+            <button className="text-2xl bg-darkG text-white font-bold py-2 text rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]">Dashboard</button>
 
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
-            Admin Side Bar<br />
+                <button className="text-2xl bg-darkG text-white font-bold py-2 text rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]">Salary</button>
+                <button className="text-2xl bg-darkG text-white font-bold py-2 text rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]">Inventory Stuff</button>
+
+            
+            </div>
+
+            <div className="relative top-96">
+            <button className="text-2xl bg-darkG text-white font-bold py-2 text rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]">Logout</button>
+
+            </div>
         </div>
     )
 }
 
-export default Sidebar;
+export default Sidebar; 
