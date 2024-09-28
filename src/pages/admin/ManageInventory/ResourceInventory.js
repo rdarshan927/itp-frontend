@@ -94,7 +94,14 @@ const ResourceInventory = () => {
           category: formData.itemCategory,
           quantity: parseInt(formData.quantity),
         });
-        getItems();
+        await api.post("/api/inventory/addinventoryrecord", {
+          productID: formData.itemCode,
+          name: formData.itemName,
+          category: formData.itemCategory,
+          quantity: formData.quantity,
+          action: "Add",
+          dateTime: new Date().toISOString(),
+        });
         setFormData({
           itemCode: "",
           itemName: "",
@@ -102,6 +109,7 @@ const ResourceInventory = () => {
           quantity: "",
         });
         setErrors({});
+        getItems();
       } catch (error) {
         console.error("Error adding resource item:", error);
       }
