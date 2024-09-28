@@ -33,9 +33,9 @@ const Sidebar = () => {
             { label: "Reports", path: "/plant-reports" }
         ],
         "Stock & Transport Manager": [
-            { label: "Dashboard", path: "/stock-transport-dashboard" },
-            { label: "Stock", path: "/stock" },
-            { label: "Logistics", path: "/logistics" }
+            { label: "Order", path: "/order" },
+            { label: "Packing", path: "/packing" },
+            { label: "Delivery", path: "/delivery" }
         ],
         "Disease Manager": [
             { label: "Dashboard", path: "/disease-dashboard" },
