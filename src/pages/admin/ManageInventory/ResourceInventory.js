@@ -24,30 +24,32 @@ const ResourceInventory = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // Handle quantity specifically to prevent negative numbers and zero
+    // Validate quantity input for positive whole numbers only, up to 4 digits
     if (name === "quantity") {
-      const intValue = parseInt(value, 10);
-      // Check if the value is a number and greater than 0
-      if (!isNaN(intValue) && intValue > 0) {
+      // Allow only positive integers greater than 0 using RegEx and limit to 4 digits
+      const quantityPattern = /^[1-9][0-9]*$/;
+      if (value === "" || (quantityPattern.test(value) && value.length <= 4)) {
         setFormData({
           ...formData,
-          [name]: intValue.toString(), // Store it back as a string if needed
-        });
-      } else if (value === "") {
-        // Allow clear to reset the field
-        setFormData({
-          ...formData,
-          [name]: "",
+          [name]: value,
         });
       }
-      // Do nothing if conditions don't meet, effectively ignoring the input
     } else {
-      // For other inputs, proceed as normal
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+      // Limit other input fields to 20 characters
+      if (value.length <= 20) {
+        setFormData({
+          ...formData,
+          [name]: value,
+        });
+      }
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (
+      ["e", "E", "+", "-", ".", "/"].includes(e.key) // Block these characters
+    ) {
+      e.preventDefault();
     }
   };
 
@@ -292,6 +294,7 @@ const ResourceInventory = () => {
                 <p className="text-red-500 text-sm">{errors.itemCode}</p>
               )}
             </div>
+
             <div>
               <label className="block mb-1">Item Name</label>
               <input
@@ -305,7 +308,9 @@ const ResourceInventory = () => {
                 <p className="text-red-500 text-sm">{errors.itemName}</p>
               )}
             </div>
+
             <div></div>
+
             <div>
               <label className="block mb-1">Item Category</label>
               <input
@@ -319,6 +324,7 @@ const ResourceInventory = () => {
                 <p className="text-red-500 text-sm">{errors.itemCategory}</p>
               )}
             </div>
+
             <div>
               <label className="block mb-1">Quantity</label>
               <input
@@ -327,11 +333,13 @@ const ResourceInventory = () => {
                 value={formData.quantity}
                 onChange={handleChange}
                 className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+                onKeyDown={handleKeyDown}
               />
               {errors.quantity && (
                 <p className="text-red-500 text-sm">{errors.quantity}</p>
               )}
             </div>
+
             <div className="flex justify-center items-end">
               <button
                 type="submit"
