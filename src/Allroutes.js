@@ -61,6 +61,7 @@ const AllRoutes = () => {
                             <Route path='/salary' element={<Salary />} />
                             <Route path='/inventorystuff' element={<InventoryStuff />} />
                             <Route path='/Dashboard' element={<Dashboard/>}/>
+                           
                         </Route>
                     </Routes>
                 </Suspense>

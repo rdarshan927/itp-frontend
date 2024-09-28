@@ -63,13 +63,13 @@ function AddPacking() {
         e.preventDefault(); // Prevent default form submission
         setLoading(true);
         setError('');
-    
+
         // Validate the form before submitting
         if (!validateForm()) {
             setLoading(false); // Stop loading if validation fails
             return;
         }
-    
+
         const PackingData = {
             orderId,
             receivercontact,
@@ -79,17 +79,17 @@ function AddPacking() {
             packingdate,
             currentstatus,
         };
-    
+
         try {
             const response = await api.post('/api/packing/add', PackingData);
             console.log(response.data);
-    
+
             // Show success alert
             alert(response.data.message); // Display the success message from the backend response
-    
+
             // Update the state with the new packing data
             setPacking([...packing, PackingData]);
-    
+
             // Clear input fields after submission
             setOrderId('');
             setReceiverContact('');
@@ -105,7 +105,7 @@ function AddPacking() {
             setLoading(false);
         }
     };
-    
+
 
     return (
         <>
@@ -127,29 +127,48 @@ function AddPacking() {
                             />
                         </div>
                         <div className="w-1/3 pl-2">
-                            <label htmlFor="receivercontact" className="block text-2xl text-black font-bold mb-2">Receiver Contact No:</label>
+                            <label htmlFor="receivercontact" className="block text-2xl text-black font-bold mb-2">
+                                Receiver Contact No:
+                            </label>
                             <input
                                 type="text"
                                 id="receivercontact"
                                 className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
                                 value={receivercontact}
-                                onChange={(e) => setReceiverContact(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Allow only digits and restrict length to 10
+                                    if (/^\d*$/.test(value) && value.length <= 10) {
+                                        setReceiverContact(value);
+                                    }
+                                }}
+                                maxLength={10} // Ensures no more than 10 characters can be entered
                                 required
                             />
+
                         </div>
                     </div>
 
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="receivername" className="block text-2xl text-black font-bold mb-2">Receiver Name:</label>
+                            <label htmlFor="receivername" className="block text-2xl text-black font-bold mb-2">
+                                Receiver Name:
+                            </label>
                             <input
                                 type="text"
                                 id="receivername"
                                 className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
                                 value={receivername}
-                                onChange={(e) => setReceiverName(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Allow only letters and restrict numbers/special characters
+                                    if (/^[a-zA-Z\s]*$/.test(value)) {
+                                        setReceiverName(value);
+                                    }
+                                }}
                                 required
                             />
+
                         </div>
                         <div className="w-1/3 pl-2">
                             <label htmlFor="sendermail" className="block text-2xl text-black font-bold mb-2">Sender Email:</label>
@@ -208,7 +227,7 @@ function AddPacking() {
                     {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
 
                     <button
-                        type="submit" 
+                        type="submit"
                         className="bg-lightG text-black font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0]"
                         disabled={loading}
                     >
