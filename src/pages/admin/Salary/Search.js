@@ -13,7 +13,7 @@ function Search({ searchTerm, onSearchChange }) {
                     placeholder="Enter search term..."
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    className="w-1/4 p-3 rounded-md border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-1/4 p-3 rounded-md border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-green-600"
                 />
             </div>
         </div>
