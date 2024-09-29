@@ -102,7 +102,7 @@ const ViewPacking = () => {
             const response = await api.get(`/api/packing/qrcode/${id}`, {
                 responseType: 'blob', // Important to specify the response type
             });
-    
+
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
@@ -152,19 +152,19 @@ const ViewPacking = () => {
                         <div className="text-left">{selectedPacking.packingdate.split('T')[0]}</div>
                         <div className="text-left">{selectedPacking.currentstatus}</div>
                         <div className="text-left flex flex-col space-y-2">
-                            <button 
+                            <button
                                 className="bg-[#BACD92] text-black text-sm px-4 py-2 rounded-full hover:bg-green-700"
                                 onClick={() => handleQRCodeDownload(selectedPacking._id)}
                             >
                                 QR
                             </button>
-                            <button 
+                            <button
                                 className="bg-yellow-400 text-black text-sm px-2 py-1 rounded hover:bg-yellow-500"
                                 onClick={() => handleEdit(index)}
                             >
                                 Edit
                             </button>
-                            <button 
+                            <button
                                 className="bg-red-400 text-black text-sm px-2 py-1 rounded hover:bg-red-500"
                                 onClick={() => handleDelete(index)} // Now correctly references handleDelete
                             >
@@ -181,7 +181,7 @@ const ViewPacking = () => {
                         <form>
                             <div className="mb-4">
                                 <label className="block text-xl font-bold mb-2">Order ID</label>
-                                <input 
+                                <input
                                     type="text"
                                     className="w-full p-2 rounded-md bg-lightG"
                                     value={orderId}
@@ -194,7 +194,14 @@ const ViewPacking = () => {
                                     type="text"
                                     className="w-full p-2 rounded-md bg-lightG"
                                     value={receiverName}
-                                    onChange={(e) => setReceiverName(e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        // Allow only letters and restrict numbers/special characters
+                                        if (/^[a-zA-Z\s]*$/.test(value)) {
+                                            setReceiverName(value);
+                                        }
+                                    }}
+                                    required
                                 />
                             </div>
                             <div className="mb-4">
@@ -203,7 +210,15 @@ const ViewPacking = () => {
                                     type="text"
                                     className="w-full p-2 rounded-md bg-lightG"
                                     value={receiverContact}
-                                    onChange={(e) => setReceiverContact(e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        // Allow only digits and restrict length to 10
+                                        if (/^\d*$/.test(value) && value.length <= 9) {
+                                            setReceiverContact(value);
+                                        }
+                                    }}
+                                    maxLength={10} // Ensures no more than 10 characters can be entered
+                                    required
                                 />
                             </div>
                             <div className="mb-4">
@@ -241,7 +256,6 @@ const ViewPacking = () => {
                                     onChange={(e) => setCurrentStatus(e.target.value)}
                                 >
                                     <option value="Packing">Packing</option>
-                                    <option value="Shipped">Shipped</option>
                                     <option value="Delivered">Delivered</option>
                                     <option value="Cancelled">Cancelled</option>
                                 </select>
