@@ -69,10 +69,20 @@ const ViewInventoryStuff = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setSelectedStuff(prevState => ({
-            ...prevState,
-            [name]: value,
-        }));
+
+        // Update selectedStuff with the new value
+        setSelectedStuff((prevStuff) => {
+            const updatedStuff = { ...prevStuff, [name]: value };
+
+            // Recalculate totalPrice when price or amount changes
+            if (name === 'price' || name === 'amount') {
+                const price = parseFloat(updatedStuff.price) || 0;
+                const amount = parseFloat(updatedStuff.amount) || 0;
+                updatedStuff.totalPrice = (price * amount).toFixed(2); // Update totalPrice
+            }
+
+            return updatedStuff;
+        });
     };
 
     return (
@@ -133,6 +143,7 @@ const ViewInventoryStuff = () => {
                                 value={selectedStuff.stuffID}
                                 onChange={handleChange}
                                 className="border p-2 w-full"
+                                disabled
                             />
                         </div>
                         <div className="mb-2">
@@ -143,6 +154,7 @@ const ViewInventoryStuff = () => {
                                 value={selectedStuff.stuffName}
                                 onChange={handleChange}
                                 className="border p-2 w-full"
+                                disabled
                             />
                         </div>
                         <div className="mb-2">
@@ -173,11 +185,12 @@ const ViewInventoryStuff = () => {
                                 value={selectedStuff.totalPrice}
                                 onChange={handleChange}
                                 className="border p-2 w-full"
+                                disabled
                             />
                         </div>
                         <div className="flex justify-end space-x-2 mt-4">
                             <button
-                                className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+                                className="bg-red-400 text-white px-4 py-2 rounded hover:bg-gray-500"
                                 onClick={handleModalClose}
                             >
                                 Cancel
