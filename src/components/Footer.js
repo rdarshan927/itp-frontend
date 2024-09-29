@@ -9,10 +9,10 @@ const Footer = () => {
                 </div>
 
                 <div className="flex flex-col md:flex-row md:space-x-20 space-y-2 md:space-y-0 mb-4 md:mb-0">
-                    <a href="#home" className="text-darkG hover:text-lightG text-[18px]">HOME</a>
-                    <a href="#about" className="text-darkG hover:text-lightG text-[18px]">FLOWERS</a>
-                    <a href="#services" className="text-darkG hover:text-lightG text-[18px]">BOUQUET</a>
-                    <a href="#contact" className="text-darkG hover:text-lightG text-[18px]">CONTACT</a>
+                    <a href="#home" className="text-black hover:text-lightG text-[18px]">HOME</a>
+                    <a href="#about" className="text-black hover:text-lightG text-[18px]">FLOWERS</a>
+                    <a href="#services" className="text-black hover:text-lightG text-[18px]">BOUQUET</a>
+                    <a href="#contact" className="text-black hover:text-lightG text-[18px]">CONTACT</a>
                 </div>
             </div>
 
@@ -24,12 +24,12 @@ const Footer = () => {
                 </div>
 
                 <div className="flex flex-col pl-2">
-                    <span className="text-darkG">+94771987402</span>
-                    <span className="text-darkG">sephoraflowers@gmail.com</span>
+                    <span className="text-black">+94771987402</span>
+                    <span className="text-black">sephoraflowers@gmail.com</span>
                 </div>
 
                 <div className="text-center md:text-left">
-                    <h2 className="text-darkG text-[20px]">We accept</h2>
+                    <h2 className="text-black text-[20px]">We accept</h2>
                     <div className="flex justify-center md:justify-start">
                         <img src="./image/visa.png" className="w-10 h-10 mr-2" alt="Visa" />
                         <img src="./image/amex.png" className="w-10 h-10 mr-2" alt="American Express" />
@@ -38,7 +38,7 @@ const Footer = () => {
                 </div>
 
                 <div className="text-center md:text-left">
-                    <h2 className="text-darkG text-base">Subscribe Us</h2>
+                    <h2 className="text-black text-base">Subscribe Us</h2>
                     <div className="flex justify-center md:justify-start">
                         <input type="text" placeholder="Enter Your Email" className="w-40 md:w-60 h-10 rounded-md pl-2 mr-2" />
                         <button className="bg-darkG text-white px-4 py-1 rounded-md">Subscribe</button>
@@ -47,7 +47,7 @@ const Footer = () => {
             </div>
 
             <div className="mt-4">
-                <p className="text-darkG text-center">
+                <p className="text-black text-center">
                     &copy; 2024. All Rights Reserved | Design by Group
                 </p>
             </div>

@@ -85,10 +85,10 @@ const ViewInventoryStuff = () => {
                 <>
                     <div className='flex items-center w-full mb-3'>
                         <div className='w-1/5 text-center text-xl font-bold text-white'>StuffID</div>
-                        <div className='w-1/5 text-center text-xl font-bold text-white'>Stuff Name</div> 
-                        <div className='w-1/5 text-center text-xl font-bold text-white'>Price</div>
-                        <div className='w-1/5 text-center text-xl font-bold text-white'>Amount</div>
-                        <div className='w-1/5 text-center text-xl font-bold text-white'>Total Price</div>
+                        <div className='w-1/6 text-center text-xl font-bold text-white'>Stuff Name</div> 
+                        <div className='w-1/6 text-center text-xl font-bold text-white'>Price</div>
+                        <div className='w-1/6 text-center text-xl font-bold text-white'>Amount</div>
+                        <div className='w-1/6 text-center text-xl font-bold text-white'>Total Price</div>
                     </div>
                     <ul>
                         {filteredStuffEntries.map((stuff) => (
