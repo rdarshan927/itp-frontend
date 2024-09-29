@@ -47,9 +47,7 @@ const Sidebar = () => {
             { label: "Sales Inventory", path: "/SalesInventory" }
         ],
         "Employee Manager": [
-            { label: "Dashboard", path: "/employee-dashboard" },
-            { label: "Employee Records", path: "/employee-records" },
-            { label: "Salary", path: "/employee-salary" }
+            { label: "Manage Employee", path: "/addemployee" }
         ]
     };
 
