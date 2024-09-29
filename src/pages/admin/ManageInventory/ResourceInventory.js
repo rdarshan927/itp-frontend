@@ -54,7 +54,7 @@ const ResourceInventory = () => {
   };
 
   //after clicking the add button
-    const validateForm = () => {
+  const validateForm = () => {
     let formErrors = {};
     if (!formData.itemCode) formErrors.itemCode = "Item Code is required";
     if (!formData.itemName) formErrors.itemName = "Item Name is required";
@@ -95,7 +95,8 @@ const ResourceInventory = () => {
           category: formData.itemCategory,
           quantity: parseInt(formData.quantity),
         });
-        await api.post("/api/inventory/addinventoryrecord", {           //report
+        await api.post("/api/inventory/addinventoryrecord", {
+          //report
           productID: formData.itemCode,
           name: formData.itemName,
           category: formData.itemCategory,
@@ -311,8 +312,16 @@ const ResourceInventory = () => {
                 type="text"
                 name="itemName"
                 value={formData.itemName}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Allow only letters (a-z, A-Z)
+                  if (/^[A-Za-z]*$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+                title="Please enter letters only" // Tooltip message for invalid input
+                required // Optional: makes the field required
               />
               {errors.itemName && (
                 <p className="text-red-500 text-sm">{errors.itemName}</p>
