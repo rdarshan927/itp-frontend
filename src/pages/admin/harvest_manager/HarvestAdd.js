@@ -1,0 +1,388 @@
+import React, { useEffect, useState } from 'react';
+import { api } from '../../../config/api';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+
+function HarvestManagement() {
+  const [harvests, setHarvests] = useState([]);
+  const [form, setForm] = useState({
+    harvestId: '',
+    cropType: '',
+    harvestDate: '',
+    quantity: '',
+    quality: '',
+    unit: ''
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentId, setCurrentId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // State for error messages
+
+  useEffect(() => {
+    api
+      .get('/harvest')
+      .then((res) => {
+        setHarvests(Array.isArray(res.data.harvestData) ? res.data.harvestData : []);
+      })
+      .catch((err) => {
+        console.log(err);
+        setHarvests([]);
+      });
+  }, []);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // Function to check if the harvestId is unique
+  const isHarvestIdUnique = () => {
+    if (isEditing) return true; // Skip validation when editing
+    return !harvests.some(harvest => harvest.harvestId === form.harvestId);
+  };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    
+    // Validate unique Harvest ID
+    if (!isHarvestIdUnique()) {
+      setErrorMessage('Harvest ID must be unique');
+      return;
+    }
+
+    const updateHarvestList = (newHarvestData) => {
+      setHarvests((prevHarvests) => {
+        const harvestData = Array.isArray(newHarvestData) ? newHarvestData : [];
+
+        if (isEditing) {
+          return prevHarvests.map(harvest =>
+            harvest.harvestId === currentId
+              ? { ...harvest, ...form }
+              : harvest
+          );
+        } else {
+          return [...prevHarvests, form];
+        }
+      });
+    };
+
+    if (isEditing) {
+      api
+        .put(`/harvest/${currentId}`, form)
+        .then((res) => updateHarvestList(res.data.harvestData))
+        .catch((err) => console.log(err));
+    } else {
+      api
+        .post('/harvest', form)
+        .then((res) => {
+          updateHarvestList([{ ...form, harvestId: res.data.harvestId }]);
+        })
+        .catch((err) => console.log(err));
+    }
+
+    setIsEditing(false);
+    setErrorMessage(''); // Clear error message
+    setForm({
+      harvestId: '',
+      cropType: '',
+      harvestDate: '',
+      quantity: '',
+      quality: '',
+      unit: ''
+    });
+  };
+
+  const handleEdit = (_id) => {
+    const harvestToEdit = harvests.find((harvest) => harvest._id === _id);
+    if (harvestToEdit) {
+      setForm(harvestToEdit);
+      setIsEditing(true);
+      setCurrentId(_id);
+    }
+  };
+
+  const handleDelete = (_id) => {
+    setHarvests((prevHarvests) => {
+      return prevHarvests.filter((harvest) => harvest.harvestId !== _id);
+    });
+
+    api
+      .delete(`/harvest/${_id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          if (Array.isArray(res.data.harvestData)) {
+            setHarvests(res.data.harvestData);
+          }
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredHarvests = Array.isArray(harvests)
+    ? harvests.filter(
+        (harvest) =>
+          harvest.harvestId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          harvest.cropType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          harvest.quality.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
+    const handleDownloadPDF = () => {
+      const doc = new jsPDF();
+    
+      // Add title: "Sephora Flowers"
+      doc.setFontSize(16);
+      doc.setTextColor("#5cb85c");
+      doc.text("Sephora Flowers", 105, 20, { align: "center" });
+    
+      // Subtitle: "Delivering beauty and elegance in every petal."
+      doc.setFontSize(12);
+      doc.setTextColor("#555");
+      doc.text("Delivering beauty and elegance in every petal.", 105, 30, {
+        align: "center",
+      });
+    
+      // Contact information
+      doc.setFontSize(10);
+      doc.setTextColor("#000");
+      doc.text("Contact: 0777-894523 | Email: sephoraflowers@gmail.com", 14, 45);
+      doc.text("Address: Badulla, Bandarawela", 14, 50);
+    
+      // Title for the PDF
+      doc.setFontSize(14);
+      doc.text("Harvest Data Report", 105, 65, { align: "center" });
+    
+      // Prepare the harvest data for the table
+      const tableColumn = [
+        { header: "Harvest ID", dataKey: "harvestId" },
+        { header: "Crop Type", dataKey: "cropType" },
+        { header: "Harvest Date", dataKey: "harvestDate" },
+        { header: "Quantity", dataKey: "quantity" },
+        { header: "Quality", dataKey: "quality" },
+        { header: "Unit", dataKey: "unit" },
+      ];
+    
+      const tableRows = filteredHarvests.map((harvest) => ({
+        harvestId: harvest.harvestId,
+        cropType: harvest.cropType,
+        harvestDate: new Date(harvest.harvestDate).toLocaleDateString(),
+        quantity: harvest.quantity,
+        quality: harvest.quality,
+        unit: harvest.unit,
+      }));
+    
+      // Add the table to the PDF (note the correct way of passing columns and data)
+      doc.autoTable({
+        columns: tableColumn,
+        body: tableRows,
+        startY: 80, // Start the table a bit lower on the page
+        theme: "grid",
+        styles: { fontSize: 10, halign: "center" },
+        headStyles: { fillColor: "#5cb85c" },
+        columnStyles: {
+          0: { halign: "left" }, // Align the first column (Harvest ID) to the left
+        },
+      });
+    
+      // Get the final position after the table for adding Date and Signature
+      const finalY = doc.lastAutoTable.finalY || 80;
+    
+      // Add Date and Signature at the bottom
+      const date = new Date().toLocaleDateString();
+      doc.text(`Date: ${date}`, 14, finalY + 20);
+      doc.text("Signature: ", 160, finalY + 20);
+    
+      // Save and download the PDF
+      doc.save("harvest_data.pdf");
+    };
+    
+    
+    
+    
+  return (
+    <div className="flex flex-col lg:flex-row  bg-white-100">
+      <div className="w-full p-6">
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Search by Harvest ID, Crop Type, or Quality"
+            value={searchTerm}
+            onChange={handleSearch}
+            className="p-2 border border-gray-300 rounded w-full"
+          />
+        </div>
+
+        {errorMessage && (
+          <div className="bg-red-200 text-red-700 p-2 rounded mb-4">
+            {errorMessage}
+          </div>
+        )}
+
+        <div className="bg-darkG p-4 rounded-md mb-4">
+          <h2 className="mb-4 text-xl text-white font-bold">
+            {isEditing ? 'Edit Harvest Details' : 'Add Harvest Details'}
+          </h2>
+
+          <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="form-group">
+              <label htmlFor="harvestId" className="text-white">Harvest ID</label><br />
+              <input
+                type="text"
+                id="harvestId"
+                name="harvestId"
+                value={form.harvestId}
+                onChange={handleChange}
+                placeholder="Harvest ID"
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="cropType" className="text-white">Crop Type</label><br />
+              <input
+                type="text"
+                id="cropType"
+                name="cropType"
+                value={form.cropType}
+                required
+                onChange={handleChange}
+                placeholder="Crop Type"
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="harvestDate" className="text-white">Harvest Date</label><br />
+              <input
+                type="date"
+                id="harvestDate"
+                name="harvestDate"
+                value={form.harvestDate}
+                required
+                onChange={handleChange}
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+                style={{ width: '213px' }}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="quantity" className="text-white">Quantity</label><br />
+              <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                value={form.quantity}
+                required
+                onChange={handleChange}
+                placeholder="Quantity"
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="quality" className="text-white">Quality</label><br />
+              <select
+                id="quality"
+                name="quality"
+                value={form.quality}
+                required
+                onChange={handleChange}
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+                style={{ width: '213px' }}
+              >
+                <option value="" disabled>Select Quality</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Fair">Fair</option>
+                <option value="Poor">Poor</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="unit" className="text-white">Unit</label><br />
+              <input
+                type="text"
+                id="unit"
+                name="unit"
+                value={form.unit}
+                required
+                onChange={handleChange}
+                placeholder="Unit"
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+              />
+            </div>
+            <div className="form-group">
+              <button
+                type="submit"
+                className="mt-4 py-2 px-4 bg-adminLightGreen text-white rounded"
+              >
+                {isEditing ? 'Update' : 'Add'}
+              </button>
+            </div>
+          </form>
+        </div>
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleDownloadPDF}
+            className="bg-green-500 text-white py-2 px-4 rounded"
+          >
+            Download PDF
+          </button>
+        </div>
+
+        <div className="p-4 rounded-md overflow-x-auto">
+          <table className="min-w-full">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 text-left">Harvest ID</th>
+                <th className="px-4 py-2 text-left">Crop Type</th>
+                <th className="px-4 py-2 text-left">Harvest Date</th>
+                <th className="px-4 py-2 text-left">Quantity</th>
+                <th className="px-4 py-2 text-left">Quality</th>
+                <th className="px-4 py-2 text-left">Unit</th>
+                <th className="px-4 py-2 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredHarvests.length > 0 ? (
+                filteredHarvests.map((harvest, index) => (
+                  <tr key={index} className="odd:bg-darkG: even:bg-green-50">
+                    <td className="px-4 py-2">{harvest.harvestId}</td>
+                    <td className="px-4 py-2">{harvest.cropType}</td>
+                    <td className="px-4 py-2">{harvest.harvestDate}</td>
+                    <td className="px-4 py-2">{harvest.quantity}</td>
+                    <td className="px-4 py-2">{harvest.quality}</td>
+                    <td className="px-4 py-2">{harvest.unit}</td>
+                    <td className="px-4 py-2">
+                      <div className="flex items-center space-x-4">
+                        <button
+                          onClick={() => handleEdit(harvest._id)}
+                          className="text-blue-500 hover:text-blue-700"
+                        >
+                          <PencilSquareIcon className="h-5 w-5" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(harvest._id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <TrashIcon className="h-5 w-5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="text-center py-4">
+                    No harvest data found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default HarvestManagement;
