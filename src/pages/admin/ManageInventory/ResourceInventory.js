@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EditResourceItemModal from "./EditResourceItemModal";
 import { api } from "../../../config/api";
+import html2pdf from "html2pdf.js";
 
 const ResourceInventory = () => {
   const [inventory, setInventory] = useState([]);
@@ -19,23 +20,53 @@ const ResourceInventory = () => {
     category: "",
     quantity: "",
   });
+  const [printData, setPrintData] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    // Validate quantity input for positive whole numbers only, up to 4 digits
+    if (name === "quantity") {
+      // Allow only positive integers greater than 0 using RegEx and limit to 4 digits
+      const quantityPattern = /^[1-9][0-9]*$/;
+      if (value === "" || (quantityPattern.test(value) && value.length <= 4)) {
+        setFormData({
+          ...formData,
+          [name]: value,
+        });
+      }
+    } else {
+      // Limit other input fields to 20 characters
+      if (value.length <= 20) {
+        setFormData({
+          ...formData,
+          [name]: value,
+        });
+      }
+    }
   };
 
+  const handleKeyDown = (e) => {
+    if (
+      ["e", "E", "+", "-", ".", "/"].includes(e.key) // Block these characters
+    ) {
+      e.preventDefault();
+    }
+  };
+
+  //after clicking the add button
   const validateForm = () => {
     let formErrors = {};
     if (!formData.itemCode) formErrors.itemCode = "Item Code is required";
     if (!formData.itemName) formErrors.itemName = "Item Name is required";
     if (!formData.itemCategory)
       formErrors.itemCategory = "Item Category is required";
-    if (!formData.quantity || isNaN(formData.quantity))
+    if (!formData.quantity) {
+      formErrors.quantity = "Quantity is required";
+    } else if (isNaN(formData.quantity)) {
       formErrors.quantity = "Quantity must be a number";
+    } else if (parseInt(formData.quantity) < 1) {
+      formErrors.quantity = "Quantity must be 1 or more";
+    }
     return formErrors;
   };
 
@@ -64,7 +95,15 @@ const ResourceInventory = () => {
           category: formData.itemCategory,
           quantity: parseInt(formData.quantity),
         });
-        getItems();
+        await api.post("/api/inventory/addinventoryrecord", {
+          //report
+          productID: formData.itemCode,
+          name: formData.itemName,
+          category: formData.itemCategory,
+          quantity: formData.quantity,
+          action: "Add",
+          dateTime: new Date().toISOString(),
+        });
         setFormData({
           itemCode: "",
           itemName: "",
@@ -72,6 +111,7 @@ const ResourceInventory = () => {
           quantity: "",
         });
         setErrors({});
+        getItems();
       } catch (error) {
         console.error("Error adding resource item:", error);
       }
@@ -91,10 +131,25 @@ const ResourceInventory = () => {
       "Are you sure you want to delete this item?"
     );
     if (confirmDelete) {
+      const item = inventory[index];
       try {
-        const itemID = inventory[index].productID;
-        await api.delete(`/api/inventory/deleteresourceitem/${itemID}`);
-        getItems();
+        const response = await api.delete(
+          `/api/inventory/deleteresourceitem/${item.productID}`
+        );
+        if (response.status === 200) {
+          getItems();
+          console.log("Item deleted successfully and record saved.");
+          await api.post("/api/inventory/addinventoryrecord", {
+            productID: item.productID,
+            name: item.name,
+            category: item.category,
+            quantity: item.quantity,
+            action: "Delete",
+            dateTime: new Date().toISOString(),
+          });
+        } else {
+          console.error("Failed to delete item from inventory.");
+        }
       } catch (error) {
         console.error("Error deleting resource item:", error);
       }
@@ -103,7 +158,8 @@ const ResourceInventory = () => {
 
   const handleModalSave = async () => {
     try {
-      await api.patch(
+      // Attempt to update the resource item with new data
+      const updateResponse = await api.patch(
         `/api/inventory/updateresourceitem/${editData.productID}`,
         {
           name: editData.name,
@@ -111,18 +167,130 @@ const ResourceInventory = () => {
           quantity: parseInt(editData.quantity),
         }
       );
-      getItems();
-      setIsModalOpen(false);
+      if (updateResponse.status === 200) {
+        // If the update is successful, record the update action
+        await api.post("/api/inventory/addinventoryrecord", {
+          productID: editData.productID,
+          name: editData.name,
+          category: editData.category,
+          quantity: parseInt(editData.quantity),
+          action: "Edit",
+          dateTime: new Date().toISOString(),
+        });
+        console.log("Item updated and record saved.");
+      } else {
+        console.error("Failed to update item.");
+      }
+      getItems(); // Refresh the list after updating
+      setIsModalOpen(false); // Close the modal after saving
     } catch (error) {
       console.error("Error updating resource item:", error);
     }
+  };
+
+  const handleDownload = async () => {
+    try {
+      const response = await api.get("/api/inventory/getallrecords");
+      const records = response.data; // Assume it's an array of items
+      const printableContent = generatePrintableContent(records);
+      downloadReport(printableContent);
+    } catch (error) {
+      console.error("Failed to fetch records for printing", error);
+    }
+  };
+
+  const formatDateTime = (dateTime) => {
+    return dateTime.replace("T", " ").substring(0, 16); // Format to "YYYY-MM-DD HH:MM"
+  };
+
+  //report
+  const generatePrintableContent = (records) => {
+    const element = document.createElement("div");
+    element.innerHTML = `
+      <div style="text-align: center; margin-bottom: 50px;">
+        <h1 style="font-size: 25px; font-weight: bold;">Resource Inventory Records</h1>
+      </div>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid black; padding: 8px;">#</th>
+            <th style="border: 1px solid black; padding: 8px;">Item Code</th>
+            <th style="border: 1px solid black; padding: 8px;">Item Name</th>
+            <th style="border: 1px solid black; padding: 8px;">Item Category</th>
+            <th style="border: 1px solid black; padding: 8px;">Quantity</th>
+            <th style="border: 1px solid black; padding: 8px;">Date & Time</th>
+            <th style="border: 1px solid black; padding: 8px;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${records
+            .toReversed()
+            .map(
+              (item, index) => `
+            <tr>
+              <td style="border: 1px solid black; padding: 8px;">${
+                index + 1
+              }</td>
+              <td style="border: 1px solid black; padding: 8px;">${
+                item.productID
+              }</td>
+              <td style="border: 1px solid black; padding: 8px;">${
+                item.name
+              }</td>
+              <td style="border: 1px solid black; padding: 8px;">${
+                item.category
+              }</td>
+              <td style="border: 1px solid black; padding: 8px;">${
+                item.quantity
+              }</td>
+              <td style="border: 1px solid black; padding: 8px;">${formatDateTime(
+                item.dateTime
+              )}</td>
+              <td style="border: 1px solid black; padding: 8px;">${
+                item.action
+              }</td>
+            </tr>`
+            )
+            .join("")}
+        </tbody>
+      </table>`;
+    return element;
+  };
+
+  const downloadReport = (element) => {
+    const options = {
+      margin: 1,
+      filename: "inventory_report.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    };
+
+    html2pdf()
+      .set(options)
+      .from(element)
+      .toPdf()
+      .get("pdf")
+      .then(function (pdf) {
+        // Process if necessary
+      })
+      .save();
   };
 
   return (
     <div>
       <div className="p-6 bg-darkG text-black rounded-lg">
         <div>
-          <div className="text-2xl font-semibold mb-6">Resource Inventory</div>
+          <div className="mb-6 flex justify-between">
+            <div className="text-2xl font-semibold">Resource Inventory</div>
+            <button
+              className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0]"
+              onClick={handleDownload}
+            >
+              Report Download
+            </button>
+          </div>
+
           <form onSubmit={handleAdd} className="grid grid-cols-3 gap-4 mb-6">
             <div>
               <label className="block mb-1">Item Code</label>
@@ -137,20 +305,31 @@ const ResourceInventory = () => {
                 <p className="text-red-500 text-sm">{errors.itemCode}</p>
               )}
             </div>
+
             <div>
               <label className="block mb-1">Item Name</label>
               <input
                 type="text"
                 name="itemName"
                 value={formData.itemName}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Allow only letters (a-z, A-Z)
+                  if (/^[A-Za-z]*$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+                title="Please enter letters only" // Tooltip message for invalid input
+                required // Optional: makes the field required
               />
               {errors.itemName && (
                 <p className="text-red-500 text-sm">{errors.itemName}</p>
               )}
             </div>
+
             <div></div>
+
             <div>
               <label className="block mb-1">Item Category</label>
               <input
@@ -164,6 +343,7 @@ const ResourceInventory = () => {
                 <p className="text-red-500 text-sm">{errors.itemCategory}</p>
               )}
             </div>
+
             <div>
               <label className="block mb-1">Quantity</label>
               <input
@@ -172,11 +352,13 @@ const ResourceInventory = () => {
                 value={formData.quantity}
                 onChange={handleChange}
                 className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+                onKeyDown={handleKeyDown}
               />
               {errors.quantity && (
                 <p className="text-red-500 text-sm">{errors.quantity}</p>
               )}
             </div>
+
             <div className="flex justify-center items-end">
               <button
                 type="submit"

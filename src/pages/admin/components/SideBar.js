@@ -33,9 +33,9 @@ const Sidebar = () => {
             { label: "Reports", path: "/plant-reports" }
         ],
         "Stock & Transport Manager": [
-            { label: "Dashboard", path: "/stock-transport-dashboard" },
-            { label: "Stock", path: "/stock" },
-            { label: "Logistics", path: "/logistics" }
+            { label: "Order", path: "/order" },
+            { label: "Packing", path: "/packing" },
+            { label: "Delivery", path: "/delivery" }
         ],
         "Disease Manager": [
             { label: "Dashboard", path: "/disease-dashboard" },
@@ -43,14 +43,11 @@ const Sidebar = () => {
             { label: "Reports", path: "/disease-reports" }
         ],
         "Inventory Manager": [
-            { label: "Dashboard", path: "/inventory-dashboard" },
-            { label: "Inventory", path: "/inventory" },
-            { label: "Suppliers", path: "/suppliers" }
+            { label: " Resource Inventory", path: "/ResourceInventory" },
+            { label: "Sales Inventory", path: "/SalesInventory" }
         ],
         "Employee Manager": [
-            { label: "Dashboard", path: "/employee-dashboard" },
-            { label: "Employee Records", path: "/employee-records" },
-            { label: "Salary", path: "/employee-salary" }
+            { label: "Manage Employee", path: "/addemployee" }
         ]
     };
 
@@ -77,14 +74,6 @@ const Sidebar = () => {
                     Logout
                 </button>
             </div>
-            {/* <div className="relative top-96">
-                <button 
-                    className="text-2xl bg-darkG text-white font-bold py-2 rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]" 
-                    onClick={() => handleNavigation("/logout")}
-                >
-                    Logout
-                </button>
-            </div> */}
         </div>
     );
 };
