@@ -18,6 +18,8 @@ const ResetPassword = lazy(() => import('./pages/forgetpassword/ResetPassword'))
 const AddEmployee = lazy(() => import('./pages/admin/SheporaEmployeeManagement/AddEmployee'));
 
 const Login = lazy(() => import('./pages/login/Login'));
+const HarvestAdd = lazy(() => import('./pages/admin/harvest_manager/HarvestAdd'));
+const Table = lazy(() => import('./pages/admin/harvest_manager/Harves_table'));
 const ResourceInventory = lazy(() => import('./pages/admin/ManageInventory/ResourceInventory'));
 const SalesInventory = lazy(() => import('./pages/admin/ManageInventory/SalesInventory'));
 const Packing = lazy(() => import('./pages/admin/packinganddelivery/Packing'));
@@ -57,6 +59,9 @@ const AllRoutes = () => {
 
                         {/* Admin Routes */}
                         <Route element={<AdminLayout />}>
+                            <Route path='/manageemprole' element={<ManageEmployeeRole />} />   
+                            <Route path='/harvest' element={<HarvestAdd />} />
+                            <Route path='/table' element={<Table />} />
                             <Route path='/manageemprole' element={<ManageEmployeeRole />} />
                             <Route path='/addemployee' element={<AddEmployee />} />
                             <Route path='/packing' element={<Packing />} />
