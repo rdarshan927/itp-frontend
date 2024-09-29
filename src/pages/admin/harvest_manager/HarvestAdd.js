@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import {api} from '../../../config/api'
+import { api } from '../../../config/api';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 
 function HarvestManagement() {
-  const [harvests, setHarvests] = useState([]); // Initialize as an empty array
+  const [harvests, setHarvests] = useState([]);
   const [form, setForm] = useState({
     harvestId: '',
     cropType: '',
@@ -15,79 +17,82 @@ function HarvestManagement() {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(''); // New state for search
+  const [searchTerm, setSearchTerm] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // State for error messages
 
-  // Fetch harvest data on component mount
   useEffect(() => {
     api
       .get('/harvest')
       .then((res) => {
-        setHarvests(Array.isArray(res.data.harvestData) ? res.data.harvestData : []); // Ensure it's an array
+        setHarvests(Array.isArray(res.data.harvestData) ? res.data.harvestData : []);
       })
       .catch((err) => {
         console.log(err);
-        setHarvests([]); // Fallback to empty array in case of error
+        setHarvests([]);
       });
   }, []);
 
-  // Handle form input changes
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission (Add or Edit)
-const handleAdd = (e) => {
-  e.preventDefault(); // Prevent default form submission behavior
+  // Function to check if the harvestId is unique
+  const isHarvestIdUnique = () => {
+    if (isEditing) return true; // Skip validation when editing
+    return !harvests.some(harvest => harvest.harvestId === form.harvestId);
+  };
 
-  const updateHarvestList = (newHarvestData) => {
-    setHarvests((prevHarvests) => {
-      const harvestData = Array.isArray(newHarvestData) ? newHarvestData : [];
+  const handleAdd = (e) => {
+    e.preventDefault();
+    
+    // Validate unique Harvest ID
+    if (!isHarvestIdUnique()) {
+      setErrorMessage('Harvest ID must be unique');
+      return;
+    }
 
-      if (isEditing) {
-        // Optimistically update the specific harvest
-        return prevHarvests.map(harvest =>
-          harvest.harvestId === currentId
-            ? { ...harvest, ...form } // Use form data to update immediately
-            : harvest
-        );
-      } else {
-        // Optimistically append the new harvest (form will be updated with the new ID in .then)
-        return [...prevHarvests, form];
-      }
+    const updateHarvestList = (newHarvestData) => {
+      setHarvests((prevHarvests) => {
+        const harvestData = Array.isArray(newHarvestData) ? newHarvestData : [];
+
+        if (isEditing) {
+          return prevHarvests.map(harvest =>
+            harvest.harvestId === currentId
+              ? { ...harvest, ...form }
+              : harvest
+          );
+        } else {
+          return [...prevHarvests, form];
+        }
+      });
+    };
+
+    if (isEditing) {
+      api
+        .put(`/harvest/${currentId}`, form)
+        .then((res) => updateHarvestList(res.data.harvestData))
+        .catch((err) => console.log(err));
+    } else {
+      api
+        .post('/harvest', form)
+        .then((res) => {
+          updateHarvestList([{ ...form, harvestId: res.data.harvestId }]);
+        })
+        .catch((err) => console.log(err));
+    }
+
+    setIsEditing(false);
+    setErrorMessage(''); // Clear error message
+    setForm({
+      harvestId: '',
+      cropType: '',
+      harvestDate: '',
+      quantity: '',
+      quality: '',
+      unit: ''
     });
   };
 
-  if (isEditing) {
-    // Update existing harvest
-    api
-      .put(`/harvest/${currentId}`, form)
-      .then((res) => updateHarvestList(res.data.harvestData)) // Use server response to sync
-      .catch((err) => console.log(err));
-  } else {
-    // Add new harvest
-    api
-      .post('/harvest', form)
-      .then((res) => {
-        // Update the list using server response for new ID
-        updateHarvestList([{ ...form, harvestId: res.data.harvestId }]);
-      })
-      .catch((err) => console.log(err));
-  }
-
-  // Reset form and editing state
-  setIsEditing(false);
-  setForm({
-    harvestId: '',
-    cropType: '',
-    harvestDate: '',
-    quantity: '',
-    quality: '',
-    unit: ''
-  });
-};
-
-
-  // Handle edit button click
   const handleEdit = (_id) => {
     const harvestToEdit = harvests.find((harvest) => harvest._id === _id);
     if (harvestToEdit) {
@@ -97,45 +102,27 @@ const handleAdd = (e) => {
     }
   };
 
-  // Handle delete button click
   const handleDelete = (_id) => {
-    console.log("Attempting to delete:", _id);
-    
-    // Optimistically remove the item from the UI before the server call
     setHarvests((prevHarvests) => {
-      const newHarvests = prevHarvests.filter((harvest) => harvest.harvestId !== _id);
-      console.log("Updated harvests after optimistic delete:", newHarvests);
-      return newHarvests;
+      return prevHarvests.filter((harvest) => harvest.harvestId !== _id);
     });
-  
+
     api
       .delete(`/harvest/${_id}`)
       .then((res) => {
         if (res.status === 200) {
-          console.log('Item successfully deleted from the server');
-          // Optionally sync with the server's updated list
           if (Array.isArray(res.data.harvestData)) {
             setHarvests(res.data.harvestData);
           }
-        } else {
-          console.error('Error: Server did not confirm deletion. Status:', res.status);
         }
       })
-      .catch((err) => {
-        console.error('Error deleting harvest:', err);
-        // If needed, restore the item
-        // setHarvests((prevHarvests) => [...prevHarvests, { harvestId: _id }]);
-      });
+      .catch((err) => console.log(err));
   };
-  
 
-
-  // Handle search input change
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // Filter harvests based on search term
   const filteredHarvests = Array.isArray(harvests)
     ? harvests.filter(
         (harvest) =>
@@ -144,12 +131,81 @@ const handleAdd = (e) => {
           harvest.quality.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : [];
-
+    const handleDownloadPDF = () => {
+      const doc = new jsPDF();
+    
+      // Add title: "Sephora Flowers"
+      doc.setFontSize(16);
+      doc.setTextColor("#5cb85c");
+      doc.text("Sephora Flowers", 105, 20, { align: "center" });
+    
+      // Subtitle: "Delivering beauty and elegance in every petal."
+      doc.setFontSize(12);
+      doc.setTextColor("#555");
+      doc.text("Delivering beauty and elegance in every petal.", 105, 30, {
+        align: "center",
+      });
+    
+      // Contact information
+      doc.setFontSize(10);
+      doc.setTextColor("#000");
+      doc.text("Contact: 0777-894523 | Email: sephoraflowers@gmail.com", 14, 45);
+      doc.text("Address: Badulla, Bandarawela", 14, 50);
+    
+      // Title for the PDF
+      doc.setFontSize(14);
+      doc.text("Harvest Data Report", 105, 65, { align: "center" });
+    
+      // Prepare the harvest data for the table
+      const tableColumn = [
+        { header: "Harvest ID", dataKey: "harvestId" },
+        { header: "Crop Type", dataKey: "cropType" },
+        { header: "Harvest Date", dataKey: "harvestDate" },
+        { header: "Quantity", dataKey: "quantity" },
+        { header: "Quality", dataKey: "quality" },
+        { header: "Unit", dataKey: "unit" },
+      ];
+    
+      const tableRows = filteredHarvests.map((harvest) => ({
+        harvestId: harvest.harvestId,
+        cropType: harvest.cropType,
+        harvestDate: new Date(harvest.harvestDate).toLocaleDateString(),
+        quantity: harvest.quantity,
+        quality: harvest.quality,
+        unit: harvest.unit,
+      }));
+    
+      // Add the table to the PDF (note the correct way of passing columns and data)
+      doc.autoTable({
+        columns: tableColumn,
+        body: tableRows,
+        startY: 80, // Start the table a bit lower on the page
+        theme: "grid",
+        styles: { fontSize: 10, halign: "center" },
+        headStyles: { fillColor: "#5cb85c" },
+        columnStyles: {
+          0: { halign: "left" }, // Align the first column (Harvest ID) to the left
+        },
+      });
+    
+      // Get the final position after the table for adding Date and Signature
+      const finalY = doc.lastAutoTable.finalY || 80;
+    
+      // Add Date and Signature at the bottom
+      const date = new Date().toLocaleDateString();
+      doc.text(`Date: ${date}`, 14, finalY + 20);
+      doc.text("Signature: ", 160, finalY + 20);
+    
+      // Save and download the PDF
+      doc.save("harvest_data.pdf");
+    };
+    
+    
+    
+    
   return (
     <div className="flex flex-col lg:flex-row  bg-white-100">
-      {/* Main Content */}
       <div className="w-full p-6">
-        {/* Search Bar */}
         <div className="mb-4">
           <input
             type="text"
@@ -160,7 +216,12 @@ const handleAdd = (e) => {
           />
         </div>
 
-        {/* Add Harvest Details Form */}
+        {errorMessage && (
+          <div className="bg-red-200 text-red-700 p-2 rounded mb-4">
+            {errorMessage}
+          </div>
+        )}
+
         <div className="bg-darkG p-4 rounded-md mb-4">
           <h2 className="mb-4 text-xl text-white font-bold">
             {isEditing ? 'Edit Harvest Details' : 'Add Harvest Details'}
@@ -202,6 +263,7 @@ const handleAdd = (e) => {
                 required
                 onChange={handleChange}
                 className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+                style={{ width: '213px' }}
               />
             </div>
             <div className="form-group">
@@ -219,16 +281,21 @@ const handleAdd = (e) => {
             </div>
             <div className="form-group">
               <label htmlFor="quality" className="text-white">Quality</label><br />
-              <input
-                type="text"
+              <select
                 id="quality"
                 name="quality"
                 value={form.quality}
                 required
                 onChange={handleChange}
-                placeholder="Quality"
                 className="p-2 border border-gray-300 rounded bg-adminLightGreen"
-              />
+                style={{ width: '213px' }}
+              >
+                <option value="" disabled>Select Quality</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Fair">Fair</option>
+                <option value="Poor">Poor</option>
+              </select>
             </div>
             <div className="form-group">
               <label htmlFor="unit" className="text-white">Unit</label><br />
@@ -253,8 +320,15 @@ const handleAdd = (e) => {
             </div>
           </form>
         </div>
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleDownloadPDF}
+            className="bg-green-500 text-white py-2 px-4 rounded"
+          >
+            Download PDF
+          </button>
+        </div>
 
-        {/* Harvest Details Table */}
         <div className="p-4 rounded-md overflow-x-auto">
           <table className="min-w-full">
             <thead>
