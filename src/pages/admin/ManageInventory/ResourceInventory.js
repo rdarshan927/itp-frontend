@@ -284,7 +284,7 @@ const ResourceInventory = () => {
           <div className="mb-6 flex justify-between">
             <div className="text-2xl font-semibold">Resource Inventory</div>
             <button
-              className="bg-lightG font-bold py-2 text rounded-lg w-52 rounded hover:bg-[#c9d5b0]"
+              className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0]"
               onClick={handleDownload}
             >
               Report Download
