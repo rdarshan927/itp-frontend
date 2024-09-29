@@ -6,7 +6,7 @@ const Flower = () => {
 
     return (
         <div className="relative">
-            Hello
+            {/* Hello */}
         </div>
     )
 }
