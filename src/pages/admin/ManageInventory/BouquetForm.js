@@ -12,8 +12,11 @@ const BouquetForm = ({ getItems }) => {
   const [bouquetErrors, setBouquetErrors] = useState({});
   const fileInputRef = useRef(null);
 
+  // Handle input changes with validation
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
+
+    // Handle image input
     if (files && files[0]) {
       const file = files[0];
       const reader = new FileReader();
@@ -26,29 +29,64 @@ const BouquetForm = ({ getItems }) => {
       };
       reader.readAsDataURL(file);
     } else {
-      setBouquetFormData({
-        ...bouquetFormData,
-        [name]: value,
-      });
+      // Validate and update form data for other inputs
+      if (name === "quantity") {
+        // Allow only positive integers greater than 0, up to 4 digits
+        const quantityPattern = /^[1-9][0-9]*$/;
+        if (
+          value === "" ||
+          (quantityPattern.test(value) && value.length <= 4)
+        ) {
+          setBouquetFormData({
+            ...bouquetFormData,
+            [name]: value,
+          });
+        }
+      } else if (name === "price") {
+        // Ensure price is a valid number and not longer than 20 characters
+        const pricePattern = /^[0-9]+(\.[0-9]{1,2})?$/; // Allow up to 2 decimal places
+        if (value === "" || (pricePattern.test(value) && value.length <= 20)) {
+          setBouquetFormData({
+            ...bouquetFormData,
+            [name]: value,
+          });
+        }
+      } else {
+        // Limit productID, name to 20 characters
+        if (value.length <= 20) {
+          setBouquetFormData({
+            ...bouquetFormData,
+            [name]: value,
+          });
+        }
+      }
     }
   };
 
+  // Prevent unwanted characters in the quantity and price fields
+  const handleKeyDown = (e) => {
+    if (["e", "E", "+", "-", ".", "/"].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  // Validate the form before submission
   const validateForm = async (formData) => {
     let errors = {};
     if (!formData.productID) errors.productID = "Item Code is required";
-    if (!formData.name) errors.name = "Name is required";
+    if (!formData.name) errors.name = "Bouquet Name is required";
     if (!formData.quantity || isNaN(formData.quantity)) {
       errors.quantity = "Quantity must be a number";
     }
     if (!formData.price || isNaN(formData.price)) {
-      errors.price = "Price must be a number";
+      errors.price = "Price must be a valid number";
     }
     return errors;
   };
 
   const handleBouquetAdd = async (e) => {
     e.preventDefault();
-    const errors = validateForm(bouquetFormData);
+    const errors = await validateForm(bouquetFormData);
     console.log(bouquetFormData);
     if (Object.keys(errors).length === 0) {
       try {
@@ -91,8 +129,9 @@ const BouquetForm = ({ getItems }) => {
           value={bouquetFormData.productID}
           onChange={handleInputChange}
           className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          maxLength="20"
         />
-        {bouquetErrors.name && (
+        {bouquetErrors.productID && (
           <p className="text-red-500 text-sm">{bouquetErrors.productID}</p>
         )}
       </div>
@@ -104,6 +143,7 @@ const BouquetForm = ({ getItems }) => {
           value={bouquetFormData.name}
           onChange={handleInputChange}
           className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          maxLength="20"
         />
         {bouquetErrors.name && (
           <p className="text-red-500 text-sm">{bouquetErrors.name}</p>
@@ -116,6 +156,7 @@ const BouquetForm = ({ getItems }) => {
           name="quantity"
           value={bouquetFormData.quantity}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown} // Prevent unwanted characters
           className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
         />
         {bouquetErrors.quantity && (
@@ -125,10 +166,11 @@ const BouquetForm = ({ getItems }) => {
       <div>
         <label className="block mb-1">Price</label>
         <input
-          type="text"
+          type="number"
           name="price"
           value={bouquetFormData.price}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown} // Prevent unwanted characters
           className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
         />
         {bouquetErrors.price && (
@@ -140,6 +182,7 @@ const BouquetForm = ({ getItems }) => {
         <input
           type="file"
           name="image"
+          ref={fileInputRef}
           onChange={handleInputChange}
           className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
         />

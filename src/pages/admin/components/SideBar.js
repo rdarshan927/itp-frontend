@@ -43,9 +43,8 @@ const Sidebar = () => {
             { label: "Reports", path: "/disease-reports" }
         ],
         "Inventory Manager": [
-            { label: "Dashboard", path: "/inventory-dashboard" },
-            { label: "Inventory", path: "/inventory" },
-            { label: "Suppliers", path: "/suppliers" }
+            { label: " Resource Inventory", path: "/ResourceInventory" },
+            { label: "Sales Inventory", path: "/SalesInventory" }
         ],
         "Employee Manager": [
             { label: "Dashboard", path: "/employee-dashboard" },

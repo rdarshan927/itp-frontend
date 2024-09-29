@@ -10,6 +10,52 @@ const ItemCard = ({ item, getItems }) => {
     imageData: item.imageData,
   });
 
+  // Handle input changes with validation
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+
+    // Handle image input
+    if (files && files[0]) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Update the form state with the Base64 encoded string
+        setEditData((prev) => ({ ...prev, imageData: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // Validate and update form data for other inputs
+      if (name === "quantity") {
+        // Allow only positive integers greater than 0, up to 4 digits
+        const quantityPattern = /^[1-9][0-9]*$/;
+        if (
+          value === "" ||
+          (quantityPattern.test(value) && value.length <= 4)
+        ) {
+          setEditData((prev) => ({ ...prev, [name]: value }));
+        }
+      } else if (name === "price") {
+        // Ensure price is a valid number and not longer than 20 characters
+        const pricePattern = /^[0-9]+(\.[0-9]{1,2})?$/; // Allow up to 2 decimal places
+        if (value === "" || (pricePattern.test(value) && value.length <= 20)) {
+          setEditData((prev) => ({ ...prev, [name]: value }));
+        }
+      } else {
+        // Limit name to 20 characters
+        if (value.length <= 20) {
+          setEditData((prev) => ({ ...prev, [name]: value }));
+        }
+      }
+    }
+  };
+
+  // Prevent unwanted characters in the quantity and price fields
+  const handleKeyDown = (e) => {
+    if (["e", "E", "+", "-", "/", "."].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   const handleDelete = async () => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this item?"
@@ -21,21 +67,6 @@ const ItemCard = ({ item, getItems }) => {
       } catch (error) {
         console.error("Error deleting item:", error);
       }
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
-    if (files && files[0]) {
-      const file = files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Update the form state with the Base64 encoded string
-        setEditData((prev) => ({ ...prev, imageData: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setEditData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
@@ -74,6 +105,7 @@ const ItemCard = ({ item, getItems }) => {
         name="quantity"
         value={editData.quantity}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown} // Prevent unwanted characters
         className="w-full p-2 mb-2 rounded-lg"
       />
       Price:
@@ -82,6 +114,7 @@ const ItemCard = ({ item, getItems }) => {
         name="price"
         value={editData.price}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown} // Prevent unwanted characters
         className="w-full p-2 mb-2 rounded-lg"
       />
       Image:
