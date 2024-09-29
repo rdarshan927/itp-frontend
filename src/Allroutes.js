@@ -27,6 +27,7 @@ const Dashboard = lazy(() => import('./pages/admin/Dashboard/Dashboard'));
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
 const ClientPrivateRoute = lazy(() => import('./config/ClientPrivateRoute'))
+const None = lazy(() => import('./pages/admin/components/None'))
 
 const AllRoutes = () => {
     return (
@@ -61,7 +62,7 @@ const AllRoutes = () => {
                             <Route path='/salary' element={<Salary />} />
                             <Route path='/inventorystuff' element={<InventoryStuff />} />
                             <Route path='/Dashboard' element={<Dashboard/>}/>
-                           
+                            <Route path='/none' element={<None />} />
                         </Route>
                     </Routes>
                 </Suspense>
