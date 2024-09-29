@@ -77,14 +77,6 @@ const Sidebar = () => {
                     Logout
                 </button>
             </div>
-            {/* <div className="relative top-96">
-                <button 
-                    className="text-2xl bg-darkG text-white font-bold py-2 rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]" 
-                    onClick={() => handleNavigation("/logout")}
-                >
-                    Logout
-                </button>
-            </div> */}
         </div>
     );
 };
