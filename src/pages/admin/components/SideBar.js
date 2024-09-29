@@ -23,9 +23,7 @@ const Sidebar = () => {
             
         ],
         "Harvest Manager": [
-            { label: "Dashboard", path: "/harvest-dashboard" },
-            { label: "Harvest Schedule", path: "/harvest-schedule" },
-            { label: "Inventory", path: "/harvest-inventory" }
+            { label: "Manage Harvest", path: "/harvest" }
         ],
         "Plant Scheduling Manager": [
             { label: "Dashboard", path: "/plant-schedule-dashboard" },
