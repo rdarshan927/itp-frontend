@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import { useDarkMode } from "../config/darkMode";
 
 const Header = () => {
@@ -39,7 +40,7 @@ const Header = () => {
 
                     {/* Navigation Links */}
                     <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-10 mt-4 md:mt-0">
-                        <a href="#home" className="text-black font-bold hover:text-lightG text-lg">HOME</a>
+                        <a href="/" className="text-black font-bold hover:text-lightG text-lg">HOME</a>
                         <a href="#about" className="text-black font-bold hover:text-lightG text-lg">FLOWERS</a>
                         <a href="#services" className="text-black font-bold hover:text-lightG text-lg">BOUQUET</a>
                         <a href="#contact" className="text-black font-bold hover:text-lightG text-lg">CONTACT</a>
@@ -47,8 +48,12 @@ const Header = () => {
 
                     {/* Login and Cart Icons */}
                     <div className="flex items-center space-x-4 mt-4 md:mt-0">
-                        <img src="./image/login.png" className="w-8 md:w-10" alt="Login" />
-                        <img src="./image/cart.png" className="w-8 md:w-10" alt="Cart" />
+                        <Link to="/login">
+                            <img src="./image/login.png" className="w-8 md:w-10" alt="Login" />
+                        </Link>
+                        <Link to="/cart">
+                            <img src="./image/cart.png" className="w-8 md:w-10" alt="Cart" />
+                        </Link>
                     </div>
                 </div>
             </nav>

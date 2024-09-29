@@ -10,6 +10,28 @@ const Cart = () => {
     const [deliveryAddress, setDeliveryAddress] = useState('No address have been set!')
     const [receiverPhone, setReceiverPhone] = useState('No receiver phone number set!')
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [errors, setErrors] = useState({ phone: '', address: '' });
+
+    const validatePhone = (phone) => {
+        const phoneRegex = /^[0-9]+$/; // Numeric check
+        if (!phone) {
+            return "Phone number is required";
+        } else if (!phoneRegex.test(phone)) {
+            return "Phone number must contain only digits";
+        } else if (phone.length !== 10) {
+            return "Phone number must be 10 digits";
+        }
+        return "";
+    };
+
+    const validateAddress = (address) => {
+        if (!address) {
+            return "Delivery address is required";
+        } else if (address.length < 10) {
+            return "Address must be at least 10 characters";
+        }
+        return "";
+    };
 
     const userEmail = localStorage.getItem('useremail')
 
@@ -155,22 +177,34 @@ const Cart = () => {
     };
 
     const updateDelivery = async () => {
-        try {
-            const body = {
-                receiverPhoneNumber: receiverPhone,
-                deliveryAddress: deliveryAddress
-            };
+        // Validate fields
+        const phoneError = validatePhone(receiverPhone);
+        const addressError = validateAddress(deliveryAddress);
 
-            const response = await api.patch(`/api/cart/update/delivery/${userEmail}`, body);
+        setErrors({
+            phone: phoneError,
+            address: addressError,
+        });
 
-            if (response.status === 200) {
-                console.log('Delivery details updated successfully!');
-                toggleModal();
-            } else {
-                console.error('Failed to update delivery details', response.status, response.data);
+        // If no errors, submit form or perform desired action
+        if (!phoneError && !addressError) {
+            try {
+                const body = {
+                    receiverPhoneNumber: receiverPhone,
+                    deliveryAddress: deliveryAddress
+                };
+
+                const response = await api.patch(`/api/cart/update/delivery/${userEmail}`, body);
+
+                if (response.status === 200) {
+                    console.log('Delivery details updated successfully!');
+                    toggleModal();
+                } else {
+                    console.error('Failed to update delivery details', response.status, response.data);
+                }
+            } catch (error) {
+                console.error('There was an error while updating the delivery details', error);
             }
-        } catch (error) {
-            console.error('There was an error while updating the delivery details', error);
         }
     };
 
@@ -226,6 +260,7 @@ const Cart = () => {
                                                 onChange={(e) => setReceiverPhone(e.target.value)} 
                                                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
                                             />
+                                            {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
                                         </div>
                                         
                                         <div>
@@ -235,6 +270,7 @@ const Cart = () => {
                                                 onChange={(e) => setDeliveryAddress(e.target.value)} 
                                                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
                                             />
+                                            {errors.phone && <p className="text-red-500 text-sm">{errors.address}</p>}
                                         </div>
                                     </div>
 
