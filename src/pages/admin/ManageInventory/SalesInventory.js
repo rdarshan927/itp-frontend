@@ -9,6 +9,7 @@ const SalesInventory = () => {
   const [activeTab, setActiveTab] = useState("flowers");
   const [flowers, setFlowers] = useState([]);
   const [bouquets, setBouquets] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -20,7 +21,6 @@ const SalesInventory = () => {
       const items = response.data;
       setFlowers(items.filter((item) => item.category === "flower"));
       setBouquets(items.filter((item) => item.category === "bouquet"));
-      console.log("Fetched Resource Items:", items);
     } catch (error) {
       console.error("There was an error while fetching data!", error);
     }
@@ -49,7 +49,7 @@ const SalesInventory = () => {
   const handleDownload = async () => {
     try {
       const response = await api.get("/api/inventory/getallrecords/sales");
-      const records = response.data; // Assume it's an array of items
+      const records = response.data;
       const printableContent = generatePrintableContent(records);
       downloadReport(printableContent);
     } catch (error) {
@@ -58,10 +58,9 @@ const SalesInventory = () => {
   };
 
   const formatDateTime = (dateTime) => {
-    return dateTime.replace("T", " ").substring(0, 16); // Format to "YYYY-MM-DD HH:MM"
+    return dateTime.replace("T", " ").substring(0, 16);
   };
 
-  //report
   const generatePrintableContent = (records) => {
     const element = document.createElement("div");
     element.innerHTML = `
@@ -139,6 +138,19 @@ const SalesInventory = () => {
       .save();
   };
 
+  // Filter flowers and bouquets by search query
+  const filteredFlowers = flowers.filter(
+    (item) =>
+      item.productID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredBouquets = bouquets.filter(
+    (item) =>
+      item.productID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
       <div className="p-6 bg-darkG text-black rounded-lg">
@@ -179,16 +191,24 @@ const SalesInventory = () => {
           )}
         </div>
       </div>
-
-      <div className="text-2xl font-semibold mb-4 mt-4 ml-4">
-        Current Sales Items
+      <div className="flex justify-between">
+        <div className="text-2xl font-semibold mb-4 mt-4 ml-4">
+          Current Sales Items
+        </div>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="border border-gray-300 rounded-lg px-4 h-10 mt-4"
+        />
       </div>
+
       <div className="text-xl font-semibold mb-4 ml-8">Flowers</div>
       <div className="grid grid-cols-4 gap-4 ml-4">
-        {flowers.map((flower) => (
-          <div className="flex justify-center w-full">
+        {filteredFlowers.map((flower) => (
+          <div className="flex justify-center w-full" key={flower.productID}>
             <ItemCard
-              key={flower.productID}
               item={flower}
               getItems={getItems}
               saveRecord={saveRecord}
@@ -196,13 +216,14 @@ const SalesInventory = () => {
           </div>
         ))}
       </div>
+
       <hr className="mt-10"></hr>
+
       <div className="text-xl font-semibold mb-4 ml-8 mt-5">Bouquets</div>
       <div className="grid grid-cols-4 gap-4 ml-4">
-        {bouquets.map((bouquet) => (
-          <div className="flex justify-center w-full">
+        {filteredBouquets.map((bouquet) => (
+          <div className="flex justify-center w-full" key={bouquet.productID}>
             <ItemCard
-              key={bouquet.productID}
               item={bouquet}
               getItems={getItems}
               saveRecord={saveRecord}
