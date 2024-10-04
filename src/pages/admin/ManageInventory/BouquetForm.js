@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { api } from "../../../config/api";
 
-const BouquetForm = ({ getItems }) => {
+const BouquetForm = ({ getItems,saveRecord }) => {
   const [bouquetFormData, setBouquetFormData] = useState({
     productID: "",
     name: "",
@@ -90,15 +90,16 @@ const BouquetForm = ({ getItems }) => {
     console.log(bouquetFormData);
     if (Object.keys(errors).length === 0) {
       try {
-        const response = await api.post("/api/inventory/addsalesitem", {
-          productID: bouquetFormData.productID,
-          name: bouquetFormData.name,
-          category: "bouquet",
-          quantity: parseInt(bouquetFormData.quantity),
-          price: parseFloat(bouquetFormData.price),
-          imageData: bouquetFormData.image,
-        });
-        console.log(response);
+        // const response = await api.post("/api/inventory/addsalesitem", {
+        //   productID: bouquetFormData.productID,
+        //   name: bouquetFormData.name,
+        //   category: "bouquet",
+        //   quantity: parseInt(bouquetFormData.quantity),
+        //   price: parseFloat(bouquetFormData.price),
+        //   imageData: bouquetFormData.image,
+        // });
+        // console.log(response);
+        saveRecord(bouquetFormData, "Add", "bouquet");
         getItems();
         setBouquetFormData({
           productID: "",

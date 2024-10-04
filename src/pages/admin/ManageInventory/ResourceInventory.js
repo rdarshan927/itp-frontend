@@ -190,7 +190,7 @@ const ResourceInventory = () => {
 
   const handleDownload = async () => {
     try {
-      const response = await api.get("/api/inventory/getallrecords");
+      const response = await api.get("/api/inventory/getallrecords/resource");
       const records = response.data; // Assume it's an array of items
       const printableContent = generatePrintableContent(records);
       downloadReport(printableContent);
@@ -208,9 +208,9 @@ const ResourceInventory = () => {
     const element = document.createElement("div");
     element.innerHTML = `
       <div style="text-align: center; margin-bottom: 50px;">
-        <h1 style="font-size: 25px; font-weight: bold;">Resource Inventory Records</h1>
+        <h1 style="font-size: 20px; font-weight: bold;">Resource Inventory Records</h1>
       </div>
-      <table style="width: 100%; border-collapse: collapse;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
         <thead>
           <tr>
             <th style="border: 1px solid black; padding: 8px;">#</th>
