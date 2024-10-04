@@ -10,6 +10,8 @@ const SalesInventory = () => {
   const [flowers, setFlowers] = useState([]);
   const [bouquets, setBouquets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [lowStockItems, setLowStockItems] = useState([]); // To keep track of low stock items
+  const [isPopupVisible, setIsPopupVisible] = useState(false); // To control the popup visibility
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -21,6 +23,10 @@ const SalesInventory = () => {
       const items = response.data;
       setFlowers(items.filter((item) => item.category === "flower"));
       setBouquets(items.filter((item) => item.category === "bouquet"));
+
+      // Find items with quantity less than 5
+      const lowStock = items.filter((item) => item.quantity < 5);
+      setLowStockItems(lowStock); // Set the low stock items
     } catch (error) {
       console.error("There was an error while fetching data!", error);
     }
@@ -151,18 +157,59 @@ const SalesInventory = () => {
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const togglePopup = () => {
+    setIsPopupVisible(!isPopupVisible);
+  };
+
   return (
     <>
       <div className="p-6 bg-darkG text-black rounded-lg">
         <div className="mb-6">
           <div className="flex justify-between items-center">
             <div className="text-2xl font-semibold mb-4">Sales Inventory</div>
-            <button
-              className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0]"
-              onClick={handleDownload}
-            >
-              Report Download
-            </button>
+            <div className="flex items-center">
+              <div className="relative">
+                <button
+                  className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]"
+                  onClick={togglePopup}
+                >
+                  <span role="img" aria-label="notification">
+                    🔔
+                  </span>
+                </button>
+
+                {/* Popup menu for low stock items */}
+                {isPopupVisible && (
+                  <div className="absolute right-0 w-96 mt-2  bg-white shadow-lg rounded-lg p-4">
+                    <div className="flex justify-between align-center mb-6">
+                      <strong className="mt-2">Low Stock Items</strong>
+                      <button className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]">
+                        Notify with an Email
+                      </button>
+                    </div>
+
+                    <ul>
+                      {lowStockItems?.length > 0 ? (
+                        lowStockItems.map((item, index) => (
+                          <li key={index}>
+                            {index+1}. {item.name} (Code: {item.productID}) - Quantity:{" "}
+                            {item.quantity}
+                          </li>
+                        ))
+                      ) : (
+                        <li>No low stock items</li>
+                      )}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              <button
+                className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0] ml-4"
+                onClick={handleDownload}
+              >
+                Report Download
+              </button>
+            </div>
           </div>
 
           <div className="flex space-x-4 mb-6">
@@ -191,6 +238,7 @@ const SalesInventory = () => {
           )}
         </div>
       </div>
+
       <div className="flex justify-between">
         <div className="text-2xl font-semibold mb-4 mt-4 ml-4">
           Current Sales Items

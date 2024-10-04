@@ -21,6 +21,8 @@ const ResourceInventory = () => {
     quantity: "",
   });
   const [searchQuery, setSearchQuery] = useState("");
+  const [lowStockItems, setLowStockItems] = useState([]); // Track low stock items
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,8 +75,12 @@ const ResourceInventory = () => {
   const getItems = async () => {
     try {
       const response = await api.get("/api/inventory/getresourceitems");
-      setInventory(response.data);
-      console.log("Fetched Resource Items:", response.data);
+      const items = response.data;
+      setInventory(items);
+
+      // Find items with quantity less than 5
+      const lowStock = items.filter((item) => item.quantity < 5);
+      setLowStockItems(lowStock); // Set low stock items
     } catch (error) {
       console.error("There was an error while fetching data!", error);
     }
@@ -285,18 +291,58 @@ const ResourceInventory = () => {
       item.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const togglePopup = () => {
+    setIsPopupVisible(!isPopupVisible);
+  };
+
   return (
     <div>
       <div className="p-6 bg-darkG text-black rounded-lg">
         <div>
           <div className="mb-6 flex justify-between">
             <div className="text-2xl font-semibold">Resource Inventory</div>
-            <button
-              className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0]"
-              onClick={handleDownload}
-            >
-              Report Download
-            </button>
+            <div className="flex items-center">
+              <div className="relative">
+                <button
+                  className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]"
+                  onClick={togglePopup}
+                >
+                  <span role="img" aria-label="notification">
+                    🔔
+                  </span>
+                </button>
+
+                {/* Popup menu for low stock items */}
+                {isPopupVisible && (
+                  <div className="absolute right-0 w-96 mt-2 bg-white shadow-lg rounded-lg p-4">
+                    <div className="flex justify-between align-center mb-6">
+                      <strong className="mt-2">Low Stock Items</strong>
+                      <button className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]">
+                        Notify with an Email
+                      </button>
+                    </div>
+                    <ul>
+                      {lowStockItems?.length > 0 ? (
+                        lowStockItems.map((item, index) => (
+                          <li key={index}>
+                            {index + 1}. {item.name} (Code: {item.productID}) -
+                            Quantity: {item.quantity}
+                          </li>
+                        ))
+                      ) : (
+                        <li>No low stock items</li>
+                      )}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              <button
+                className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0] ml-4"
+                onClick={handleDownload}
+              >
+                Report Download
+              </button>
+            </div>
           </div>
 
           <form onSubmit={handleAdd} className="grid grid-cols-3 gap-4 mb-6">
