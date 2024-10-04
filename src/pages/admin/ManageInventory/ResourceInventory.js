@@ -20,7 +20,7 @@ const ResourceInventory = () => {
     category: "",
     quantity: "",
   });
-  const [printData, setPrintData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -277,6 +277,14 @@ const ResourceInventory = () => {
       .save();
   };
 
+  //--------Search----------//
+  const filteredInventory = inventory.filter(
+    (item) =>
+      item.productID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
       <div className="p-6 bg-darkG text-black rounded-lg">
@@ -370,9 +378,19 @@ const ResourceInventory = () => {
           </form>
         </div>
       </div>
-      <div className="text-lg font-semibold mb-3 mt-5">
-        Current Stock - Resource Inventory
+      <div className="flex justify-between">
+        <div className="text-lg font-semibold mb-3 mt-5">
+          Current Stock - Resource Inventory
+        </div>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="border border-gray-300 rounded-lg px-4 h-10 mt-5"
+        />
       </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full border-separate border-spacing-y-3">
           <thead>
@@ -386,7 +404,7 @@ const ResourceInventory = () => {
             </tr>
           </thead>
           <tbody>
-            {inventory.map((item, index) => (
+            {filteredInventory.map((item, index) => (
               <tr key={index}>
                 <td className="px-4 py-2 border-b bg-lightG rounded-s-xl">
                   {index + 1}
