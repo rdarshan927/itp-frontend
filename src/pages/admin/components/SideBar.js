@@ -28,8 +28,8 @@ const Sidebar = () => {
         ],
         "Plant Scheduling Manager": [
             { label: "Dashboard", path: "/plant-schedule-dashboard" },
-            { label: "Plant Schedule", path: "/plant-schedule" },
-            { label: "Reports", path: "/plant-reports" }
+            { label: "Plant Schedule", path: "/Plant" },
+            { label: "Reports", path: "/PlantReports" }
         ],
         "Stock & Transport Manager": [
             { label: "Order", path: "/order" },

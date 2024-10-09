@@ -29,6 +29,8 @@ const Salary = lazy(() => import('./pages/admin/Salary/Salary'));
 const InventoryStuff = lazy(() => import('./pages/admin/InventoryStuff/InventoryStuff'));
 const Dashboard = lazy(() => import('./pages/admin/Dashboard/Dashboard'));
 const AdminLogin =lazy(()=>import('./pages/login/AdminLogin'))
+const Plant = lazy(() => import('./pages/admin/PlantSchedule/PlantSchedule'));
+const PlantReports = lazy(() => import('./pages/admin/PlantSchedule/PlantReport'));
 
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
@@ -191,6 +193,25 @@ const AllRoutes = () => {
                                     </AdminPrivateRoute>
                                 } 
                             />
+                            <Route path='/manageemprole' element={<ManageEmployeeRole />} />   
+                            <Route path='/harvest' element={<HarvestAdd />} />
+                            <Route path='/table' element={<Table />} />
+                            <Route path='/manageemprole' element={<ManageEmployeeRole />} />
+                            <Route path='/addemployee' element={<AddEmployee />} />
+                            <Route path='/packing' element={<Packing />} />
+                            <Route path='/order' element={<Order />} />
+                            <Route path='/delivery' element={<Delivery />} />
+                            
+                            <Route path="/sales/invoices" element={<Invoice />} />
+                            <Route path='/ResourceInventory' element={<ResourceInventory />} />
+                            <Route path='/SalesInventory' element={<SalesInventory />} />
+                            <Route path='sales/dashboard' element={<SalesDashboard />} />
+                            <Route path='/salary' element={<Salary />} />
+                            <Route path='/inventorystuff' element={<InventoryStuff />} />
+                            <Route path='/Dashboard' element={<Dashboard/>}/>
+                            <Route path='/plant' element={<Plant />} />
+                            <Route path='/PlantReports' element={<PlantReports />} />
+                            <Route path='/none' element={<None />} />
                         </Route>
                     </Routes>
                 </Suspense>
