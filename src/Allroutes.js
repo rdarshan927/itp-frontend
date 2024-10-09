@@ -28,6 +28,8 @@ const Delivery = lazy(() => import('./pages/admin/packinganddelivery/Delivery'))
 const Salary = lazy(() => import('./pages/admin/Salary/Salary'));
 const InventoryStuff = lazy(() => import('./pages/admin/InventoryStuff/InventoryStuff'));
 const Dashboard = lazy(() => import('./pages/admin/Dashboard/Dashboard'));
+const Plant = lazy(() => import('./pages/admin/PlantSchedule/PlantSchedule'));
+const PlantReports = lazy(() => import('./pages/admin/PlantSchedule/PlantReport'));
 
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
@@ -75,6 +77,8 @@ const AllRoutes = () => {
                             <Route path='/salary' element={<Salary />} />
                             <Route path='/inventorystuff' element={<InventoryStuff />} />
                             <Route path='/Dashboard' element={<Dashboard/>}/>
+                            <Route path='/plant' element={<Plant />} />
+                            <Route path='/PlantReports' element={<PlantReports />} />
                             <Route path='/none' element={<None />} />
                         </Route>
                     </Routes>
