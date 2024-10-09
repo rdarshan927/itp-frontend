@@ -34,13 +34,10 @@ function Login(){
             const { success, message, jwtToken, name, error } = response.data;
 
             if (success) {
-                console.log("logged in");
-                console.log(jwtToken);
-                console.log(name)
                 handleSuccess(message);
-                localStorage.setItem('token', jwtToken);
-                localStorage.setItem('loggedInUser', name);
-                localStorage.setItem('useremail', email);
+                localStorage.setItem('tokenc', jwtToken);
+                localStorage.setItem('loggedCustomer', name);
+                localStorage.setItem('useremailc', email);
                 setTimeout(() => {
                     navigate('/')
                 }, 1000)
