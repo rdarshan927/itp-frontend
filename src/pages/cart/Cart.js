@@ -33,7 +33,7 @@ const Cart = () => {
         return "";
     };
 
-    const userEmail = localStorage.getItem('useremail')
+    const userEmail = localStorage.getItem('useremailc')
 
     useEffect(() => {
         const fetchCarts = async () => {

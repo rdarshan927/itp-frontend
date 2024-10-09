@@ -19,7 +19,7 @@ function HarvestManagement() {
   const [currentId, setCurrentId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // State for error messages
-
+  
   useEffect(() => {
     api
       .get('/harvest')
@@ -31,7 +31,7 @@ function HarvestManagement() {
         setHarvests([]);
       });
   }, []);
-
+  
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -254,17 +254,19 @@ function HarvestManagement() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="harvestDate" className="text-white">Harvest Date</label><br />
-              <input
-                type="date"
-                id="harvestDate"
-                name="harvestDate"
-                value={form.harvestDate}
-                required
-                onChange={handleChange}
-                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
-                style={{ width: '213px' }}
-              />
+            <label htmlFor="harvestDate" className="text-white">Harvest Date</label><br />
+            <input
+            type="date"
+            id="harvestDate"
+            name="harvestDate"
+            value={form.harvestDate}
+            required
+            onChange={handleChange}
+            max={new Date().toISOString().split("T")[0]} // Sets the max date as today's date
+            className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+            style={{ width: '213px' }}
+            />
+
             </div>
             <div className="form-group">
               <label htmlFor="quantity" className="text-white">Quantity</label><br />
@@ -276,6 +278,7 @@ function HarvestManagement() {
                 required
                 onChange={handleChange}
                 placeholder="Quantity"
+                min="1" // Ensures that the minimum value is 1
                 className="p-2 border border-gray-300 rounded bg-adminLightGreen"
               />
             </div>
@@ -345,10 +348,15 @@ function HarvestManagement() {
             <tbody>
               {filteredHarvests.length > 0 ? (
                 filteredHarvests.map((harvest, index) => (
-                  <tr key={index} className="odd:bg-darkG: even:bg-green-50">
+                  <tr key={index} className="odd:bg-lightG even:bg-green-200">
                     <td className="px-4 py-2">{harvest.harvestId}</td>
                     <td className="px-4 py-2">{harvest.cropType}</td>
-                    <td className="px-4 py-2">{harvest.harvestDate}</td>
+                    <td className="px-4 py-2">{new Date(harvest.harvestDate).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'numeric',
+                          day: 'numeric'
+                      })}
+                    </td>
                     <td className="px-4 py-2">{harvest.quantity}</td>
                     <td className="px-4 py-2">{harvest.quality}</td>
                     <td className="px-4 py-2">{harvest.unit}</td>

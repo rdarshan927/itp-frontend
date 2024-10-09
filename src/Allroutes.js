@@ -28,6 +28,7 @@ const Delivery = lazy(() => import('./pages/admin/packinganddelivery/Delivery'))
 const Salary = lazy(() => import('./pages/admin/Salary/Salary'));
 const InventoryStuff = lazy(() => import('./pages/admin/InventoryStuff/InventoryStuff'));
 const Dashboard = lazy(() => import('./pages/admin/Dashboard/Dashboard'));
+const AdminLogin =lazy(()=>import('./pages/login/AdminLogin'))
 const Plant = lazy(() => import('./pages/admin/PlantSchedule/PlantSchedule'));
 const PlantReports = lazy(() => import('./pages/admin/PlantSchedule/PlantReport'));
 
@@ -35,6 +36,7 @@ const PlantReports = lazy(() => import('./pages/admin/PlantSchedule/PlantReport'
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
 const ClientPrivateRoute = lazy(() => import('./config/ClientPrivateRoute'))
+const AdminPrivateRoute = lazy(() => import('./config/AdminPrivateRoute'))
 const None = lazy(() => import('./pages/admin/components/None'))
 
 const AllRoutes = () => {
@@ -45,22 +47,152 @@ const AllRoutes = () => {
                     <Routes>
                         {/* Client Routes */}
                         <Route element={<ClientLayout />}>
-                            <Route path='/cart' element={<Cart />} />
-                            <Route path="/paymentsuccess" element={<PaymentSuccess/>} />
+                            <Route 
+                                path='/cart' 
+                                element={
+                                    <ClientPrivateRoute>
+                                        <Cart />
+                                    </ClientPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/paymentsuccess' 
+                                element={
+                                    <ClientPrivateRoute>
+                                        <PaymentSuccess />
+                                    </ClientPrivateRoute>
+                                } 
+                            />
                             <Route path='/register' element={<Register />} />
                             <Route path='/forgetpassword' element={<ForgotPassword />} />
                             <Route path='/reset_password/:id/:token' element={<ResetPassword />} />
                             <Route path='/' element={<Home />} />
                             <Route path="/login" element={<Login/>}/>
-                            <Route path='/' element={
-                                <ClientPrivateRoute>
-                                    <Home/>
-                                </ClientPrivateRoute>
-                            } />
+                            <Route path="/adminLogin" element={<AdminLogin/>}/>
                         </Route>
 
                         {/* Admin Routes */}
                         <Route element={<AdminLayout />}>
+                            <Route 
+                                path='/manageemprole' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <ManageEmployeeRole />
+                                    </AdminPrivateRoute>
+                                } 
+                            />   
+                            <Route 
+                                path='/harvest' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <HarvestAdd />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/harvestdashboard' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <Table />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/addemployee' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <AddEmployee />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/packing' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <Packing />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/order' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <Order />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/delivery' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <Delivery />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path="/sales/invoices" 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <Invoice />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/ResourceInventory' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <ResourceInventory />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/SalesInventory' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <SalesInventory />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='sales/dashboard' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <SalesDashboard />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/salary' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <Salary />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/inventorystuff' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <InventoryStuff />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/financialdashboard' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <Dashboard />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
+                            <Route 
+                                path='/none' 
+                                element={
+                                    <AdminPrivateRoute>
+                                        <None />
+                                    </AdminPrivateRoute>
+                                } 
+                            />
                             <Route path='/manageemprole' element={<ManageEmployeeRole />} />   
                             <Route path='/harvest' element={<HarvestAdd />} />
                             <Route path='/table' element={<Table />} />
