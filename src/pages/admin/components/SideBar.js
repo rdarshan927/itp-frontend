@@ -23,14 +23,13 @@ const Sidebar = () => {
             
         ],
         "Harvest Manager": [
-            { label: "Dashboard", path: "/harvest-dashboard" },
-            { label: "Harvest Schedule", path: "/harvest-schedule" },
-            { label: "Inventory", path: "/harvest-inventory" }
+            { label: "Harvest Dashboard", path: "/harvestdashboard" },
+            { label: "Manage Harvest", path: "/harvest" }
         ],
         "Plant Scheduling Manager": [
             { label: "Dashboard", path: "/plant-schedule-dashboard" },
-            { label: "Plant Schedule", path: "/plant-schedule" },
-            { label: "Reports", path: "/plant-reports" }
+            { label: "Plant Schedule", path: "/Plant" },
+            { label: "Reports", path: "/PlantReports" }
         ],
         "Stock & Transport Manager": [
             { label: "Order", path: "/order" },
@@ -47,16 +46,20 @@ const Sidebar = () => {
             { label: "Sales Inventory", path: "/SalesInventory" }
         ],
         "Employee Manager": [
-            { label: "Dashboard", path: "/employee-dashboard" },
-            { label: "Employee Records", path: "/employee-records" },
-            { label: "Salary", path: "/employee-salary" }
+            { label: "Manage Employee", path: "/addemployee" }
         ]
     };
 
     const handleNavigation = (path) => {
-        navigate(path); // Navigates to the clicked button's path
+        navigate(path); 
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('jwtToken');  
+        localStorage.removeItem('email');  
+        localStorage.removeItem('loggedInAdmin');  
+        navigate("/AdminLogin");
+    }
     return (
         <div className="bg-lightG p-3 w-80 ">
             <div className="inline-grid relative top-20">
@@ -71,7 +74,7 @@ const Sidebar = () => {
                 ))}
                 <button 
                     className="text-2xl bg-darkG text-white font-bold py-2 rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]" 
-                    onClick={() => handleNavigation("/logout")}
+                    onClick={() => handleLogout()}
                 >
                     Logout
                 </button>

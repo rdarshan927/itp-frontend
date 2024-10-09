@@ -8,7 +8,11 @@ const ViewSalary = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedSalary, setSelectedSalary] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [expandedCards, setExpandedCards] = useState({}); // State to track expanded cards
+    const [expandedCards, setExpandedCards] = useState({});
+
+    // Define EPF and ETF rates (example rates)
+    const epfRate = 0.12;  // 12% EPF
+    const etfRate = 0.03;  // 3% ETF
 
     // Fetch salaries from the backend
     useEffect(() => {
@@ -36,13 +40,49 @@ const ViewSalary = () => {
     }, [searchTerm, salaries]);
 
     const handleEdit = (salary) => {
-        setSelectedSalary(salary);
+        setSelectedSalary({ ...salary });  // Create a copy of the salary to edit
         setIsModalOpen(true);
     };
 
     const handleModalClose = () => {
         setIsModalOpen(false);
         setSelectedSalary(null);
+    };
+
+    const calculateEPF = (basicSalary) => {
+        return basicSalary * epfRate;
+    };
+
+    const calculateETF = (basicSalary) => {
+        return basicSalary * etfRate;
+    };
+
+    const calculateTotalSalary = (basicSalary) => {
+        return basicSalary + calculateEPF(basicSalary) + calculateETF(basicSalary);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Update selectedSalary state
+        setSelectedSalary(prevState => {
+            const updatedSalary = {
+                ...prevState,
+                [name]: value,
+            };
+
+            // If the field being changed is basic salary, recalculate EPF, ETF, and total salary
+            if (name === 'basicSalary') {
+                const newBasicSalary = parseFloat(value) || 0;
+                const epf = calculateEPF(newBasicSalary);
+                const etf = calculateETF(newBasicSalary);
+                updatedSalary.epf = epf;  // Assuming you have an epf field in your state
+                updatedSalary.etf = etf;  // Assuming you have an etf field in your state
+                updatedSalary.totalSalary = calculateTotalSalary(newBasicSalary);
+            }
+
+            return updatedSalary;
+        });
     };
 
     const handleSave = async () => {
@@ -70,23 +110,13 @@ const ViewSalary = () => {
         setSearchTerm(term);
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setSelectedSalary(prevState => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
-
-    // Toggle card expansion
     const toggleExpand = (id) => {
         setExpandedCards(prevState => ({
             ...prevState,
-            [id]: !prevState[id] // Toggle the expanded state
+            [id]: !prevState[id]
         }));
     };
 
-    // Generate an array of days for the current month
     const getDaysInMonth = () => {
         const date = new Date();
         const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -139,7 +169,6 @@ const ViewSalary = () => {
                                     </div>
                                 </div>
 
-                                {/* Show table when the card is expanded */}
                                 {expandedCards[salary._id] && (
                                     <div className="mt-4 overflow-hidden transition-all duration-300 ease-in-out">
                                         <table className="table-auto w-full bg-white bg-opacity-50">
@@ -167,8 +196,7 @@ const ViewSalary = () => {
                                                 })}
                                             </tbody>
                                         </table>
-                                        
-                                        {/* Calculate total OT Price */}
+
                                         <div className="mt-4">
                                             <h3 className="font-bold text-lg text-white">Total OT Price: Rs. 
                                                 {
@@ -187,42 +215,42 @@ const ViewSalary = () => {
                 </>
             )}
 
-            {isModalOpen && (
+            {isModalOpen && selectedSalary && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-5 rounded-md shadow-lg">
                         <h2 className="text-2xl font-bold mb-4">Edit Salary Entry</h2>
-                        {selectedSalary && (
-                            <>
-                                {Object.keys(selectedSalary)
-                                    .filter(key => key !== '_id')
-                                    .map(key => (
-                                        <div key={key} className="mb-4">
-                                            <label className="block mb-1 font-bold">{key}</label>
-                                            <input
-                                                type="text"
-                                                name={key}
-                                                value={selectedSalary[key]}
-                                                onChange={handleChange}
-                                                className="border p-2 w-full"
-                                            />
-                                        </div>
-                                    ))}
-                                <div className="flex justify-end">
-                                    <button
-                                        className="bg-green-400 text-white px-3 py-1 rounded hover:bg-green-500"
-                                        onClick={handleSave}
-                                    >
-                                        Save
-                                    </button>
-                                    <button
-                                        className="bg-red-400 text-white px-3 py-1 rounded hover:bg-red-500 ml-2"
-                                        onClick={handleModalClose}
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
-                            </>
-                        )}
+                        <form>
+                            {Object.keys(selectedSalary)
+                                .filter(key => key !== '_id' && key !== '__v' && key !== 'salaryID' && key !== 'userID')  // Exclude _id, __v, salaryID, and userID
+                                .map(key => (
+                                    <div key={key} className="mb-4">
+                                        <label className="block mb-1 font-bold capitalize">{key}</label>
+                                        <input
+                                            type="text"
+                                            name={key}
+                                            value={selectedSalary[key] || ''}
+                                            onChange={handleChange}
+                                            className="border p-2 w-full"
+                                        />
+                                    </div>
+                                ))}
+                            <div className="flex justify-end">
+                                <button
+                                    type="button"
+                                    className="bg-green-400 text-white px-3 py-1 rounded hover:bg-green-500"
+                                    onClick={handleSave}
+                                >
+                                    Save
+                                </button>
+                                <button
+                                    type="button"
+                                    className="bg-red-400 text-white px-3 py-1 rounded hover:bg-red-500 ml-2"
+                                    onClick={handleModalClose}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}

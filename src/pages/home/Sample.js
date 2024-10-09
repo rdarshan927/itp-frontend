@@ -6,15 +6,16 @@ import { ToastContainer } from 'react-toastify';
 const Sample =() => {
     const [loggedInUser, setLoggedInUser] = useState('');
     const navigate = useNavigate();
-    const storedEmail = localStorage.getItem('useremail');
+    const storedEmail = localStorage.getItem('useremailc');
 
     useEffect(() => {
-        setLoggedInUser(localStorage.getItem('loggedInUser'))
+        setLoggedInUser(localStorage.getItem('loggedCustomer'))
     }, [])
 
     const handleLogout = (e) => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('loggedInUser');
+        localStorage.removeItem('tokenc');
+        localStorage.removeItem('loggedCustomer');
+        localStorage.removeItem('useremailc');
         handleSuccess('User Loggedout');
         setTimeout(() => {
             navigate('/login');
