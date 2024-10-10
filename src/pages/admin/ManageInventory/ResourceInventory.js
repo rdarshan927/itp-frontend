@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import EditResourceItemModal from "./EditResourceItemModal";
 import { api } from "../../../config/api";
 import html2pdf from "html2pdf.js";
+import emailjs from "@emailjs/browser";
+import { handleError, handleSuccess } from "../../../utils";
+import { ToastContainer } from "react-toastify";
 
 const ResourceInventory = () => {
   const [inventory, setInventory] = useState([]);
@@ -283,6 +286,42 @@ const ResourceInventory = () => {
       .save();
   };
 
+  const handleEmailNotification = () => {
+    const templateParams = {
+      lowStockItems: lowStockItems
+        .map(
+          (item, index) =>
+            `${index + 1}. ${item.name} (Code: ${item.productID}) - Quantity: ${
+              item.quantity
+            }`
+        )
+        .join("\n"),
+    };
+
+    emailjs
+      .send(
+        "service_suk6vfa", // Replace with your EmailJS service ID
+        "template_ijd4f75", // Replace with your EmailJS template ID
+        templateParams,
+        "ADcp2FigtWrnqkX8i" // Replace with your EmailJS user ID
+      )
+      .then(
+        (response) => {
+          console.log(
+            "Email sent successfully!",
+            response.status,
+            response.text
+          );
+          handleSuccess("Email sent successfully!");
+          togglePopup();
+        },
+        (error) => {
+          console.error("Failed to send email.", error);
+          handleError("Failed to send email.");
+        }
+      );
+  };
+
   //--------Search----------//
   const filteredInventory = inventory.filter(
     (item) =>
@@ -317,7 +356,10 @@ const ResourceInventory = () => {
                   <div className="absolute right-0 w-96 mt-2 bg-white shadow-lg rounded-lg p-4">
                     <div className="flex justify-between align-center mb-6">
                       <strong className="mt-2">Low Stock Items</strong>
-                      <button className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]">
+                      <button
+                        className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]"
+                        onClick={handleEmailNotification}
+                      >
                         Notify with an Email
                       </button>
                     </div>
@@ -492,6 +534,7 @@ const ResourceInventory = () => {
           setIsModalOpen={setIsModalOpen}
         />
       )}
+      <ToastContainer />
     </div>
   );
 };
