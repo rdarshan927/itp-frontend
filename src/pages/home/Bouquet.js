@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { api } from "../../config/api";
 import ItemCard from "./ItemCard";
 
-const Flower = () => {
-  const [flowers, setFlowers] = useState([]);
+const Bouquet = () => {
+  const [bouquets, setBouquets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const getItems = async () => {
     try {
       const response = await api.get("/api/inventory/getsalesitems");
       const items = response.data;
-      setFlowers(items.filter((item) => item.category === "flower"));
+      setBouquets(items.filter((item) => item.category === "bouquet"));
     } catch (error) {
       console.error("There was an error while fetching data!", error);
     }
@@ -21,7 +21,7 @@ const Flower = () => {
   }, []);
 
   // Filter flowers and bouquets by search query
-  const filteredFlowers = flowers.filter(
+  const filteredBouquets = bouquets.filter(
     (item) =>
       item.productID.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -30,7 +30,7 @@ const Flower = () => {
   return (
     <>
       <div className="text-2xl font-semibold text-darkG text-center pt-5">
-        Flowers
+        Bouquet
       </div>
       <div className="flex justify-between mb-4 ml-4">
         <input
@@ -43,9 +43,12 @@ const Flower = () => {
       </div>
       <hr />
       <div className="grid grid-cols-4 gap-4 ml-4 mt-4">
-        {filteredFlowers.map((flower) => (
-          <div className="flex justify-center w-full" key={flower.productID}>
-            <ItemCard item={flower} getItems={getItems} />
+        {filteredBouquets.map((bouquet) => (
+          <div className="flex justify-center w-full" key={bouquet.productID}>
+            <ItemCard
+              item={bouquet}
+              getItems={getItems}
+            />
           </div>
         ))}
       </div>
@@ -53,4 +56,4 @@ const Flower = () => {
   );
 };
 
-export default Flower;
+export default Bouquet;

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { api } from "../../../config/api";
 
-const BouquetForm = ({ getItems }) => {
+const BouquetForm = ({ getItems, saveRecord }) => {
   const [bouquetFormData, setBouquetFormData] = useState({
     productID: "",
     name: "",
@@ -99,6 +99,7 @@ const BouquetForm = ({ getItems }) => {
           imageData: bouquetFormData.image,
         });
         console.log(response);
+        saveRecord(bouquetFormData, "Add", "bouquet");
         getItems();
         setBouquetFormData({
           productID: "",
