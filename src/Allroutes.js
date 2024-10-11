@@ -59,6 +59,7 @@ const AdminPrivateRoute = lazy(() => import("./config/AdminPrivateRoute"));
 const None = lazy(() => import("./pages/admin/components/None"));
 const Flower = lazy(() => import("./pages/home/Flower"));
 const Bouquet = lazy(() => import("./pages/home/Bouquet"));
+const ItemDescription = lazy(() => import("./pages/home/ItemDescription"));
 
 const AllRoutes = () => {
   return (
@@ -95,6 +96,8 @@ const AllRoutes = () => {
               <Route path="/adminLogin" element={<AdminLogin />} />
               <Route path="/flowers" element={<Flower />} />
               <Route path="/bouquet" element={<Bouquet />} />
+              <Route path="/flowers/:productId" element={<ItemDescription />} />
+              <Route path="/bouquet/:productId" element={<ItemDescription />} />
             </Route>
 
             {/* Admin Routes */}

@@ -1,8 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ItemCard = ({ item }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`./${item.productID}`, { state: { item } });
+  };
+
   return (
-    <div className="bg-darkG rounded-lg shadow-md p-4 w-80">
+    <div
+      className="bg-darkG rounded-lg shadow-md p-4 w-80 transform transition-all duration-300 hover:scale-105 cursor-pointer"
+      onClick={handleClick}
+    >
       <img
         src={item.imageData || ""}
         alt={item.name}
