@@ -28,6 +28,7 @@ const Delivery = lazy(() => import('./pages/admin/packinganddelivery/Delivery'))
 const Salary = lazy(() => import('./pages/admin/Salary/Salary'));
 const InventoryStuff = lazy(() => import('./pages/admin/InventoryStuff/InventoryStuff'));
 const Dashboard = lazy(() => import('./pages/admin/Dashboard/Dashboard'));
+const Attendance = lazy(() => import('./pages/admin/Attendance/Attendance'));
 
 
 const ClientLayout = lazy(() => import('./layouts/ClientLayout'));
@@ -68,6 +69,7 @@ const AllRoutes = () => {
                             <Route path='/order' element={<Order />} />
                             <Route path='/delivery' element={<Delivery />} />
                             
+                            <Route path='/attendance' element={<Attendance />} />
                             <Route path="/sales/invoices" element={<Invoice />} />
                             <Route path='/ResourceInventory' element={<ResourceInventory />} />
                             <Route path='/SalesInventory' element={<SalesInventory />} />

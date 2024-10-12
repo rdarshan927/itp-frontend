@@ -119,11 +119,15 @@ const FinancialDashboardWithChart = () => {
       tableRows.push(item);
     });
 
-    // Add table with inventory data
+    // Add table with inventory data, setting header style for background color
     doc.autoTable({
       startY: 120, 
       head: [tableColumn],
       body: tableRows,
+      headStyles: {
+        fillColor: '#75A47F',   // Set header background color to #75A47F
+        textColor: '#FFFFFF',   // Set header text color to white
+      }
     });
 
     // Get current date
