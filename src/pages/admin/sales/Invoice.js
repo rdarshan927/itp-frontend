@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from '../../../config/api';
 import { MdEdit, MdDelete } from "react-icons/md";
 import jsPDF from 'jspdf';
+import signatureImage from '../../../assests/signature.png'
 
 const Invoice = () => {
     const [invoices, setInvoices] = useState([]);
@@ -81,13 +82,10 @@ const Invoice = () => {
 
     // Set font and styles
     doc.setFont('helvetica', 'normal');
-    
-    // Add Company Logo (Optional, assuming you have a base64 logo or any method to add an image)
-    // doc.addImage('base64LogoHere', 'PNG', 40, 40, 50, 50); // X, Y, Width, Height
 
     // Invoice Title
     doc.setFontSize(30);
-    doc.text('Shephora Flowers', doc.internal.pageSize.getWidth() - 120, 80, { align: 'right' });
+    doc.text('Shephora Flowers', doc.internal.pageSize.getWidth() - 180, 80, { align: 'right' });
 
     // Billed To Section
     doc.setFontSize(12);
@@ -157,13 +155,8 @@ const Invoice = () => {
     yOffset += 20;
     // doc.text(invoice.paymentInfo || 'No Payment Info', 40, yOffset); // Assuming you have paymentInfo
 
-    // Example: base64 signature image (replace with your own base64 image string)
-    const signatureBase64 = '';  // Truncated base64 string of the image
-
     // Add the signature image
-    doc.addImage('https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Signature_of_Maithripala_Sirisena.svg/640px-Signature_of_Maithripala_Sirisena.svg.png', 'PNG', doc.internal.pageSize.getWidth() - 160, yOffset, 100, 50);  // X, Y, Width, Height
-
-
+    doc.addImage(signatureImage, 'PNG', doc.internal.pageSize.getWidth() - 160, yOffset, 100, 50);  // X, Y, Width, Height
 
     // Footer: Signature/Address
     doc.text('Authorized Signature', doc.internal.pageSize.getWidth() - 160, yOffset + 100);
@@ -185,7 +178,7 @@ const Invoice = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="border border-gray-300 p-2 rounded w-1/4"
                 />
-                <button onClick={downloadReport} className="ml-2 p-2 bg-lightG text-white rounded">Download Report</button>
+                {/* <button onClick={downloadReport} className="ml-2 p-2 bg-lightG text-white rounded">Download Report</button> */}
             </div>
             {filteredInvoices.length > 0 ? (
                 <table id="invoice-table" className="w-full bg-green-200 text-green-900">
@@ -255,7 +248,7 @@ const Invoice = () => {
                     onClick={() => downloadReport(inv)} 
                     className="p-2 bg-lightG text-white rounded"
                 >
-                    Download Report
+                    Download Invoice
                 </button>
             </td>
         </tr>
