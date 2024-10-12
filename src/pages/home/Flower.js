@@ -29,7 +29,7 @@ const Flower = () => {
 
   return (
     <>
-      <div className="text-2xl font-semibold text-darkG text-center pt-5">
+      <div className="text-2xl font-semibold text-darkG text-center pt-5 mt-20">
         Flowers
       </div>
       <div className="flex justify-between mb-4 ml-4">
@@ -42,7 +42,7 @@ const Flower = () => {
         />
       </div>
       <hr />
-      <div className="grid grid-cols-4 gap-4 ml-4 mt-4">
+      <div className="grid grid-cols-4 gap-4 mx-4 my-10">
         {filteredFlowers.map((flower) => (
           <div className="flex justify-center w-full" key={flower.productID}>
             <ItemCard item={flower} getItems={getItems} />
