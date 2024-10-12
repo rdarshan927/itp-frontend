@@ -213,7 +213,7 @@ const ViewPacking = () => {
                                     onChange={(e) => {
                                         const value = e.target.value;
                                         // Allow only digits and restrict length to 10
-                                        if (/^\d*$/.test(value) && value.length <= 9) {
+                                        if (/^\d*$/.test(value) && value.length <= 10) {
                                             setReceiverContact(value);
                                         }
                                     }}
