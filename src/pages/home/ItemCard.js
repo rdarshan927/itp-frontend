@@ -1,17 +1,18 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import AddCartBtn from "../cart/AddCartBtn";
 
 const ItemCard = ({ item }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate(`./${item.productID}`, { state: { item } });
-  };
+  // const handleClick = () => {
+  //   navigate(`./${item.productID}`, { state: { item } });
+  // };
 
   return (
     <div
       className="bg-darkG rounded-lg shadow-md p-4 w-80 transform transition-all duration-300 hover:scale-105 cursor-pointer"
-      onClick={handleClick}
+      // onClick={handleClick}
     >
       <img
         src={item.imageData || ""}
@@ -23,6 +24,9 @@ const ItemCard = ({ item }) => {
         <p>{`Rs: ${item.price}`}</p>
         <p>{`In Stock: ${item.quantity}`}</p>
       </div>
+      <div className="text-center mt-5">
+          <AddCartBtn addedCart={item} />
+        </div>
     </div>
   );
 };

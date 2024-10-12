@@ -248,7 +248,7 @@ const Invoice = () => {
                     onClick={() => downloadReport(inv)} 
                     className="p-2 bg-lightG text-white rounded"
                 >
-                    Download Invoice
+                    Invoice
                 </button>
             </td>
         </tr>

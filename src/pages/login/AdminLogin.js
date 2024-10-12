@@ -1,5 +1,5 @@
 import React from "react";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import{api} from '../../config/api'
 import { useNavigate } from 'react-router-dom'
 import { handleError, handleSuccess } from '../../utils';
@@ -14,6 +14,13 @@ function Login(){
     })
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('loggedInAdmin');
+        if (loggedInUser) {
+            navigate('/admin');
+        }
+    }, [navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

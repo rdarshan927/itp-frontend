@@ -65,7 +65,7 @@ const SalesDashboard = () => {
         ],
         yAxis: [
             {
-                label: 'Month',
+                label: '',
                 dataKey: 'month',
                 scaleType: 'band',
             },
@@ -84,7 +84,7 @@ const SalesDashboard = () => {
         ],
         yAxis: [
             {
-                label: 'Sales Amount',
+                label: '',
                 dataKey: 'sales',
                 scaleType: 'linear',
             },
@@ -95,8 +95,8 @@ const SalesDashboard = () => {
 
     // Prepare Pie Chart data
     const pieChartData = [
-        { id: 0, value: customerData.totalPreviousCustomers, label: 'Previous Customers' },
-        { id: 1, value: customerData.newCustomersThisMonth, label: 'New Customers' },
+        { id: 0, value: customerData.totalPreviousCustomers, label: 'Previous' },
+        { id: 1, value: customerData.newCustomersThisMonth, label: 'New' },
     ];
 
     // Function to generate PDF report
