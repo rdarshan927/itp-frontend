@@ -70,7 +70,7 @@ const AddDelivery = () => {
             {/* Modal */}
             {isModalVisible && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded shadow-lg w-1/2">
+                    <div className="bg-white p-6 rounded shadow-lg w-1/2 dark:bg-cTwo">
                         <h2 className="text-2xl font-bold mb-4">Add Delivery</h2>
                         <form>
                             <div className="flex mb-4">
@@ -131,11 +131,11 @@ const AddDelivery = () => {
                                     />
                                 </div>
                                <div className="w-1/3 pl-2">
-                                    <label htmlFor="deliveryDate" className="block text-xl text-black font-bold mb-2">Delivery Date:</label>
+                                    <label htmlFor="deliveryDate" className="block text-xl font-bold mb-2">Delivery Date:</label>
                                     <input
                                         type="date"
                                         id="deliveryDate"
-                                        className="w-full rounded-md px-3 py-2 border"
+                                        className="w-full rounded-md px-3 py-2 border dark:text-black"
                                         value={deliveryDate}
                                         onChange={(e) => setDeliveryDate(e.target.value)}
                                         required
@@ -149,7 +149,7 @@ const AddDelivery = () => {
                                     <input
                                         type="text"
                                         id="delivererName"
-                                        className="w-full rounded-md px-3 py-2 border"
+                                        className="w-full rounded-md px-3 py-2 border dark:text-black"
                                         value={delivererName}
                                         onChange={(e) => setDelivererName(e.target.value)}
                                     />
@@ -159,7 +159,7 @@ const AddDelivery = () => {
                                     <label htmlFor="currentStatus" className="block text-xl font-bold mb-2">Current Status:</label>
                                     <select
                                         id="currentStatus"
-                                        className="w-full rounded-md px-3 py-2 border"
+                                        className="w-full rounded-md px-3 py-2 border dark:text-black"
                                         value={currentStatus}
                                         onChange={(e) => setCurrentStatus(e.target.value)}
                                     >
@@ -171,7 +171,7 @@ const AddDelivery = () => {
 
                             <button
                                 type="button"
-                                className="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700 mt-5"
+                                className="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700 mt-5 dark:bg-bOne"
                                 onClick={handleAddDelivery}
                             >
                                 Add Delivery
@@ -179,7 +179,7 @@ const AddDelivery = () => {
 
                             <button
                                 type="button"
-                                className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mt-5 ml-4"
+                                className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mt-5 ml-4 dark:bg-bOne"
                                 onClick={() => setIsModalVisible(false)} // Close modal
                             >
                                 Close

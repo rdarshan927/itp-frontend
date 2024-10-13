@@ -57,7 +57,7 @@ function Login(){
                   } else if(name === "Financial Manager"){
                     navigate('/financialdashboard')
                   } else if(name === "Plant Scheduling Manager"){
-                    navigate('/plant-schedule')
+                    navigate('/plant')
                   } else if(name === "Stock & Transport Manager"){
                     navigate('/order')
                   } else if(name === "Disease Manager"){

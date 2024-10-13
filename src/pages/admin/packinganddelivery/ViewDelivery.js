@@ -146,25 +146,25 @@ const ViewDelivery = () => {
     };
 
     return (
-        <div className="bg-[#BACD92] mt-10 p-6">
-            <h2 className="font-bold text-black mb-4 text-center text-5xl">Delivered Orders</h2>
+        <div className="bg-[#BACD92] mt-10 p-6 dark:bg-cTwo dark:text-white">
+            <h2 className="font-bold mb-4 text-center text-5xl">Delivered Orders</h2>
             <div className='flex items-center w-11/12 mb-3'>
-                <div className='w-1/5 text-left text-xl font-bold text-black'>Order ID</div>
-                <div className='w-1/5 text-left text-xl font-bold text-black'>Delivery Status</div>
-                <div className='w-1/5 text-left text-xl font-bold text-black'>Sender Email</div>
-                <div className='w-1/5 text-left text-xl font-bold text-black'>Order Details</div>
-                <div className='w-1/5 text-left text-xl font-bold text-black'>Send Email</div>
+                <div className='w-1/5 text-left text-xl font-bold'>Order ID</div>
+                <div className='w-1/5 text-left text-xl font-bold'>Delivery Status</div>
+                <div className='w-1/5 text-left text-xl font-bold'>Sender Email</div>
+                <div className='w-1/5 text-left text-xl font-bold'>Order Details</div>
+                <div className='w-1/5 text-left text-xl font-bold'>Send Email</div>
             </div>
             <ul>
                 {deliveries.map((delivery) => (
-                    <li key={delivery._id} className="flex items-center justify-between mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
+                    <li key={delivery._id} className="flex items-center justify-between mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md dark:bg-bOne">
                         <div className="flex-1 flex items-center">
                             <div className="w-1/5 text-left px-2 text-sm">{delivery.orderId}</div>
                             <div className="w-1/5 text-left px-2 text-sm">{delivery.currentStatus || 'N/A'}</div>
                             <div className="w-1/5 text-left px-2 text-sm">{delivery.senderEmail || 'N/A'}</div>
                             <div className="w-1/5 text-left px-2 text-sm">
                                 <button 
-                                    className="bg-[#BACD92] text-black text-sm px-4 py-2 rounded-full hover:bg-green-700"
+                                    className="bg-[#BACD92] text-sm px-4 py-2 rounded-full hover:bg-green-700 dark:bg-cOne"
                                     onClick={() => handleDownloadReceipt(delivery)} // Call new function
                                 >
                                     <i className="fas fa-download"></i> Download
@@ -172,7 +172,7 @@ const ViewDelivery = () => {
                             </div>
                             <div className="w-1/5 text-left px-2 text-2xl">
                                 <button 
-                                    className="bg-[#BACD92] text-black text-sm px-4 py-2 rounded-full hover:bg-green-700"
+                                    className="bg-[#BACD92]  text-sm px-4 py-2 rounded-full hover:bg-green-700 dark:bg-cOne"
                                     onClick={() => handleSendEmail(delivery._id, delivery.senderEmail)}
                                 >
                                     <i className="fas fa-paper-plane"></i> Send Email
@@ -181,13 +181,13 @@ const ViewDelivery = () => {
                         </div>
                         <div className="flex space-x-2">
                             <button 
-                                className="bg-yellow-400 text-black text-sm px-3 py-1 rounded hover:bg-yellow-500"
+                                className="bg-yellow-400  text-sm px-3 py-1 rounded hover:bg-yellow-500 dark:bg-cOne"
                                 onClick={() => handleEditClick(delivery)}
                             >
                                 Edit
                             </button>
                             <button 
-                                className="bg-red-400 text-black text-sm px-3 py-1 rounded hover:bg-red-500"
+                                className="bg-red-400  text-sm px-3 py-1 rounded hover:bg-red-500 dark:bg-cOne"
                                 onClick={() => handleDeleteClick(delivery._id)}
                             >
                                 Delete
@@ -200,7 +200,7 @@ const ViewDelivery = () => {
             {/* Popup Form for Editing */}
             {editDelivery && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-md">
+                    <div className="bg-white p-6 rounded-md dark:bg-cTwo">
                         <h3 className="text-2xl mb-4">Edit Delivery</h3>
                         <div>
                             <label className="block mb-2">Order ID:</label>
@@ -208,7 +208,7 @@ const ViewDelivery = () => {
                                 type="text" 
                                 value={editDelivery.orderId} 
                                 disabled 
-                                className="border p-2 mb-4 w-full bg-gray-100"
+                                className="border p-2 mb-4 w-full bg-gray-100 dark:text-black"
                             />
                         </div>
                         <div>
@@ -216,7 +216,7 @@ const ViewDelivery = () => {
                             <select 
                                 value={deliveryStatus} 
                                 onChange={(e) => setDeliveryStatus(e.target.value)} 
-                                className="border p-2 mb-4 w-full"
+                                className="border p-2 mb-4 w-full dark:text-black"
                             >
                                 <option value="was delivered">was delivered</option>
                                 <option value="is on the way">is on the way</option>
@@ -229,18 +229,18 @@ const ViewDelivery = () => {
                                 type="date" 
                                 value={deliveryDate} 
                                 onChange={(e) => setDeliveryDate(e.target.value)} 
-                                className="border p-2 mb-4 w-full"
+                                className="border p-2 mb-4 w-full dark:text-black"
                             />
                         </div>
                         <div className="flex justify-end">
                             <button 
-                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 dark:bg-bOne"
                                 onClick={handleUpdate}
                             >
                                 Save Changes
                             </button>
                             <button 
-                                className="bg-gray-400 text-white px-4 py-2 rounded ml-2 hover:bg-gray-500"
+                                className="bg-gray-400 text-white px-4 py-2 rounded ml-2 hover:bg-gray-500 dark:bg-bOne"
                                 onClick={() => setEditDelivery(null)}
                             >
                                 Cancel
