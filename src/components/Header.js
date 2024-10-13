@@ -8,7 +8,7 @@ const Header = () => {
     return (
         <>
             {/* Social Media and Contact Information */}
-            <div className="bg-darkG w-full">
+            <div className="bg-darkG w-full dark:bg-cOne">
                 <div className="flex flex-col sm:flex-row justify-between items-center p-2 space-y-2 sm:space-y-0">
                     {/* Social Media Icons */}
                     <div className="flex items-center space-x-4">
@@ -31,7 +31,7 @@ const Header = () => {
             </div>
 
             {/* Navigation Bar */}
-            <nav className="bg-white p-2 shadow-md w-full">
+            <nav className="bg-white p-2 shadow-md w-full dark:bg-cTwo text-black dark:text-white">
                 <div className="flex flex-col md:flex-row justify-between items-center">
                     {/* Logo */}
                     <div className="text-darkG text-3xl md:text-4xl font-bold text-center md:text-left">
@@ -40,10 +40,10 @@ const Header = () => {
 
                     {/* Navigation Links */}
                     <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-10 mt-4 md:mt-0">
-                        <a href="/" className="text-black font-bold hover:text-lightG text-lg">HOME</a>
-                        <a href="#about" className="text-black font-bold hover:text-lightG text-lg">FLOWERS</a>
-                        <a href="#services" className="text-black font-bold hover:text-lightG text-lg">BOUQUET</a>
-                        <a href="#contact" className="text-black font-bold hover:text-lightG text-lg">CONTACT</a>
+                        <a href="/" className="text-black font-bold hover:text-lightG text-lg dark:text-white">HOME</a>
+                        <a href="/flowers" className="text-black font-bold hover:text-lightG text-lg dark:text-white">FLOWERS</a>
+                        <a href="/bouquet" className="text-black font-bold hover:text-lightG text-lg dark:text-white">BOUQUET</a>
+                        <a href="#contact" className="text-black font-bold hover:text-lightG text-lg dark:text-white">CONTACT</a>
                     </div>
 
                     {/* Login and Cart Icons */}

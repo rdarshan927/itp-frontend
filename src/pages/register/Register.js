@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../../config/api'
 
 const Register = () => {
@@ -9,6 +10,15 @@ const Register = () => {
         phoneNumber: '',
         password: '',
     });
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('loggedCustomer');
+        if (loggedInUser) {
+            navigate('/');
+        }
+    }, [navigate]);
 
     const handleChange = (e) => {
         setFormData({

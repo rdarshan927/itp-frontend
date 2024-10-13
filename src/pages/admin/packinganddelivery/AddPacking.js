@@ -49,12 +49,14 @@ function AddPacking() {
             return false;
         }
 
-        // Validate Order ID (alphanumeric)
-        const orderIdRegex = /^[A-Za-z0-9]+$/;
+        
+        const orderIdRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
         if (!orderIdRegex.test(orderId)) {
-            alert("Order ID should contain only letters and characters.");
-            return false;
+        alert("Order ID should contain at least one letter and one number.");
+        return false;
         }
+
+
 
         return true; // All validations passed
     };
@@ -109,31 +111,31 @@ function AddPacking() {
 
     return (
         <>
-            <div className="bg-darkG p-6">
-                <h1 className="text-5xl font-bold text-black mb-6 text-center">
+            <div className="bg-darkG p-6 dark:bg-cTwo dark:text-white">
+                <h1 className="text-5xl font-bold mb-6 text-center ">
                     {isEditing ? "Edit Packing Details" : "Add Packing Details"}
                 </h1>
                 <form className="relative left-56" onSubmit={handleAddPacking}>
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="orderId" className="block text-2xl text-black font-bold mb-2">Order ID:</label>
+                            <label htmlFor="orderId" className="block text-2xl font-bold mb-2">Order ID:</label>
                             <input
                                 type="text"
                                 id="orderId"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-3xl dark:bg-bOne"
                                 value={orderId}
                                 onChange={(e) => setOrderId(e.target.value)}
                                 required
                             />
                         </div>
                         <div className="w-1/3 pl-2">
-                            <label htmlFor="receivercontact" className="block text-2xl text-black font-bold mb-2">
+                            <label htmlFor="receivercontact" className="block text-2xl font-bold mb-2">
                                 Receiver Contact No:
                             </label>
                             <input
                                 type="text"
                                 id="receivercontact"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-3xl dark:bg-bOne"
                                 value={receivercontact}
                                 onChange={(e) => {
                                     const value = e.target.value;
@@ -151,13 +153,13 @@ function AddPacking() {
 
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="receivername" className="block text-2xl text-black font-bold mb-2">
+                            <label htmlFor="receivername" className="block text-2xl  font-bold mb-2">
                                 Receiver Name:
                             </label>
                             <input
                                 type="text"
                                 id="receivername"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG  text-3xl dark:bg-bOne"
                                 value={receivername}
                                 onChange={(e) => {
                                     const value = e.target.value;
@@ -171,11 +173,11 @@ function AddPacking() {
 
                         </div>
                         <div className="w-1/3 pl-2">
-                            <label htmlFor="sendermail" className="block text-2xl text-black font-bold mb-2">Sender Email:</label>
+                            <label htmlFor="sendermail" className="block text-2xl  font-bold mb-2">Sender Email:</label>
                             <input
                                 type="email"
                                 id="sendermail"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-3xl dark:bg-bOne"
                                 value={senderemail}
                                 onChange={(e) => setSenderEmail(e.target.value)}
                                 required
@@ -185,11 +187,11 @@ function AddPacking() {
 
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="receiveraddress" className="block text-2xl text-black font-bold mb-2">Receiver Address:</label>
+                            <label htmlFor="receiveraddress" className="block text-2xl font-bold mb-2">Receiver Address:</label>
                             <input
                                 type="text"
                                 id="receiveraddress"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-3xl dark:bg-bOne"
                                 value={receiveraddress}
                                 onChange={(e) => setReceiverAddress(e.target.value)}
                                 required
@@ -197,11 +199,11 @@ function AddPacking() {
                         </div>
 
                         <div className="w-1/3 pl-2">
-                            <label htmlFor="packingdate" className="block text-2xl text-black font-bold mb-2">Packing Date:</label>
+                            <label htmlFor="packingdate" className="block text-2xl  font-bold mb-2">Packing Date:</label>
                             <input
                                 type="date"
                                 id="packingdate"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-3xl dark:bg-bOne"
                                 value={packingdate}
                                 onChange={(e) => setPackingDate(e.target.value)}
                                 required
@@ -211,10 +213,10 @@ function AddPacking() {
 
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="currentstatus" className="block text-2xl text-black font-bold mb-2">Current Status:</label>
+                            <label htmlFor="currentstatus" className="block text-2xl font-bold mb-2">Current Status:</label>
                             <select
                                 id="currentstatus"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG  text-3xl dark:bg-bOne"
                                 value={currentstatus}
                                 onChange={(e) => setCurrentStatus(e.target.value)}
                             >
@@ -228,7 +230,7 @@ function AddPacking() {
 
                     <button
                         type="submit"
-                        className="bg-lightG text-black font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0]"
+                        className="bg-lightG font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0] dark:bg-bOne"
                         disabled={loading}
                     >
                         {loading ? "Adding..." : "ADD"}

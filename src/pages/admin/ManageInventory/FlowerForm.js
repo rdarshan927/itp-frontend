@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { api } from "../../../config/api";
 
-const FlowerForm = ({ getItems }) => {
+const FlowerForm = ({ getItems, saveRecord }) => {
   const [flowerFormData, setFlowerFormData] = useState({
     productID: "",
     name: "",
@@ -99,6 +99,7 @@ const FlowerForm = ({ getItems }) => {
           imageData: flowerFormData.image,
         });
         console.log(response);
+        saveRecord(flowerFormData, "Add", "flower");
         getItems();
         setFlowerFormData({
           productID: "",
@@ -128,7 +129,7 @@ const FlowerForm = ({ getItems }) => {
           name="productID"
           value={flowerFormData.productID}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
         {flowerErrors.productID && (
           <p className="text-red-500 text-sm">{flowerErrors.productID}</p>
@@ -141,7 +142,7 @@ const FlowerForm = ({ getItems }) => {
           name="name"
           value={flowerFormData.name}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
         {flowerErrors.name && (
           <p className="text-red-500 text-sm">{flowerErrors.name}</p>
@@ -155,7 +156,7 @@ const FlowerForm = ({ getItems }) => {
           value={flowerFormData.quantity}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown} // Prevent unwanted characters
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
         {flowerErrors.quantity && (
           <p className="text-red-500 text-sm">{flowerErrors.quantity}</p>
@@ -169,7 +170,7 @@ const FlowerForm = ({ getItems }) => {
           value={flowerFormData.price}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown} // Prevent unwanted characters
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
         {flowerErrors.price && (
           <p className="text-red-500 text-sm">{flowerErrors.price}</p>
@@ -181,13 +182,13 @@ const FlowerForm = ({ getItems }) => {
           type="file"
           name="image"
           onChange={handleInputChange}
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
       </div>
       <div className="flex justify-center items-end">
         <button
           type="submit"
-          className="bg-lightG text-black px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition"
+          className="bg-lightG text-black px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition dark:bg-bOne"
         >
           ADD
         </button>

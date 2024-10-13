@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDarkMode } from "../../../config/darkMode";
 
 const Sidebar = () => {
     const [admin, setAdmin] = useState(null);
     const navigate = useNavigate();
+    const { darkMode, toggleDarkMode } = useDarkMode();
 
     useEffect(() => {
         // Get the logged-in admin from localStorage
@@ -23,12 +25,12 @@ const Sidebar = () => {
             
         ],
         "Harvest Manager": [
+            { label: "Harvest Dashboard", path: "/harvestdashboard" },
             { label: "Manage Harvest", path: "/harvest" }
         ],
         "Plant Scheduling Manager": [
-            { label: "Dashboard", path: "/plant-schedule-dashboard" },
-            { label: "Plant Schedule", path: "/plant-schedule" },
-            { label: "Reports", path: "/plant-reports" }
+            { label: "Plant Schedule", path: "/Plant" },
+            { label: "Reports", path: "/PlantReports" }
         ],
         "Stock & Transport Manager": [
             { label: "Order", path: "/order" },
@@ -50,27 +52,39 @@ const Sidebar = () => {
     };
 
     const handleNavigation = (path) => {
-        navigate(path); // Navigates to the clicked button's path
+        navigate(path); 
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('jwtToken');  
+        localStorage.removeItem('email');  
+        localStorage.removeItem('loggedInAdmin');  
+        navigate("/AdminLogin");
+    }
     return (
-        <div className="bg-lightG p-3 w-80 ">
+        <div className="bg-lightG p-3 w-80 dark:bg-cTwo">
             <div className="inline-grid relative top-20">
                 {admin && adminButtons[admin]?.map(({ label, path }, index) => (
                     <button
                         key={index}
-                        className="text-2xl bg-darkG text-white font-bold py-2 rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]"
+                        className="text-2xl bg-darkG text-white font-bold py-2 rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0] dark:bg-bOne"
                         onClick={() => handleNavigation(path)}
                     >
                         {label}
                     </button>
                 ))}
                 <button 
-                    className="text-2xl bg-darkG text-white font-bold py-2 rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0]" 
-                    onClick={() => handleNavigation("/logout")}
+                    className="text-2xl bg-darkG text-white font-bold py-2 rounded-b-lg mt-10 w-72 rounded hover:bg-[#c9d5b0] dark:bg-bOne" 
+                    onClick={() => handleLogout()}
                 >
                     Logout
                 </button>
+                <button
+                            onClick={toggleDarkMode}
+                            className="bg-white text-black px-2 rounded text-2xl font-bold py-2 rounded-b-lg mt-10 w-72 hover:bg-[#c9d5b0]"
+                        >
+                            {darkMode ? "Light Mode" : "Dark Mode"}
+                        </button>
             </div>
         </div>
     );
