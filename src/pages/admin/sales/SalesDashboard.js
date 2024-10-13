@@ -176,7 +176,7 @@ const SalesDashboard = () => {
 
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', padding: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', padding: '20px' }} className=' text-black bg-white dark:[#]'>
             {/* Button to generate report */}
             <button onClick={generateReport} style={{ marginBottom: '20px', padding: '10px', cursor: 'pointer' }}>
                 Generate PDF Report

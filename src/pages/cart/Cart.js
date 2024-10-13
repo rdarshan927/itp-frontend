@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { api } from '../../config/api';
 import {loadStripe} from '@stripe/stripe-js'
 import { MdDelete } from 'react-icons/md';
-import AddCartBtn from "./AddCartBtn";
 
 const Cart = () => {
     const [carts, setCarts] = useState([]);
@@ -214,7 +213,7 @@ const Cart = () => {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
                 <div className="lg:order-2 col-span-1 lg:col-span-1">
                     {/* Order Summary */}
-                    <div className="bg-darkG p-4 rounded-lg lg:min-h-[250px] lg:h-auto my-4">
+                    <div className="bg-darkG dark:bg-bOne p-4 rounded-lg lg:min-h-[250px] lg:h-auto my-4">
                         <h2 className="font-semibold text-lg">Order Summary</h2>
                         <p className="flex justify-between mt-4">
                             <span>Sub Total:</span>
@@ -230,45 +229,45 @@ const Cart = () => {
                             <span>Rs. {total}</span>
                         </p>
                         <div className="lg:flex-col flex items-center justify-center">
-                            <button className="w-full bg-lightG py-2 rounded-md mt-4 md:mx-4 mx-1 h-fit" onClick={() => {makePayment()}}>CHECKOUT</button>
-                            <button className="w-full bg-lightG py-2 md:px-5 px-2 rounded-md mt-4 lg:mt-2 md:mx-4 mx-1 w0">CONTINUE SHOPPING</button>
+                            <button className="w-full bg-lightG dark:bg-cTwo py-2 rounded-md mt-4 md:mx-4 mx-1 h-fit" onClick={() => {makePayment()}}>CHECKOUT</button>
+                            <button className="w-full bg-lightG dark:bg-cTwo py-2 md:px-5 px-2 rounded-md mt-4 lg:mt-2 md:mx-4 mx-1 w0">CONTINUE SHOPPING</button>
                         </div>
                     </div>
 
-                    <div className="bg-darkG p-4 rounded-lg lg:min-h-[250px] lg:h-auto my-4">
+                    <div className="bg-darkG dark:bg-bOne p-4 rounded-lg lg:min-h-[250px] lg:h-auto my-4">
                         <h2 className="font-semibold text-lg"> Receiver Details </h2>
                         <p className="font-bold my-1"> Default Receiver Mobile No </p>
                         <p> {receiverPhone} </p>
                         <p className="font-bold my-1"> Default Delivery Address </p>
                         <p> {deliveryAddress} </p>
                         <div className="w-full text-center my-6">
-                            <button className="bg-lightG py-2 md:px-5 px-2 rounded-md mt-4 lg:mt-2 md:mx-4 mx-1 " onClick={toggleModal}>EDIT</button>
+                            <button className="bg-lightG dark:bg-cTwo py-2 md:px-5 px-2 rounded-md mt-4 lg:mt-2 md:mx-4 mx-1 " onClick={toggleModal}>EDIT</button>
                         </div>
 
                         {/* Conditionally render modal */}
                         {isModalOpen && (
                             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                                <div className="bg-darkG p-6 rounded-lg w-full max-w-lg shadow-lg">
+                                <div className="bg-darkG p-6 rounded-lg w-full max-w-lg shadow-lg dark:bg-cTwo dark:text-white">
                                     <h3 className="text-lg font-bold mb-4">Edit Receiver Details</h3>
                                     
                                     <div className="space-y-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700">Phone Number:</label>
+                                            <label className="block text-sm font-medium ">Phone Number:</label>
                                             <input
                                                 type="text"
                                                 value={receiverPhone}
                                                 onChange={(e) => setReceiverPhone(e.target.value)} 
-                                                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                                                className="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-bOne shadow-sm focus:outline-none focus:ring focus:border-blue-300"
                                             />
                                             {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
                                         </div>
                                         
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700">Delivery Address:</label>
+                                            <label className="block text-sm font-medium">Delivery Address:</label>
                                             <textarea
                                                 value={deliveryAddress}
                                                 onChange={(e) => setDeliveryAddress(e.target.value)} 
-                                                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                                                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm dark:bg-bOne focus:outline-none focus:ring focus:border-blue-300"
                                             />
                                             {errors.phone && <p className="text-red-500 text-sm">{errors.address}</p>}
                                         </div>
@@ -282,7 +281,7 @@ const Cart = () => {
                                             Cancel
                                         </button>
                                         <button 
-                                            className="bg-lightG text-white font-bold py-2 px-4 rounded-md" 
+                                            className="bg-lightG text-white dark:bg-bOne font-bold py-2 px-4 rounded-md" 
                                             onClick={updateDelivery}
                                         >
                                             Save
@@ -308,7 +307,7 @@ const Cart = () => {
                     </thead>
                     <tbody>
                     {carts.map((cart) => (
-                        <tr key={cart._id} className="hover:bg-[#98c2a0] transition-all bg-darkG mt-16">
+                        <tr key={cart._id} className="hover:bg-[#98c2a0] transition-all bg-darkG mt-16 dark:bg-bOne">
                         <td className="px-4 py-4">
                             <div className="flex items-center space-x-4">
                             <img
@@ -318,7 +317,7 @@ const Cart = () => {
                             />
                             <div>
                                 <p className="font-semibold text-lg">{cart.productName}</p>
-                                <p className="text-gray-500 text-sm">Rs. {cart.price}</p>
+                                <p className="text-gray-500 text-sm dark:text-white">Rs. {cart.price}</p>
                             </div>
                             </div>
                         </td>
@@ -330,7 +329,7 @@ const Cart = () => {
                             >
                                 -
                             </button>
-                            <span className="px-2 text-black font-medium">{cart.quantity}</span>
+                            <span className="px-2 text-black dark:text-white font-medium">{cart.quantity}</span>
                             <button
                                 className="bg-gray-300 text-black px-2 rounded-r-md hover:bg-gray-400"
                                 onClick={() => handleIncrease(cart)}
@@ -374,13 +373,12 @@ const Cart = () => {
                                     <span className="px-2 py-1 text-black">{cart.quantity}</span>
                                     <button className="text-black px-2 rounded-r-md" onClick={() => handleIncrease(cart)}> + </button>
                                 </div>
-                                <button className="text-red-600 sm:ml-4" onClick={() => handleDelete(cart)}> <MdDelete size={30} /> </button>
+                                <button className="text-red-600 dark:bg-white sm:ml-4" onClick={() => handleDelete(cart)}> <MdDelete className="text-red-600 dark:text-black" size={30} /> </button>
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
-            {/* <AddCartBtn addedCart={"hello"} /> */}
         </section>
     )
 }

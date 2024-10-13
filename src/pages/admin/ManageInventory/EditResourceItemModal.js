@@ -38,8 +38,8 @@ const EditResourceItemModal = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96 dark:bg-bOne">
         <h2 className="text-2xl font-bold mb-4">Edit Item</h2>
         <div className="mb-4">
           <label className="block mb-1">Item Name</label>
@@ -48,7 +48,7 @@ const EditResourceItemModal = ({
             name="name"
             value={editData.name}
             onChange={handleModalChange}
-            className="w-full px-3 py-2 rounded-lg border border-gray-300"
+            className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:text-black"
           />
         </div>
         <div className="mb-4">
@@ -58,7 +58,7 @@ const EditResourceItemModal = ({
             name="category"
             value={editData.category}
             onChange={handleModalChange}
-            className="w-full px-3 py-2 rounded-lg border border-gray-300"
+            className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:text-black"
           />
         </div>
         <div className="mb-4">
@@ -69,19 +69,19 @@ const EditResourceItemModal = ({
             value={editData.quantity}
             onChange={handleModalChange}
             onKeyDown={handleModalKeyDown} // Prevent unwanted characters
-            className="w-full px-3 py-2 rounded-lg border border-gray-300"
+            className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:text-black"
           />
         </div>
         <div className="flex justify-end">
           <button
             onClick={() => setIsModalOpen(false)}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg mr-2"
+            className="bg-red-500 text-white px-4 py-2 rounded-lg mr-2 dark:bg-cTwo"
           >
             Cancel
           </button>
           <button
             onClick={handleModalSave}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg dark:bg-cTwo"
           >
             Save
           </button>

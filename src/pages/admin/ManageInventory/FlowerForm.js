@@ -129,7 +129,7 @@ const FlowerForm = ({ getItems, saveRecord }) => {
           name="productID"
           value={flowerFormData.productID}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
         {flowerErrors.productID && (
           <p className="text-red-500 text-sm">{flowerErrors.productID}</p>
@@ -142,7 +142,7 @@ const FlowerForm = ({ getItems, saveRecord }) => {
           name="name"
           value={flowerFormData.name}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
         {flowerErrors.name && (
           <p className="text-red-500 text-sm">{flowerErrors.name}</p>
@@ -156,7 +156,7 @@ const FlowerForm = ({ getItems, saveRecord }) => {
           value={flowerFormData.quantity}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown} // Prevent unwanted characters
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
         {flowerErrors.quantity && (
           <p className="text-red-500 text-sm">{flowerErrors.quantity}</p>
@@ -170,7 +170,7 @@ const FlowerForm = ({ getItems, saveRecord }) => {
           value={flowerFormData.price}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown} // Prevent unwanted characters
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
         {flowerErrors.price && (
           <p className="text-red-500 text-sm">{flowerErrors.price}</p>
@@ -182,13 +182,13 @@ const FlowerForm = ({ getItems, saveRecord }) => {
           type="file"
           name="image"
           onChange={handleInputChange}
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
       </div>
       <div className="flex justify-center items-end">
         <button
           type="submit"
-          className="bg-lightG text-black px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition"
+          className="bg-lightG text-black px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition dark:bg-bOne"
         >
           ADD
         </button>

@@ -176,14 +176,14 @@ const Invoice = () => {
                     placeholder="Search by Invoice, Order, or Sender Info"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="border border-gray-300 p-2 rounded w-1/4"
+                    className="border border-gray-300 p-2 rounded w-1/4 dark:bg-cTwo"
                 />
                 {/* <button onClick={downloadReport} className="ml-2 p-2 bg-lightG text-white rounded">Download Report</button> */}
             </div>
             {filteredInvoices.length > 0 ? (
-                <table id="invoice-table" className="w-full bg-green-200 text-green-900">
+                <table id="invoice-table" className="w-full bg-green-200 text-green-900 dark:text-white">
                     <thead>
-                        <tr className="text-left bg-darkG">
+                        <tr className="text-left bg-darkG dark:bg-cOne">
                             <th className="py-2 px-4">Invoice ID</th>
                             <th className="py-2 px-4">Order ID</th>
                             <th className="py-2 px-4">Sender Info</th>
@@ -196,7 +196,7 @@ const Invoice = () => {
                     </thead>
                     <tbody>
     {filteredInvoices.map((inv, index) => (
-        <tr key={index} className="odd:bg-green-100 even:bg-green-200">
+        <tr key={index} className="odd:bg-green-100 even:bg-green-200 dark:odd:bg-[#555555] dark:even:bg-[#757575]">
             <td className="py-2 px-4">{inv.invoiceID}</td>
             <td className="py-2 px-4">{inv.orderID}</td>
             <td className="py-2 px-4" style={{ width: '200px' }}>{inv.userInfo || 'N/A'}</td>
@@ -214,14 +214,14 @@ const Invoice = () => {
             <td className="py-2 px-4">{inv.validity}</td>
             <td className="py-2 px-4 flex items-center space-x-2 relative">
                 <button 
-                    className="p-2 rounded bg-green-400 text-white hover:bg-green-500"
+                    className="p-2 rounded bg-green-400 text-white hover:bg-green-500 dark:bg-cOne"
                     onClick={() => toggleDropdown(inv._id)}
                 >
                     <MdEdit size={20} />
                 </button>
 
                 {isDropdownOpen === inv._id && (
-                    <div className="absolute z-10 mt-32 w-32 bg-white border border-gray-300 rounded-md shadow-lg">
+                    <div className="absolute z-10 mt-32 w-32 bg-white border border-gray-300 rounded-md shadow-lg dark:bg-cOne">
                         <ul className="py-1">
                             <li 
                                 onClick={() => updateValidity(inv._id, 'Valid')}
@@ -239,14 +239,14 @@ const Invoice = () => {
                     </div>
                 )}
 
-                <button className="p-2 rounded bg-green-400 text-white hover:bg-green-500" onClick={() => handleDelete(inv)}>
+                <button className="p-2 rounded bg-green-400 text-white hover:bg-green-500 dark:bg-cOne" onClick={() => handleDelete(inv)}>
                     <MdDelete size={20} />
                 </button>
 
                 {/* Add download button inside the .map() loop */}
                 <button 
                     onClick={() => downloadReport(inv)} 
-                    className="p-2 bg-lightG text-white rounded"
+                    className="p-2 bg-lightG text-white rounded dark:bg-cOne"
                 >
                     Invoice
                 </button>
