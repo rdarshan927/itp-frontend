@@ -135,14 +135,14 @@ function Orders() {
 
 
     return (
-        <div className="bg-[#BACD92] mt-10 p-6">
-            <h2 className="font-bold text-black mb-4 text-center text-4xl">Orders</h2> {/* Decrease title font size */}
+        <div className="bg-lightG mt-10 p-6 dark:bg-cTwo dark:text-white">
+            <h2 className="font-bold mb-4 text-center text-4xl">Orders</h2> {/* Decrease title font size */}
 
             {/* Use ref on this div to capture it for PDF */}
-            <div ref={ordersRef}>
+            <div ref={ordersRef} className='bg-darkG dark:bg-cTwo'>
                 <table className="w-full border-collapse mb-3">
                     <thead>
-                        <tr className="bg-[#BACD92] text-black text-xl"> {/* Decrease header font size */}
+                        <tr className="bg-[#BACD92] dark:bg-cOne text-xl"> {/* Decrease header font size */}
                             <th className="text-left">Order ID</th>
                             <th className="text-left">Receiver Name</th>
                             <th className="text-left">Receiver Address</th>
@@ -152,7 +152,7 @@ function Orders() {
                     </thead>
                     <tbody>
                         {orders.map((order, index) => (
-                            <tr key={index} className={index % 2 === 0 ? "bg-[#75A47F]" : "bg-[#BACD92]"}>
+                            <tr key={index} className={index % 2 === 0 ? "bg-[#75A47F] dark:bg-[#757575]" : "bg-[#BACD92] dark:bg-[#555555]"}>
                                 <td className="text-left text-lg py-3 px-4">{order.orderID}</td> {/* Add left and right padding */}
                                 <td className="text-left text-lg py-3 px-4">{order.receiverName}</td>
                                 <td className="text-left text-lg py-3 px-4">{order.receiverAddress}</td>
@@ -167,7 +167,7 @@ function Orders() {
             <div className="flex justify-center mt-6">
                 <button
                     onClick={downloadPDF}
-                    className="bg-[#75A47F] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
+                    className="bg-[#75A47F] hover:bg-blue-700 text-white font-bold py-2 px-6 rounded dark:bg-bOne"
                 >
                     DOWNLOAD
                 </button>
