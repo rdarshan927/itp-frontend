@@ -48,15 +48,19 @@ const ViewPlantSchedule = () => {
     }
   };
 
-  // Generate the PDF using jsPDF and jspdf-autotable
+
+
+
+  //PDF Generation
   const downloadPDF = () => {
     const doc = new jsPDF();
 
-    // Add a title to the PDF
+    
     doc.setFontSize(18);
     doc.text('Plant Schedule Report', 105, 20, { align: 'center' });
 
-    // Add date of report generation
+
+    
     doc.setFontSize(12);
     doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
 
