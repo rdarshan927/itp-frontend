@@ -18,7 +18,7 @@ const Sidebar = () => {
             { label: "Dashboard", path: "/sales/dashboard" },
             { label: "Invoices", path: "/sales/invoices" }
         ],
-        "Financial Manager": [
+        "Finance Manager": [
             { label: "Dashboard", path: "/Dashboard" },
             { label: "Salary", path: "/salary" },
             { label: "Inventory Stuff", path: "/inventorystuff" },
