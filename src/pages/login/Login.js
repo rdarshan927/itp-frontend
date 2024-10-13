@@ -92,7 +92,7 @@ function Login(){
                                 />
                             
                         </div>
-                            <a href="forgot_password" className="text-right text-lightG mb-4 block">Forgot Password</a>
+                            <a href="forgetpassword" className="text-right text-lightG mb-4 block">Forgot Password</a>
                         
                             <button  type="submit" className="bg-lightG text-white p-3 rounded md:w-96">
                                 Login

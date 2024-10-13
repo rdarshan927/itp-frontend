@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../../config/api';
 import html2pdf from 'html2pdf.js';
 
+// Declaring state variables for form fields and employee data.
 function AddEmployee() {
     const [employeeId, setEmployeeId] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -63,6 +64,7 @@ function AddEmployee() {
                 contactNumber,
                 email,
                 startDate,
+              
             };
 
             try {
@@ -116,6 +118,7 @@ function AddEmployee() {
         setEditIndex(null);
     };
 
+    // Function to generate a PDF report of employees.
     const generatePDF = () => {
         const element = document.getElementById('employeeTable');
         if (!element) {
@@ -155,7 +158,7 @@ function AddEmployee() {
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'in', orientation: 'landscape', format: 'letter', margin: 10 },
         };
-
+        // Generate the PDF using html2pdf.js.
         html2pdf().from(cloneElement).set(opt).save();
     };
 
@@ -272,7 +275,7 @@ function AddEmployee() {
                         </button>
                         <button 
                             type="button" 
-                            className="bg-red-500 text-black px-4 py-2 rounded-lg" 
+                            className="bg-lightG text-black px-4 py-2 rounded-lg" 
                             onClick={clearForm}
                         >
                             Cancel
