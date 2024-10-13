@@ -248,7 +248,7 @@ function HarvestManagement() {
             placeholder="Search by Harvest ID, Crop Type, or Quality"
             value={searchTerm}
             onChange={handleSearch}
-            className="p-2 border border-gray-300 rounded w-full"
+            className="p-2 border border-gray-300 rounded w-full  dark:bg-bOne"
           />
         </div>
 
@@ -258,7 +258,7 @@ function HarvestManagement() {
           </div>
         )}
 
-        <div className="bg-darkG p-4 rounded-md mb-4">
+        <div className="bg-darkG p-4 rounded-md mb-4 dark:bg-cTwo">
           <h2 className="mb-4 text-xl text-white font-bold">
             {isEditing ? 'Edit Harvest Details' : 'Add Harvest Details'}
           </h2>
@@ -274,7 +274,7 @@ function HarvestManagement() {
                 onChange={handleChange}
                 required
                 placeholder="Harvest ID"
-                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen dark:bg-bOne"
               />
                {formErrors.harvestId && <p className="text-red-500">{formErrors.harvestId}</p>}
             </div>
@@ -288,7 +288,7 @@ function HarvestManagement() {
                 required
                 onChange={handleChange}
                 placeholder="Crop Type"
-                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen  dark:bg-bOne"
               />
               {formErrors.cropType && <p className="text-red-500">{formErrors.cropType}</p>}
             </div>
@@ -302,7 +302,7 @@ function HarvestManagement() {
             required
             onChange={handleChange}
             max={new Date().toISOString().split("T")[0]} // Sets the max date as today's date
-            className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+            className="p-2 border border-gray-300 rounded bg-adminLightGreen  dark:bg-bOne"
             style={{ width: '213px' }}
             />
             {formErrors.harvestDate && <p className="text-red-500">{formErrors.harvestDate}</p>}
@@ -317,7 +317,7 @@ function HarvestManagement() {
                 required
                 onChange={handleChange}
                 placeholder="Quantity"
-                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen  dark:bg-bOne"
               />
               {formErrors.quantity && <p className="text-red-500">{formErrors.quantity}</p>}
             </div>
@@ -329,7 +329,7 @@ function HarvestManagement() {
                 value={form.quality}
                 required
                 onChange={handleChange}
-                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen  dark:bg-bOne"
                 style={{ width: '213px' }}
               >
                 <option value="" disabled>Select Quality</option>
@@ -350,14 +350,14 @@ function HarvestManagement() {
                 required
                 onChange={handleChange}
                 placeholder="Unit"
-                className="p-2 border border-gray-300 rounded bg-adminLightGreen"
+                className="p-2 border border-gray-300 rounded bg-adminLightGreen  dark:bg-bOne"
               />
               {formErrors.unit && <p className="text-red-500">{formErrors.unit}</p>}
             </div>
             <div className="form-group">
               <button
                 type="submit"
-                className="mt-4 py-2 px-4 bg-adminLightGreen text-white rounded"
+                className="mt-4 py-2 px-4 bg-adminLightGreen text-white rounded  dark:bg-bOne"
               >
                 {isEditing ? 'Update' : 'Add'}
               </button>
@@ -367,7 +367,7 @@ function HarvestManagement() {
         <div className="flex justify-end mb-4">
           <button
             onClick={handleDownloadPDF}
-            className="bg-green-500 text-white py-2 px-4 rounded"
+            className="bg-adminLightGreen text-white py-2 px-4 rounded  dark:bg-bOne"
           >
             Download PDF
           </button>
@@ -389,7 +389,7 @@ function HarvestManagement() {
             <tbody>
               {filteredHarvests.length > 0 ? (
                 filteredHarvests.map((harvest, index) => (
-                  <tr key={index} className="odd:bg-lightG even:bg-green-200">
+                  <tr key={index} className="odd:bg-lightG even:bg-green-200 dark:odd:bg-[#555555] dark:even:bg-[#757575]">
                     <td className="px-4 py-2">{harvest.harvestId}</td>
                     <td className="px-4 py-2">{harvest.cropType}</td>
                     <td className="px-4 py-2">{new Date(harvest.harvestDate).toLocaleDateString('en-US', {

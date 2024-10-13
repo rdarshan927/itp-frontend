@@ -46,8 +46,8 @@ const App = () => {
     ];
 
     return (
-      <div className="min-h-screen bg-gray-100 p-8">
-          <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+      <div className="min-h-screen bg-gray-100 p-8  dark:bg-bOne">
+          <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6  dark:bg-cTwo">
               <h1 className="text-3xl font-bold text-center mb-8">Harvest Dashboard</h1>
               
               <div className="mb-6">
@@ -56,7 +56,7 @@ const App = () => {
                       type="text"
                       value={cropType}
                       onChange={handleCropTypeChange}
-                      className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                      className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400  dark:bg-bOne"
                       placeholder="Enter Crop Type"
                   />
               </div>
