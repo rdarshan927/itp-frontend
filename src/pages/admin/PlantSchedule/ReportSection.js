@@ -109,20 +109,20 @@ const ViewPlantSchedule = () => {
   };
 
   return (
-    <div className="bg-[#BACD92] mt-10 p-6">
+    <div className="bg-[#BACD92] mt-10 p-6 dark:bg-cTwo ">
       {/* Search Input and Button */}
       <div className="mt-1">
-        <div className="flex justify-start items-center space-x-2">
+        <div className="flex justify-start items-center space-x-2 ">
           <input
             type="text"
             placeholder="Enter Schedule ID or Plant Name"
             value={searchTerm}
             onChange={handleSearchChange}
-            className="w-1/4 p-3 rounded-md border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-1/4 p-3 rounded-md border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
           />
           <button
             onClick={handleSearch}
-            className="p-3 bg-darkG text-white font-bold rounded-md shadow-md focus:outline-none"
+            className="p-3 bg-darkG text-white font-bold rounded-md shadow-md focus:outline-none dark:bg-bOne"
           >
             Search
           </button>
@@ -130,10 +130,10 @@ const ViewPlantSchedule = () => {
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>
 
-      <h2 className="font-bold text-black mb-4 text-center text-5xl">Plant Schedules</h2>
+      <h2 className="font-bold text-black mb-4 text-center text-5xl dark:text-white">Plant Schedules</h2>
 
       {/* Display schedule in a grid */}
-      <div className="grid grid-cols-7 gap-4 w-full text-center font-bold text-black text-xl mb-5">
+      <div className="grid grid-cols-7 gap-4 w-full text-center font-bold text-black text-xl mb-5 dark:text-white">
         <div className="px-4">Schedule ID</div>
         <div className="px-4">Plant Name</div>
         <div className="px-4">Field</div>
@@ -147,7 +147,7 @@ const ViewPlantSchedule = () => {
       <ul className="space-y-4">
         {plantSchedules.length > 0 ? (
           plantSchedules.map(schedule => (
-            <li key={schedule._id} className="grid grid-cols-7 gap-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
+            <li key={schedule._id} className="grid grid-cols-7 gap-4 p-4 bg-[#75A47F]  rounded-md dark:bg-bOne">
               <div className="px-4 text-center text-2xl">{schedule.ScheduleID}</div>
               <div className="px-4 text-center text-2xl">{schedule.PlantName}</div>
               <div className="px-4 text-center text-2xl">{schedule.Field}</div>
@@ -166,7 +166,7 @@ const ViewPlantSchedule = () => {
       <div className="flex justify-center mt-6">
         <button
           onClick={downloadPDF}
-          className="bg-[#75A47F] hover:bg-[#388E3C] text-white font-bold py-2 px-6 rounded"
+          className="bg-[#75A47F] hover:bg-[#388E3C] text-white font-bold py-2 px-6 rounded dark:bg-bOne"
         >
           Download Report
         </button>

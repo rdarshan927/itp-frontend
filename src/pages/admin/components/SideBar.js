@@ -29,7 +29,7 @@ const Sidebar = () => {
             { label: "Manage Harvest", path: "/harvest" }
         ],
         "Plant Scheduling Manager": [
-            { label: "Dashboard", path: "/plant-schedule-dashboard" },
+            //{ label: "Dashboard", path: "/plant-schedule-dashboard" },
             { label: "Plant Schedule", path: "/Plant" },
             { label: "Reports", path: "/PlantReports" }
         ],

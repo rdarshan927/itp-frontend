@@ -129,10 +129,10 @@ const ViewPlantSchedule = () => {
   };
 
   return (
-    <div className="bg-[#BACD92] mt-10 p-6">
-      <h2 className="font-bold text-black mb-4 text-center text-5xl">Plant Schedules</h2>
+    <div className="bg-[#BACD92] mt-10 p-6 dark:bg-cTwo">
+      <h2 className="font-bold text-black mb-4 text-center text-5xl dark:text-white">Plant Schedules</h2>
     
-      <div className="grid grid-cols-8 gap-4 w-full text-center font-bold text-black text-xl mb-5">
+      <div className="grid grid-cols-8 gap-4 w-full text-center font-bold text-black dark:text-white text-xl mb-5">
         <div className="px-4">Schedule ID</div>
         <div className="px-4">Plant Name</div>
         <div className="px-4">Field</div>
@@ -144,7 +144,7 @@ const ViewPlantSchedule = () => {
       </div>
       <ul className="space-y-4">
         {plantSchedules.map((schedule, index) => (
-          <li key={schedule._id} className="grid grid-cols-8 gap-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
+          <li key={schedule._id} className="grid grid-cols-8 gap-4 p-4 bg-[#75A47F]  rounded-md dark:bg-bOne ">
             <div className="px-4 text-center text-2xl">{schedule.ScheduleID}</div>
             <div className="px-4 text-center text-2xl">{schedule.PlantName}</div>
             <div className="px-4 text-center text-2xl">{schedule.Field}</div>
@@ -163,7 +163,7 @@ const ViewPlantSchedule = () => {
                 className="space-x-8 bg-red-400 text-black text-sm px-3 py-1 rounded hover:bg-red-500"
                 onClick={() => handleDelete(index)}
               >
-                <TrashIcon className="h-6 w-6" />
+                <TrashIcon className="h-6 w-6 " />
               </button>
             </div>
           </li>
@@ -172,7 +172,7 @@ const ViewPlantSchedule = () => {
 
       {/* Popup Modal for Editing */}
       {isEditing && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center dark:text-cTwo">
           <div className="bg-white p-6 rounded-lg w-1/2">
             <h2 className="text-3xl font-bold mb-4">Edit Plant Schedule</h2>
             <form>

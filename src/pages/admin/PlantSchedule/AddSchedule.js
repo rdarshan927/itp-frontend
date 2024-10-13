@@ -155,27 +155,27 @@ function AddPlantSchedule() {
 
     return (
         <>
-            <div className="bg-darkG p-6">
-                <h1 className="text-5xl font-bold text-black mb-6 text-center">Add Plant Schedule</h1>
+            <div className="bg-darkG p-6 dark:bg-cTwo">
+                <h1 className="text-5xl font-bold text-black mb-6 text-center dark:text-white">Add Plant Schedule</h1>
                 <form className="relative left-56" onSubmit={handleAddPlantSchedule}>
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="scheduleID" className="block text-2xl text-black font-bold mb-2">Schedule ID:</label>
+                            <label htmlFor="scheduleID" className="block text-2xl text-black font-bold mb-2 dark:text-white">Schedule ID:</label>
                             <input
                                 type="text"
                                 id="scheduleID"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl dark:bg-bOne"
                                 value={scheduleID}
                                 onChange={(e) => setScheduleID(e.target.value)}
                                 required
                             />
                         </div> 
                         <div className="w-1/3 pl-2">
-                            <label htmlFor="plantName" className="block text-2xl text-black font-bold mb-2">Plant Name:</label>
+                            <label htmlFor="plantName" className="block text-2xl text-black font-bold mb-2 dark:text-white">Plant Name:</label>
                             <input
                                 type="text"
                                 id="plantName"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl dark:bg-bOne"
                                 value={plantName}
                                 onChange={handlePlantNameChange}
                                 onBlur={handlePlantNameBlur}
@@ -183,7 +183,7 @@ function AddPlantSchedule() {
                             />
                             {plantNameError && <p className="text-red-500">{plantNameError}</p>} {/* Display validation error */}
                             {suggestions.length > 0 && (
-                                <ul className="bg-white border rounded shadow-md mt-2">
+                                <ul className="bg-white border rounded shadow-md mt-2 dark:text-black">
                                     {suggestions.map((suggestion, index) => (
                                         <li 
                                             key={index} 
@@ -200,10 +200,10 @@ function AddPlantSchedule() {
 
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="field" className="block text-2xl text-black font-bold mb-2">Field:</label>
+                            <label htmlFor="field" className="block text-2xl text-black font-bold mb-2 dark:text-white">Field:</label>
                             <select
                                 id="field"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl dark:bg-bOne"
                                 value={field}
                                 onChange={(e) => setField(e.target.value)}
                             >
@@ -215,11 +215,11 @@ function AddPlantSchedule() {
                             </select>
                         </div>
                         <div className="w-1/3 pl-2">
-                            <label htmlFor="resources" className="block text-2xl text-black font-bold mb-2">Resources:</label>
+                            <label htmlFor="resources" className="block text-2xl text-black font-bold mb-2 dark:text-white">Resources:</label>
                             <input
                                 type="text"
                                 id="resources"
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl dark:bg-bOne"
                                 value={resources}
                                 onChange={(e) => setResources(e.target.value)}
                                 required
@@ -228,11 +228,11 @@ function AddPlantSchedule() {
                     </div>
 
                     <div className="mb-4">
-                        <label htmlFor="weatherCondition" className="block text-2xl  font-bold mb-2">Weather Condition:</label>
+                        <label htmlFor="weatherCondition" className="block text-2xl  font-bold mb-2 dark:text-white">Weather Condition:</label>
                         <input
                             type="text"
                             id="weatherCondition"
-                            className="rounded-md px-3 py-2 bg-lightG text-black text-3xl"
+                            className="rounded-md px-3 py-2 bg-lightG text-black text-3xl dark:bg-bOne"
                             value={weatherCondition}
                             onChange= {handleWeatherConditionChange}
                             required
@@ -244,13 +244,13 @@ function AddPlantSchedule() {
 
                     <button
                         type="submit"
-                        className="bg-lightG text-black font-bold py-2 px-6 rounded-lg text-3xl hover:bg-hoverG"
+                        className="bg-lightG text-black font-bold py-2 px-6 rounded-lg text-3xl hover:bg-hoverG dark:bg-bOne dark:text-white"
                         disabled={loading}
                     >
                         {loading ? 'Adding...' : 'Add'}
                     </button>
 
-                    {successMessage && <p className="text-green-500 mt-4">{successMessage}</p>}
+                    {successMessage && <p className="text-green-500 mt-4 dark:text-white">{successMessage}</p>}
                 </form>
             </div>
         </>
