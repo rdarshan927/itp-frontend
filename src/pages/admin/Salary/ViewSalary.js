@@ -9,6 +9,7 @@ const ViewSalary = () => {
     const [selectedSalary, setSelectedSalary] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [expandedCards, setExpandedCards] = useState({});
+    const [salaryDetails, setSalaryDetails] = useState({}); // To store salary details for expanded cards
 
     // Define EPF and ETF rates (example rates)
     const epfRate = 0.12;  // 12% EPF
@@ -110,11 +111,25 @@ const ViewSalary = () => {
         setSearchTerm(term);
     };
 
-    const toggleExpand = (id) => {
+    const toggleExpand = async (id) => {
+        // Toggle the expanded state
         setExpandedCards(prevState => ({
             ...prevState,
             [id]: !prevState[id]
         }));
+
+        // If expanding, fetch the salary details
+        if (!expandedCards[id]) {
+            try {
+                const response = await api.get(`/api/attendance/salaryattendance/${id}`); // Adjust the API endpoint as needed
+                setSalaryDetails(prevDetails => ({
+                    ...prevDetails,
+                    [id]: response.data // Store fetched details for this salary ID
+                }));
+            } catch (error) {
+                console.error('Failed to fetch salary details:', error);
+            }
+        }
     };
 
     const getDaysInMonth = () => {
@@ -182,31 +197,21 @@ const ViewSalary = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {getDaysInMonth().map(day => {
-                                                    const detail = salary.details?.find(d => new Date(d.date).getDate() === day);
-                                                    return (
-                                                        <tr key={day}>
-                                                            <td className="border px-4 py-2">{day}</td>
-                                                            <td className="border px-4 py-2">{detail ? detail.startTime : '-'}</td>
-                                                            <td className="border px-4 py-2">{detail ? detail.endTime : '-'}</td>
-                                                            <td className="border px-4 py-2">{detail ? detail.otHours : '-'}</td>
-                                                            <td className="border px-4 py-2">{detail ? `Rs.${detail.otPrice}` : '-'}</td>
-                                                        </tr>
-                                                    );
-                                                })}
+                                                {salaryDetails[salary._id]?.map((detail, index) => (
+                                                    <tr key={index}>
+                                                        <td className="border px-4 py-2">{detail.date}</td>
+                                                        <td className="border px-4 py-2">{detail.startTime}</td>
+                                                        <td className="border px-4 py-2">{detail.endTime}</td>
+                                                        <td className="border px-4 py-2">{detail.otHours}</td>
+                                                        <td className="border px-4 py-2">{detail.otPrice}</td>
+                                                    </tr>
+                                                )) || (
+                                                    <tr>
+                                                        <td className="border px-4 py-2" colSpan="5">Loading...</td>
+                                                    </tr>
+                                                )}
                                             </tbody>
                                         </table>
-
-                                        <div className="mt-4">
-                                            <h3 className="font-bold text-lg text-white">Total OT Price: Rs. 
-                                                {
-                                                    salary.details?.reduce((total, detail) => total + detail.otPrice, 0) || 0
-                                                }
-                                            </h3>
-                                            <h3 className="font-bold text-lg text-white">Total Salary with OT: Rs. 
-                                                {salary.totalSalary + (salary.details?.reduce((total, detail) => total + detail.otPrice, 0) || 0)}
-                                            </h3>
-                                        </div>
                                     </div>
                                 )}
                             </li>
@@ -214,7 +219,6 @@ const ViewSalary = () => {
                     </ul>
                 </>
             )}
-
             {isModalOpen && selectedSalary && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-5 rounded-md shadow-lg">
