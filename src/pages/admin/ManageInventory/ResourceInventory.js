@@ -336,7 +336,7 @@ const ResourceInventory = () => {
 
   return (
     <div>
-      <div className="p-6 bg-darkG text-black rounded-lg">
+      <div className="p-6 bg-darkG text-black dark:bg-cTwo dark:text-white rounded-lg">
         <div>
           <div className="mb-6 flex justify-between">
             <div className="text-2xl font-semibold">Resource Inventory</div>
@@ -357,7 +357,7 @@ const ResourceInventory = () => {
                     <div className="flex justify-between align-center mb-6">
                       <strong className="mt-2">Low Stock Items</strong>
                       <button
-                        className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]"
+                        className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0] dark:bg-bOne"
                         onClick={handleEmailNotification}
                       >
                         Notify with an Email
@@ -379,7 +379,7 @@ const ResourceInventory = () => {
                 )}
               </div>
               <button
-                className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0] ml-4"
+                className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0] ml-4 dark:bg-bOne"
                 onClick={handleDownload}
               >
                 Report Download
@@ -395,7 +395,7 @@ const ResourceInventory = () => {
                 name="itemCode"
                 value={formData.itemCode}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+                className="w-full px-3 py-2 rounded-lg bg-lightG dark:bg-bOne"
               />
               {errors.itemCode && (
                 <p className="text-red-500 text-sm">{errors.itemCode}</p>
@@ -415,7 +415,7 @@ const ResourceInventory = () => {
                     handleChange(e);
                   }
                 }}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+                className="w-full px-3 py-2 rounded-lg bg-lightG dark:bg-bOne"
                 title="Please enter letters only" // Tooltip message for invalid input
                 required // Optional: makes the field required
               />
@@ -433,7 +433,7 @@ const ResourceInventory = () => {
                 name="itemCategory"
                 value={formData.itemCategory}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+                className="w-full px-3 py-2 rounded-lg bg-lightG dark:bg-bOne"
               />
               {errors.itemCategory && (
                 <p className="text-red-500 text-sm">{errors.itemCategory}</p>
@@ -447,7 +447,7 @@ const ResourceInventory = () => {
                 name="quantity"
                 value={formData.quantity}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+                className="w-full px-3 py-2 rounded-lg bg-lightG dark:bg-bOne"
                 onKeyDown={handleKeyDown}
               />
               {errors.quantity && (
@@ -458,7 +458,7 @@ const ResourceInventory = () => {
             <div className="flex justify-center items-end">
               <button
                 type="submit"
-                className="col-span-2 bg-lightG text-black px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition"
+                className="col-span-2 bg-lightG text-black px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition dark:bg-bOne"
               >
                 ADD
               </button>
@@ -479,7 +479,7 @@ const ResourceInventory = () => {
         />
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto ">
         <table className="min-w-full border-separate border-spacing-y-3">
           <thead>
             <tr className="text-left">
@@ -494,28 +494,28 @@ const ResourceInventory = () => {
           <tbody>
             {filteredInventory.map((item, index) => (
               <tr key={index}>
-                <td className="px-4 py-2 border-b bg-lightG rounded-s-xl">
+                <td className="px-4 py-2 border-b bg-lightG dark:bg-bOne rounded-s-xl">
                   {index + 1}
                 </td>
-                <td className="px-4 py-2 border-b bg-lightG">
+                <td className="px-4 py-2 border-b bg-lightG dark:bg-bOne">
                   {item.productID}
                 </td>
-                <td className="px-4 py-2 border-b bg-lightG">{item.name}</td>
-                <td className="px-4 py-2 border-b bg-lightG">
+                <td className="px-4 py-2 border-b bg-lightG dark:bg-bOne">{item.name}</td>
+                <td className="px-4 py-2 border-b bg-lightG dark:bg-bOne">
                   {item.category}
                 </td>
-                <td className="px-4 py-2 border-b bg-lightG">
+                <td className="px-4 py-2 border-b bg-lightG dark:bg-bOne">
                   {item.quantity}
                 </td>
-                <td className="px-4 py-2 border-b bg-lightG rounded-e-xl">
+                <td className="px-4 py-2 border-b bg-lightG dark:bg-bOne rounded-e-xl">
                   <button
-                    className="text-[16px] uppercase rounded-[16px] font-semibold tracking-wide bg-[#F5DAD2] hover:bg-[#f1c0b1] py-1 px-4 font-sans dark:text-[#000000]"
+                    className="text-[16px] uppercase rounded-[16px] font-semibold tracking-wide bg-[#F5DAD2] hover:bg-[#f1c0b1] py-1 px-4 font-sans dark:text-white dark:bg-cOne"
                     onClick={() => handleEdit(index)}
                   >
                     Edit
                   </button>
                   <button
-                    className="text-[16px] uppercase rounded-[16px] font-semibold tracking-wide bg-[#F5DAD2] hover:bg-[#f1c0b1] py-1 px-4  font-sans dark:text-[#000000] ml-2"
+                    className="text-[16px] uppercase rounded-[16px] font-semibold tracking-wide bg-[#F5DAD2] hover:bg-[#f1c0b1] py-1 px-4  font-sans dark:text-white dark:bg-cOne ml-2"
                     onClick={() => handleDelete(index)}
                   >
                     Delete

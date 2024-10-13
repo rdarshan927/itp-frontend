@@ -129,7 +129,7 @@ const BouquetForm = ({ getItems, saveRecord }) => {
           name="productID"
           value={bouquetFormData.productID}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
           maxLength="20"
         />
         {bouquetErrors.productID && (
@@ -143,7 +143,7 @@ const BouquetForm = ({ getItems, saveRecord }) => {
           name="name"
           value={bouquetFormData.name}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
           maxLength="20"
         />
         {bouquetErrors.name && (
@@ -158,7 +158,7 @@ const BouquetForm = ({ getItems, saveRecord }) => {
           value={bouquetFormData.quantity}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown} // Prevent unwanted characters
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
         {bouquetErrors.quantity && (
           <p className="text-red-500 text-sm">{bouquetErrors.quantity}</p>
@@ -172,7 +172,7 @@ const BouquetForm = ({ getItems, saveRecord }) => {
           value={bouquetFormData.price}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown} // Prevent unwanted characters
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
         {bouquetErrors.price && (
           <p className="text-red-500 text-sm">{bouquetErrors.price}</p>
@@ -185,13 +185,13 @@ const BouquetForm = ({ getItems, saveRecord }) => {
           name="image"
           ref={fileInputRef}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 rounded-lg bg-lightG text-black"
+          className="w-full px-3 py-2 rounded-lg bg-lightG text-black dark:bg-bOne"
         />
       </div>
       <div className="flex justify-center items-end">
         <button
           type="submit"
-          className="bg-lightG text-black px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition"
+          className="bg-lightG text-black px-4 py-2 rounded-3xl w-40 hover:bg-[#a3c5aa] transition dark:bg-bOne"
         >
           ADD
         </button>

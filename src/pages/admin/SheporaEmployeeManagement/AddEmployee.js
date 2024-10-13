@@ -161,16 +161,16 @@ function AddEmployee() {
 
     return (
         <>
-            <div className="bg-darkG p-6">
-                <h1 className="text-5xl font-bold text-black mb-6 text-center">{isEditing ? "Edit Employee" : "Add Employee"}</h1>
+            <div className="bg-darkG p-6 dark:bg-cTwo text-black dark:text-white">
+                <h1 className="text-5xl font-bold mb-6 text-center">{isEditing ? "Edit Employee" : "Add Employee"}</h1>
                 <form className='relative left-56'>
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="employeeId" className="block text-2xl text-black font-bold mb-2">Employee ID:</label>
+                            <label htmlFor="employeeId" className="block text-2xl font-bold mb-2">Employee ID:</label>
                             <input 
                                 type="text" 
                                 id="employeeId" 
-                                className={`w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl ${errors.employeeId ? 'border-red-500' : ''}`} 
+                                className={`w-full rounded-md px-3 py-2 bg-lightG dark:bg-bOne text-3xl ${errors.employeeId ? 'border-red-500' : ''}`} 
                                 value={employeeId}
                                 onChange={(e) => setEmployeeId(e.target.value)} 
                                 required
@@ -179,11 +179,11 @@ function AddEmployee() {
                         </div>
 
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="firstName" className="block text-2xl text-black font-bold mb-2">First Name:</label>
+                            <label htmlFor="firstName" className="block text-2xl font-bold mb-2">First Name:</label>
                             <input 
                                 type="text" 
                                 id="firstName" 
-                                className={`w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl ${errors.firstName ? 'border-red-500' : ''}`} 
+                                className={`w-full rounded-md px-3 py-2 bg-lightG dark:bg-bOne text-3xl ${errors.firstName ? 'border-red-500' : ''}`} 
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)} 
                                 required
@@ -194,11 +194,11 @@ function AddEmployee() {
 
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="lastName" className="block text-2xl text-black font-bold mb-2">Last Name:</label>
+                            <label htmlFor="lastName" className="block text-2xl font-bold mb-2">Last Name:</label>
                             <input 
                                 type="text" 
                                 id="lastName" 
-                                className={`w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl ${errors.lastName ? 'border-red-500' : ''}`} 
+                                className={`w-full rounded-md px-3 py-2 bg-lightG dark:bg-bOne text-3xl ${errors.lastName ? 'border-red-500' : ''}`} 
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)} 
                                 required
@@ -206,11 +206,11 @@ function AddEmployee() {
                             {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
                         </div>
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="role" className="block text-2xl text-black font-bold mb-2">Role:</label>
+                            <label htmlFor="role" className="block text-2xl font-bold mb-2">Role:</label>
                             <input 
                                 type="text" 
                                 id="role" 
-                                className={`w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl ${errors.role ? 'border-red-500' : ''}`} 
+                                className={`w-full rounded-md px-3 py-2 bg-lightG dark:bg-bOne text-3xl ${errors.role ? 'border-red-500' : ''}`} 
                                 value={role}
                                 onChange={(e) => setRole(e.target.value)} 
                                 required
@@ -221,11 +221,11 @@ function AddEmployee() {
 
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="contactNumber" className="block text-2xl text-black font-bold mb-2">Contact Number:</label>
+                            <label htmlFor="contactNumber" className="block text-2xl font-bold mb-2">Contact Number:</label>
                             <input 
                                 type="text" 
                                 id="contactNumber" 
-                                className={`w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl ${errors.contactNumber ? 'border-red-500' : ''}`} 
+                                className={`w-full rounded-md px-3 py-2 bg-lightG dark:bg-bOne text-3xl ${errors.contactNumber ? 'border-red-500' : ''}`} 
                                 value={contactNumber}
                                 onChange={(e) => setContactNumber(e.target.value)} 
                                 required
@@ -234,11 +234,11 @@ function AddEmployee() {
                         </div>
 
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="email" className="block text-2xl text-black font-bold mb-2">Email:</label>
+                            <label htmlFor="email" className="block text-2xl font-bold mb-2">Email:</label>
                             <input 
                                 type="email" 
                                 id="email" 
-                                className={`w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl ${errors.email ? 'border-red-500' : ''}`} 
+                                className={`w-full rounded-md px-3 py-2 bg-lightG dark:bg-bOne text-3xl ${errors.email ? 'border-red-500' : ''}`} 
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)} 
                                 required
@@ -249,11 +249,11 @@ function AddEmployee() {
 
                     <div className="flex mb-4">
                         <div className="w-1/3 pr-2">
-                            <label htmlFor="startDate" className="block text-2xl text-black font-bold mb-2">Start Date:</label>
+                            <label htmlFor="startDate" className="block text-2xlfont-bold mb-2">Start Date:</label>
                             <input 
                                 type="date" 
                                 id="startDate" 
-                                className={`w-full rounded-md px-3 py-2 bg-lightG text-black text-3xl ${errors.startDate ? 'border-red-500' : ''}`} 
+                                className={`w-full rounded-md px-3 py-2 bg-lightG dark:bg-bOne text-3xl ${errors.startDate ? 'border-red-500' : ''}`} 
                                 value={startDate}
                                 onChange={(e) => setStartDate(e.target.value)} 
                                 required
@@ -265,14 +265,14 @@ function AddEmployee() {
                     <div className="flex mb-4">
                         <button 
                             type="button" 
-                            className="bg-lightG text-black px-4 py-2 rounded-lg mr-2" 
+                            className="bg-lightG px-4 py-2 rounded-lg mr-2 dark:bg-bOne" 
                             onClick={addOrUpdateEmployee}
                         >
                             {isEditing ? "Update Employee" : "Add Employee"}
                         </button>
                         <button 
                             type="button" 
-                            className="bg-red-500 text-black px-4 py-2 rounded-lg" 
+                            className="bg-red-500 dark:bg-bOne px-4 py-2 rounded-lg" 
                             onClick={clearForm}
                         >
                             Cancel
@@ -281,13 +281,13 @@ function AddEmployee() {
                 </form>
             </div>
 
-            <div className="bg-lightG p-6">
-                <h2 className="text-4xl font-bold text-black mb-6 text-center">Employee List</h2>
+            <div className="bg-lightG p-6 dark:bg-bOne">
+                <h2 className="text-4xl font-bold mb-6 text-center">Employee List</h2>
                 <div className="flex justify-center mb-4">
                     <input 
                         type="text" 
                         placeholder="Search by ID or Name" 
-                        className="border border-gray-300 rounded-md px-4 py-2 w-1/3" 
+                        className="border border-gray-300 rounded-md px-4 py-2 w-1/3 dark:text-black" 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)} 
                     />
@@ -295,7 +295,7 @@ function AddEmployee() {
                 <div id="employeeTable" className="overflow-x-auto">
                     <table className="min-w-full border border-gray-300">
                         <thead>
-                            <tr className="bg-gray-200">
+                            <tr className="bg-gray-200 dark:bg-cOne">
                                 <th className="border border-gray-300 px-4 py-2">Employee ID</th>
                                 <th className="border border-gray-300 px-4 py-2">First Name</th>
                                 <th className="border border-gray-300 px-4 py-2">Last Name</th>
@@ -318,13 +318,13 @@ function AddEmployee() {
                                     <td className="border border-gray-300 px-4 py-2">{new Date(employee.startDate).toLocaleDateString()}</td>
                                     <td className="border border-gray-300 px-4 py-2">
                                         <button 
-                                            className="bg-blue-500 text-white px-2 py-1 rounded" 
+                                            className="bg-blue-500 text-white px-2 py-1 rounded dark:bg-cOne" 
                                             onClick={() => handleEdit(index)}
                                         >
                                             Edit
                                         </button>
                                         <button 
-                                            className="bg-red-500 text-white px-2 py-1 rounded ml-2" 
+                                            className="bg-red-500 text-white px-2 py-1 rounded ml-2 dark:bg-cOne" 
                                             onClick={() => handleDelete(index)}
                                         >
                                             Delete
@@ -337,7 +337,7 @@ function AddEmployee() {
                 </div>
                 <div className="flex justify-center mt-4">
                     <button 
-                        className="bg-blue-500 text-white px-4 py-2 rounded-lg" 
+                        className="bg-blue-500 text-white px-4 py-2 rounded-lg dark:bg-cOne" 
                         onClick={generatePDF}
                     >
                         Generate Report
