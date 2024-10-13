@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {useState} from "react";
 import{api} from '../../config/api'
 import { useNavigate } from 'react-router-dom'
@@ -12,8 +12,14 @@ function Login(){
         email: '',
         password: ''
     })
-
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('loggedCustomer');
+        if (loggedInUser) {
+            navigate('/');
+        }
+    }, [navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -89,7 +95,7 @@ function Login(){
                                 />
                             
                         </div>
-                            <a href="forgot_password" className="text-right text-lightG mb-4 block">Forgot Password</a>
+                            <a href="forgetpassword" className="text-right text-lightG mb-4 block">Forgot Password</a>
                         
                             <button  type="submit" className="bg-lightG text-white p-3 rounded md:w-96">
                                 Login
