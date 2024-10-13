@@ -86,7 +86,7 @@ const ViewInventoryStuff = () => {
     };
 
     return (
-        <div className="bg-[#BACD92] mt-5 p-3">
+        <div className="bg-[#BACD92] mt-5 p-3 dark:bg-cTwo">
             <Search onSearchChange={handleSearchChange} />
             <h2 className="font-bold text-white mb-4 text-center text-5xl">Inventory Stuff Entries</h2>
             {filteredStuffEntries.length === 0 ? (
@@ -102,7 +102,7 @@ const ViewInventoryStuff = () => {
                     </div>
                     <ul>
                         {filteredStuffEntries.map((stuff) => (
-                            <li key={stuff._id} className="flex items-center justify-between mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
+                            <li key={stuff._id} className="flex items-center justify-between mb-4 p-4 bg-[#75A47F] border  rounded-md dark:bg-bOne">
                                 <div className="flex-1 text-white flex items-center">
                                     <div className="w-1/5 px-2 text-center text-2xl">{stuff.stuffID}</div>
                                     <div className="w-1/5 px-2 text-center text-2xl">{stuff.stuffName}</div>
@@ -132,7 +132,7 @@ const ViewInventoryStuff = () => {
 
             {/* Modal for editing inventory stuff */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 dark:text-cTwo">
                     <div className="bg-white p-5 rounded-md shadow-lg">
                         <h2 className="text-2xl font-bold mb-4">Edit Inventory Stuff</h2>
                         <div className="mb-2">

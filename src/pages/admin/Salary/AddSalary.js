@@ -118,7 +118,7 @@ function AddSalary() {
     return (
         <>
             <Toaster position="top-right" reverseOrder={false} />
-            <div className="bg-darkG p-6">
+            <div className="bg-darkG p-6 dark:bg-cTwo">
                 <h1 className="text-5xl font-bold text-white mb-6 text-center">Add Salary</h1>
                 <form className='relative left-40'>
                     <div className="flex mb-4">
@@ -127,7 +127,7 @@ function AddSalary() {
                             <input 
                                 type="text" 
                                 id="salaryId" 
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl" 
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne" 
                                 value={salaryId}
                                 onChange={handleSalaryIdChange} 
                                 required
@@ -139,7 +139,7 @@ function AddSalary() {
                             <input 
                                 type="text" 
                                 id="userId" 
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl" 
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne" 
                                 value={userId}
                                 onChange={handleUserIdChange} 
                                 required
@@ -154,7 +154,7 @@ function AddSalary() {
                             <input 
                                 type="text" 
                                 id="baseSalary" 
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl" 
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne" 
                                 value={baseSalary}
                                 onChange={handleBaseSalaryChange} 
                                 required
@@ -166,7 +166,7 @@ function AddSalary() {
                             <input 
                                 type="text" 
                                 id="allowances" 
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl" 
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne" 
                                 value={allowances}
                                 onChange={handleAllowancesChange} 
                                 required
@@ -181,7 +181,7 @@ function AddSalary() {
                             <input 
                                 type="text" 
                                 id="epf" 
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl" 
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne" 
                                 value={epf}
                                 readOnly
                             />
@@ -191,7 +191,7 @@ function AddSalary() {
                             <input 
                                 type="text" 
                                 id="etf" 
-                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl" 
+                                className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne" 
                                 value={etf}
                                 readOnly
                             />
@@ -200,7 +200,7 @@ function AddSalary() {
 
                     <button 
                         type="button" 
-                        className="bg-lightG text-white font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0]"
+                        className="bg-lightG text-white font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0] dark:bg-bOne"
                         onClick={addSalary}
                     >
                         Submit

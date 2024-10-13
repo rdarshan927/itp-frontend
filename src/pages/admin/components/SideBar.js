@@ -18,8 +18,8 @@ const Sidebar = () => {
             { label: "Dashboard", path: "/sales/dashboard" },
             { label: "Invoices", path: "/sales/invoices" }
         ],
-        "Financial Manager": [
-            { label: "Dashboard", path: "/Dashboard" },
+        "Finance Manager": [
+            { label: "Dashboard", path: "/financialdashboard" },
             { label: "Salary", path: "/salary" },
             { label: "Inventory Stuff", path: "/inventorystuff" },
             
@@ -47,7 +47,8 @@ const Sidebar = () => {
             { label: "Sales Inventory", path: "/SalesInventory" }
         ],
         "Employee Manager": [
-            { label: "Manage Employee", path: "/addemployee" }
+            { label: "Manage Employee", path: "/addemployee" },
+            { label: "Attendance", path: "/attendance" }
         ]
     };
 

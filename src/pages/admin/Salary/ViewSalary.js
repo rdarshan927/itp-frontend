@@ -139,7 +139,7 @@ const ViewSalary = () => {
     };
 
     return (
-        <div className="bg-[#BACD92] mt-5 p-3">
+        <div className="bg-[#BACD92] mt-5 p-3 dark:bg-cTwo">
             <Search onSearchChange={handleSearchChange} />
             <h2 className="font-bold text-white mb-4 text-center text-5xl">Salary Entries</h2>
             {Array.isArray(filteredSalaries) && filteredSalaries.length === 0 ? (
@@ -154,7 +154,7 @@ const ViewSalary = () => {
                     </div>
                     <ul>
                         {filteredSalaries.map((salary) => (
-                            <li key={salary._id} className="mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
+                            <li key={salary._id} className="mb-4 p-4 bg-[#75A47F] border  rounded-md dark:bg-bOne">
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1 text-white flex items-center">
                                         <div className="w-1/4 px-2 text-center text-2xl">{salary.salaryID}</div>
@@ -220,7 +220,7 @@ const ViewSalary = () => {
                 </>
             )}
             {isModalOpen && selectedSalary && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 dark:text-black">
                     <div className="bg-white p-5 rounded-md shadow-lg">
                         <h2 className="text-2xl font-bold mb-4">Edit Salary Entry</h2>
                         <form>

@@ -88,7 +88,7 @@ function AddInventoryStuff() {
     };
 
     return (
-        <div className="bg-darkG p-6">
+        <div className="bg-darkG p-6 dark:bg-cTwo">
             
             <Toaster position="top-right" reverseOrder={false} />
             <h1 className="text-5xl font-bold text-white mb-6 text-center">Add Inventory Stuff</h1>
@@ -99,7 +99,7 @@ function AddInventoryStuff() {
                         <input
                             type="text"
                             id="stuffID"
-                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl"
+                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne"
                             value={stuffID}
                             onChange={(e) => setStuffID(e.target.value)}
                             required
@@ -110,7 +110,7 @@ function AddInventoryStuff() {
                         <input
                             type="text"
                             id="stuffName"
-                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl"
+                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne"
                             value={stuffName}
                             onChange={(e) => setStuffName(e.target.value)}
                             required
@@ -125,7 +125,7 @@ function AddInventoryStuff() {
                             type="number"
                             step="0.01"
                             id="price"
-                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl"
+                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                             required
@@ -136,7 +136,7 @@ function AddInventoryStuff() {
                         <input
                             type="number"
                             id="amount"
-                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl"
+                            className="w-full rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             required
@@ -149,7 +149,7 @@ function AddInventoryStuff() {
                     <input
                         type="text"
                         id="totalPrice"
-                        className="w-1/2 rounded-md px-3 py-2 bg-lightG text-white text-2xl"
+                        className="w-1/2 rounded-md px-3 py-2 bg-lightG text-white text-2xl dark:bg-bOne"
                         value={totalPrice}
                         readOnly
                     />
@@ -157,7 +157,7 @@ function AddInventoryStuff() {
 
                 <button
                     type="submit"
-                    className="bg-lightG text-white font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0]"
+                    className="bg-lightG text-white font-bold py-2 px-12 rounded text-2xl mt-5 hover:bg-[#c9d5b0] dark:bg-bOne"
                 >
                     Submit
                 </button>

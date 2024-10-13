@@ -33,6 +33,7 @@ const PlantReports = lazy(() => import('./pages/admin/PlantSchedule/PlantReport'
 const Flower = lazy(() => import("./pages/home/Flower"));
 const Bouquet = lazy(() => import("./pages/home/Bouquet"));
 const ItemDescription = lazy(() => import("./pages/home/ItemDescription"));
+const Attendance = lazy(() => import('./pages/admin/Attendance/Attendance'));
 
 // configurations and others
 const ClientLayout = lazy(() => import("./layouts/ClientLayout"));
@@ -86,6 +87,7 @@ const AllRoutes = () => {
               <Route path="/admin" element={ <AdminPrivateRoute> <None /> </AdminPrivateRoute> } />
               <Route path="/plant" element={ <AdminPrivateRoute> <Plant /> </AdminPrivateRoute> } />
               <Route path="/PlantReports" element={ <AdminPrivateRoute> <PlantReports /> </AdminPrivateRoute> } />
+              <Route path="/attendance" element={ <AdminPrivateRoute> <Attendance /> </AdminPrivateRoute> } />
             </Route>
           </Routes>
         </Suspense>

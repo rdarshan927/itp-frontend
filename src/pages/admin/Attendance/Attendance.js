@@ -102,10 +102,11 @@ function Attendance() {
     }, []);
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 ">
             <h1 className="text-2xl font-bold mb-4">Attendance System</h1>
             {error && <p className="text-red-500 mb-4">{error}</p>}
             <input
+                
                 type="text"
                 value={employeeId}
                 onChange={(e) => setEmployeeId(e.target.value)}
@@ -115,7 +116,7 @@ function Attendance() {
                         handleScan();
                     }
                 }}
-                className="border border-gray-300 p-2 rounded-md mb-4 w-full"
+                className="border border-gray-300 p-2 rounded-md mb-4 w-full dark:bg-bOne"
                 disabled={loading}
             />
             {loading && <p>Loading...</p>}
