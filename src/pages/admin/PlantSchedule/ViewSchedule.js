@@ -7,6 +7,9 @@ const ViewPlantSchedule = () => {
   const [plantSchedules, setPlantSchedules] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  
 
   const [formData, setFormData] = useState({
     ScheduleID: '',
@@ -112,9 +115,23 @@ const ViewPlantSchedule = () => {
     }
   };
 
+  const filterSchedules = () => {
+    return plantSchedules.filter(schedule => {
+      const lowerCaseQuery = searchQuery.toLowerCase();
+      return (
+        schedule.ScheduleID.toLowerCase().includes(lowerCaseQuery) ||
+        schedule.PlantName.toLowerCase().includes(lowerCaseQuery) ||
+        schedule.Field.toLowerCase().includes(lowerCaseQuery) ||
+        schedule.Resources.toLowerCase().includes(lowerCaseQuery) ||
+        schedule.WeatherCondition.toLowerCase().includes(lowerCaseQuery)
+      );
+    });
+  };
+
   return (
     <div className="bg-[#BACD92] mt-10 p-6">
       <h2 className="font-bold text-black mb-4 text-center text-5xl">Plant Schedules</h2>
+    
       <div className="grid grid-cols-8 gap-4 w-full text-center font-bold text-black text-xl mb-5">
         <div className="px-4">Schedule ID</div>
         <div className="px-4">Plant Name</div>
@@ -146,7 +163,7 @@ const ViewPlantSchedule = () => {
                 className="space-x-8 bg-red-400 text-black text-sm px-3 py-1 rounded hover:bg-red-500"
                 onClick={() => handleDelete(index)}
               >
-                Delete
+                <TrashIcon className="h-6 w-6" />
               </button>
             </div>
           </li>
