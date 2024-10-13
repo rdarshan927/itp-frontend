@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { api } from "../../../config/api";
 
-const ItemCard = ({ item, getItems }) => {
+const ItemCard = ({ item, getItems, saveRecord }) => {
   const [editMode, setEditMode] = useState(false);
   const [editData, setEditData] = useState({
     name: item.name,
@@ -63,6 +63,7 @@ const ItemCard = ({ item, getItems }) => {
     if (confirmDelete) {
       try {
         await api.delete(`/api/inventory/deletesalesitem/${item.productID}`);
+        saveRecord(item, "Delete", item.category);
         getItems();
       } catch (error) {
         console.error("Error deleting item:", error);
@@ -80,6 +81,16 @@ const ItemCard = ({ item, getItems }) => {
           price: parseFloat(editData.price),
           imageData: editData.imageData,
         }
+      );
+      saveRecord(
+        {
+          productID: item.productID,
+          name: editData.name,
+          quantity: parseInt(editData.quantity),
+          price: parseFloat(editData.price),
+        },
+        "Update",
+        item.category
       );
       console.log("Updated Item:", response.data);
       setEditMode(false);
