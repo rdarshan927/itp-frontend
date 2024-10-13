@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { api } from "../../../config/api";
 
-const FlowerForm = ({ getItems }) => {
+const FlowerForm = ({ getItems, saveRecord }) => {
   const [flowerFormData, setFlowerFormData] = useState({
     productID: "",
     name: "",
@@ -99,6 +99,7 @@ const FlowerForm = ({ getItems }) => {
           imageData: flowerFormData.image,
         });
         console.log(response);
+        saveRecord(flowerFormData, "Add", "flower");
         getItems();
         setFlowerFormData({
           productID: "",

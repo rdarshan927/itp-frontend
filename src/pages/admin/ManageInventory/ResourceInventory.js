@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import EditResourceItemModal from "./EditResourceItemModal";
 import { api } from "../../../config/api";
 import html2pdf from "html2pdf.js";
+import emailjs from "@emailjs/browser";
+import { handleError, handleSuccess } from "../../../utils";
+import { ToastContainer } from "react-toastify";
 
 const ResourceInventory = () => {
   const [inventory, setInventory] = useState([]);
@@ -20,7 +23,9 @@ const ResourceInventory = () => {
     category: "",
     quantity: "",
   });
-  const [printData, setPrintData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [lowStockItems, setLowStockItems] = useState([]); // Track low stock items
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,8 +78,12 @@ const ResourceInventory = () => {
   const getItems = async () => {
     try {
       const response = await api.get("/api/inventory/getresourceitems");
-      setInventory(response.data);
-      console.log("Fetched Resource Items:", response.data);
+      const items = response.data;
+      setInventory(items);
+
+      // Find items with quantity less than 5
+      const lowStock = items.filter((item) => item.quantity < 5);
+      setLowStockItems(lowStock); // Set low stock items
     } catch (error) {
       console.error("There was an error while fetching data!", error);
     }
@@ -190,7 +199,7 @@ const ResourceInventory = () => {
 
   const handleDownload = async () => {
     try {
-      const response = await api.get("/api/inventory/getallrecords");
+      const response = await api.get("/api/inventory/getallrecords/resource");
       const records = response.data; // Assume it's an array of items
       const printableContent = generatePrintableContent(records);
       downloadReport(printableContent);
@@ -208,9 +217,9 @@ const ResourceInventory = () => {
     const element = document.createElement("div");
     element.innerHTML = `
       <div style="text-align: center; margin-bottom: 50px;">
-        <h1 style="font-size: 25px; font-weight: bold;">Resource Inventory Records</h1>
+        <h1 style="font-size: 20px; font-weight: bold;">Resource Inventory Records</h1>
       </div>
-      <table style="width: 100%; border-collapse: collapse;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
         <thead>
           <tr>
             <th style="border: 1px solid black; padding: 8px;">#</th>
@@ -277,18 +286,105 @@ const ResourceInventory = () => {
       .save();
   };
 
+  const handleEmailNotification = () => {
+    const templateParams = {
+      lowStockItems: lowStockItems
+        .map(
+          (item, index) =>
+            `${index + 1}. ${item.name} (Code: ${item.productID}) - Quantity: ${
+              item.quantity
+            }`
+        )
+        .join("\n"),
+    };
+
+    emailjs
+      .send(
+        "service_suk6vfa", // Replace with your EmailJS service ID
+        "template_ijd4f75", // Replace with your EmailJS template ID
+        templateParams,
+        "ADcp2FigtWrnqkX8i" // Replace with your EmailJS user ID
+      )
+      .then(
+        (response) => {
+          console.log(
+            "Email sent successfully!",
+            response.status,
+            response.text
+          );
+          handleSuccess("Email sent successfully!");
+          togglePopup();
+        },
+        (error) => {
+          console.error("Failed to send email.", error);
+          handleError("Failed to send email.");
+        }
+      );
+  };
+
+  //--------Search----------//
+  const filteredInventory = inventory.filter(
+    (item) =>
+      item.productID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const togglePopup = () => {
+    setIsPopupVisible(!isPopupVisible);
+  };
+
   return (
     <div>
       <div className="p-6 bg-darkG text-black rounded-lg">
         <div>
           <div className="mb-6 flex justify-between">
             <div className="text-2xl font-semibold">Resource Inventory</div>
-            <button
-              className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0]"
-              onClick={handleDownload}
-            >
-              Report Download
-            </button>
+            <div className="flex items-center">
+              <div className="relative">
+                <button
+                  className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]"
+                  onClick={togglePopup}
+                >
+                  <span role="img" aria-label="notification">
+                    🔔
+                  </span>
+                </button>
+
+                {/* Popup menu for low stock items */}
+                {isPopupVisible && (
+                  <div className="absolute right-0 w-96 mt-2 bg-white shadow-lg rounded-lg p-4">
+                    <div className="flex justify-between align-center mb-6">
+                      <strong className="mt-2">Low Stock Items</strong>
+                      <button
+                        className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]"
+                        onClick={handleEmailNotification}
+                      >
+                        Notify with an Email
+                      </button>
+                    </div>
+                    <ul>
+                      {lowStockItems?.length > 0 ? (
+                        lowStockItems.map((item, index) => (
+                          <li key={index}>
+                            {index + 1}. {item.name} (Code: {item.productID}) -
+                            Quantity: {item.quantity}
+                          </li>
+                        ))
+                      ) : (
+                        <li>No low stock items</li>
+                      )}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              <button
+                className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0] ml-4"
+                onClick={handleDownload}
+              >
+                Report Download
+              </button>
+            </div>
           </div>
 
           <form onSubmit={handleAdd} className="grid grid-cols-3 gap-4 mb-6">
@@ -370,9 +466,19 @@ const ResourceInventory = () => {
           </form>
         </div>
       </div>
-      <div className="text-lg font-semibold mb-3 mt-5">
-        Current Stock - Resource Inventory
+      <div className="flex justify-between">
+        <div className="text-lg font-semibold mb-3 mt-5">
+          Current Stock - Resource Inventory
+        </div>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="border border-gray-300 rounded-lg px-4 h-10 mt-5"
+        />
       </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full border-separate border-spacing-y-3">
           <thead>
@@ -386,7 +492,7 @@ const ResourceInventory = () => {
             </tr>
           </thead>
           <tbody>
-            {inventory.map((item, index) => (
+            {filteredInventory.map((item, index) => (
               <tr key={index}>
                 <td className="px-4 py-2 border-b bg-lightG rounded-s-xl">
                   {index + 1}
@@ -428,6 +534,7 @@ const ResourceInventory = () => {
           setIsModalOpen={setIsModalOpen}
         />
       )}
+      <ToastContainer />
     </div>
   );
 };

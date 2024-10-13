@@ -49,12 +49,14 @@ function AddPacking() {
             return false;
         }
 
-        // Validate Order ID (alphanumeric)
-        const orderIdRegex = /^[A-Za-z0-9]+$/;
+        
+        const orderIdRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
         if (!orderIdRegex.test(orderId)) {
-            alert("Order ID should contain only letters and characters.");
-            return false;
+        alert("Order ID should contain at least one letter and one number.");
+        return false;
         }
+
+
 
         return true; // All validations passed
     };
