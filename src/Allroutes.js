@@ -1,3 +1,8 @@
+/**
+ * Licensed under the Shepora Flower Plant Management System License (v1.0)
+ * See the LICENSE.txt file for more details.
+ */
+
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { DarkModeProvider } from "./config/darkMode";

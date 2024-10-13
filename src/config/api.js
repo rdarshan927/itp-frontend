@@ -1,3 +1,8 @@
+/**
+ * Licensed under the Shepora Flower Plant Management System License (v1.0)
+ * See the LICENSE.txt file for more details.
+ */
+
 import axios from 'axios';
 
 const FLOWER_API_URL = process.env.REACT_APP_FLOWER_API_URL;
