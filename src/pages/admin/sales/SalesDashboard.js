@@ -176,11 +176,8 @@ const SalesDashboard = () => {
 
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', padding: '20px' }}>
-            {/* Button to generate report */}
-            <button onClick={generateReport} style={{ marginBottom: '20px', padding: '10px', cursor: 'pointer' }}>
-                Generate PDF Report
-            </button>
+        <div style={{ display: 'flex', flexDirection: 'column', padding: '20px' }} className=' text-black bg-white dark:[#]'>
+            
             
             {/* Container for the Bar Charts (Monthly and Yearly) */}
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
@@ -235,6 +232,10 @@ const SalesDashboard = () => {
                     height={200}
                 />
             </div>
+            {/* Button to generate report */}
+            <button className='bg-red-400 w-80 mx-[35%] ' onClick={generateReport} style={{ marginBottom: '20px', padding: '10px', cursor: 'pointer'}}>
+                Generate PDF Report
+            </button>
         </div>
     );
 };

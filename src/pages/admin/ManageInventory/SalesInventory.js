@@ -203,14 +203,14 @@ const SalesInventory = () => {
 
   return (
     <>
-      <div className="p-6 bg-darkG text-black rounded-lg">
+      <div className="p-6 bg-darkG text-black dark:text-white dark:bg-cTwo rounded-lg">
         <div className="mb-6">
           <div className="flex justify-between items-center">
             <div className="text-2xl font-semibold mb-4">Sales Inventory</div>
             <div className="flex items-center">
               <div className="relative">
                 <button
-                  className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]"
+                  className="bg-lightG dark:bg-bOne font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]"
                   onClick={togglePopup}
                 >
                   <span role="img" aria-label="notification">
@@ -220,8 +220,8 @@ const SalesInventory = () => {
 
                 {/* Popup menu for low stock items */}
                 {isPopupVisible && (
-                  <div className="absolute right-0 w-96 mt-2  bg-white shadow-lg rounded-lg p-4">
-                    <div className="flex justify-between align-center mb-6">
+                  <div className="absolute right-0 w-96 mt-2  bg-white dark:text-black shadow-lg rounded-lg p-4 dark:bg-bOne">
+                    <div className="flex justify-between align-center mb-6 dark:bg-bOne dark:text-black">
                       <strong className="mt-2">Low Stock Items</strong>
                       <button
                         className="bg-lightG font-bold py-2 px-4 rounded-lg hover:bg-[#c9d5b0]"
@@ -231,7 +231,7 @@ const SalesInventory = () => {
                       </button>
                     </div>
 
-                    <ul>
+                    <ul className="dark:bg-bOne">
                       {lowStockItems?.length > 0 ? (
                         lowStockItems.map((item, index) => (
                           <li key={index}>
@@ -247,7 +247,7 @@ const SalesInventory = () => {
                 )}
               </div>
               <button
-                className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0] ml-4"
+                className="bg-lightG font-bold py-2 text rounded-lg w-52 hover:bg-[#c9d5b0] ml-4 dark:bg-bOne"
                 onClick={handleDownload}
               >
                 Report Download
@@ -259,7 +259,7 @@ const SalesInventory = () => {
             <button
               onClick={() => handleTabClick("flowers")}
               className={`text-xl font-semibold px-4 py-2 rounded-lg hover:bg-[#a3c5aa] ${
-                activeTab === "flowers" ? "bg-lightG" : "bg-transparent"
+                activeTab === "flowers" ? "bg-lightG dark:bg-bOne" : "bg-transparent"
               }`}
             >
               Flowers
@@ -267,14 +267,14 @@ const SalesInventory = () => {
             <button
               onClick={() => handleTabClick("bouquets")}
               className={`text-xl font-semibold px-4 py-2 rounded-lg hover:bg-[#a3c5aa] ${
-                activeTab === "bouquets" ? "bg-lightG" : "bg-transparent"
+                activeTab === "bouquets" ? "bg-lightG dark:bg-bOne" : "bg-transparent"
               }`}
             >
               Bouquets
             </button>
           </div>
           {activeTab === "flowers" && (
-            <FlowerForm getItems={getItems} saveRecord={saveRecord} />
+            <FlowerForm getItems={getItems} saveRecord={saveRecord}/>
           )}
           {activeTab === "bouquets" && (
             <BouquetForm getItems={getItems} saveRecord={saveRecord} />

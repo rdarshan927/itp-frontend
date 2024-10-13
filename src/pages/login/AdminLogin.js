@@ -57,7 +57,7 @@ function Login(){
                   } else if(name === "Financial Manager"){
                     navigate('/financialdashboard')
                   } else if(name === "Plant Scheduling Manager"){
-                    navigate('/plant-schedule')
+                    navigate('/plant')
                   } else if(name === "Stock & Transport Manager"){
                     navigate('/order')
                   } else if(name === "Disease Manager"){
@@ -65,7 +65,7 @@ function Login(){
                   } else if(name === "Inventory Manager"){
                     navigate('/ResourceInventory')
                   } else if(name === "Employee Manager"){
-                    navigate('/employee-dashboard')
+                    navigate('/addemployee')
                   }else{
                     navigate('/none/')
                   }
@@ -85,7 +85,7 @@ function Login(){
     }
 
     return(
-        <div className="h-screen flex justify-center items-center bg-adminWhite relative overflow-hidden">
+        <div className="h-screen flex justify-center items-center bg-adminWhite relative overflow-hidden dark:bg-bOne">
         <div className="absolute left-0 bottom-0 w-1/4">
           <img src="flower-left.png" alt="Left Flower" />
         </div>
@@ -93,18 +93,18 @@ function Login(){
           <img src="flower-right.png" alt="Right Flower" />
         </div>
   
-        <div className="w-full md:w-2/5 h-auto p-8 bg-darkG rounded-lg shadow-md z-10">
+        <div className="w-full md:w-2/5 h-auto p-8 bg-darkG rounded-lg shadow-md z-10 dark:bg-cOne">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-lightG mb-4">Welcome back</h1>
-            <p className="text-lightG font-bold mb-6">Welcome back! Please enter your details</p>
+            <h1 className="text-3xl font-bold text-lightG dark:text-white mb-4">Welcome back</h1>
+            <p className="text-lightG font-bold mb-6 dark:text-white">Welcome back! Please enter your details</p>
           </div>
   
           <form onSubmit={handleLogin}>
             <div className="mb-6">
-              <label htmlFor="email" className="block text-lightG mb-2">Email</label>
+              <label htmlFor="email" className="block text-lightG mb-2 ">Email</label>
               <input
                 onChange={handleChange}
-                className="p-3 border border-gray-300 rounded w-full"
+                className="p-3 border border-gray-300 rounded w-full dark:text-black"
                 type='email'
                 name='email'
                 id='email'
@@ -114,10 +114,10 @@ function Login(){
             </div>
   
             <div className="mb-6">
-              <label htmlFor="password" className="block text-lightG mb-2">Password</label>
+              <label htmlFor="password" className="block text-lightG mb-2 ">Password</label>
               <input
                 onChange={handleChange}
-                className="p-3 border border-gray-300 rounded w-full"
+                className="p-3 border border-gray-300 rounded w-full dark:text-black"
                 type='password'
                 name='password'
                 id='password'
@@ -130,7 +130,7 @@ function Login(){
   
             <button
               type="submit"
-              className="bg-lightG text-white p-3 rounded w-full font-bold hover:bg-lightG-dark transition duration-300"
+              className="bg-lightG text-white p-3 rounded w-full font-bold hover:bg-lightG-dark transition duration-300 dark:bg-bOne"
             >
               Login
             </button>
