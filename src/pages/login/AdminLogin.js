@@ -54,7 +54,7 @@ function Login(){
                     navigate('/sales/dashboard')
                   } else if(name === "Harvest Manager"){
                     navigate('/harvestdashboard')
-                  } else if(name === "Financial Manager"){
+                  } else if(name === "Finance Manager"){
                     navigate('/financialdashboard')
                   } else if(name === "Plant Scheduling Manager"){
                     navigate('/plant')
