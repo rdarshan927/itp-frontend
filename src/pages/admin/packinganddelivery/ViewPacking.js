@@ -129,9 +129,9 @@ const ViewPacking = () => {
     };
 
     return (
-        <div className="bg-[#BACD92] mt-10 p-6">
-            <h2 className="font-bold text-black mb-4 text-center text-5xl">Packed Orders</h2>
-            <div className="grid grid-cols-8 gap-4 mb-3 text-center font-bold text-black">
+        <div className="bg-[#BACD92] mt-10 p-6 dark:bg-cTwo dark:text-white">
+            <h2 className="font-bold  mb-4 text-center text-5xl">Packed Orders</h2>
+            <div className="grid grid-cols-8 gap-4 mb-3 text-center font-bold ">
                 <div>Order ID</div>
                 <div>Receiver Name</div>
                 <div>Receiver Contact</div>
@@ -143,7 +143,7 @@ const ViewPacking = () => {
             </div>
             <ul>
                 {packing.map((selectedPacking, index) => (
-                    <li key={index} className="grid grid-cols-8 gap-4 mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md">
+                    <li key={index} className="grid grid-cols-8 gap-4 mb-4 p-4 bg-[#75A47F] border border-[#BACD92] rounded-md dark:bg-bOne">
                         <div className="text-left">{selectedPacking.orderId}</div>
                         <div className="text-left">{selectedPacking.receivername}</div>
                         <div className="text-left">{selectedPacking.receivercontact}</div>
@@ -153,19 +153,19 @@ const ViewPacking = () => {
                         <div className="text-left">{selectedPacking.currentstatus}</div>
                         <div className="text-left flex flex-col space-y-2">
                             <button
-                                className="bg-[#BACD92] text-black text-sm px-4 py-2 rounded-full hover:bg-green-700"
+                                className="bg-[#BACD92] text-sm px-4 py-2 rounded-full hover:bg-green-700 dark:bg-cOne"
                                 onClick={() => handleQRCodeDownload(selectedPacking._id)}
                             >
                                 QR
                             </button>
                             <button
-                                className="bg-yellow-400 text-black text-sm px-2 py-1 rounded hover:bg-yellow-500"
+                                className="bg-yellow-400 text-sm px-2 py-1 rounded hover:bg-yellow-500 dark:bg-cOne"
                                 onClick={() => handleEdit(index)}
                             >
                                 Edit
                             </button>
                             <button
-                                className="bg-red-400 text-black text-sm px-2 py-1 rounded hover:bg-red-500"
+                                className="bg-red-400 text-sm px-2 py-1 rounded hover:bg-red-500 dark:bg-cOne"
                                 onClick={() => handleDelete(index)} // Now correctly references handleDelete
                             >
                                 Delete
@@ -176,14 +176,14 @@ const ViewPacking = () => {
             </ul>
             {isEditing && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-darkG p-6 rounded-lg w-1/2">
+                    <div className="bg-darkG p-6 rounded-lg w-1/2 dark:bg-cTwo">
                         <h2 className="text-3xl font-bold mb-4">Edit Packing Details</h2>
                         <form>
                             <div className="mb-4">
                                 <label className="block text-xl font-bold mb-2">Order ID</label>
                                 <input
                                     type="text"
-                                    className="w-full p-2 rounded-md bg-lightG"
+                                    className="w-full p-2 rounded-md bg-lightG dark:bg-bOne"
                                     value={orderId}
                                     disabled
                                 />
@@ -192,7 +192,7 @@ const ViewPacking = () => {
                                 <label className="block text-xl font-bold mb-2">Receiver Name</label>
                                 <input
                                     type="text"
-                                    className="w-full p-2 rounded-md bg-lightG"
+                                    className="w-full p-2 rounded-md bg-lightG dark:bg-bOne"
                                     value={receiverName}
                                     onChange={(e) => {
                                         const value = e.target.value;
@@ -208,7 +208,7 @@ const ViewPacking = () => {
                                 <label className="block text-xl font-bold mb-2">Receiver Contact</label>
                                 <input
                                     type="text"
-                                    className="w-full p-2 rounded-md bg-lightG"
+                                    className="w-full p-2 rounded-md bg-lightG dark:bg-bOne"
                                     value={receiverContact}
                                     onChange={(e) => {
                                         const value = e.target.value;
@@ -225,7 +225,7 @@ const ViewPacking = () => {
                                 <label className="block text-xl font-bold mb-2">Receiver Address</label>
                                 <input
                                     type="text"
-                                    className="w-full p-2 rounded-md bg-lightG"
+                                    className="w-full p-2 rounded-md bg-lightG dark:bg-bOne"
                                     value={receiverAddress}
                                     onChange={(e) => setReceiverAddress(e.target.value)}
                                 />
@@ -234,7 +234,7 @@ const ViewPacking = () => {
                                 <label className="block text-xl font-bold mb-2">Sender Email</label>
                                 <input
                                     type="email"
-                                    className="w-full p-2 rounded-md bg-lightG"
+                                    className="w-full p-2 rounded-md bg-lightG dark:bg-bOne"
                                     value={senderEmail}
                                     onChange={(e) => setSenderEmail(e.target.value)}
                                 />
@@ -243,7 +243,7 @@ const ViewPacking = () => {
                                 <label className="block text-xl font-bold mb-2">Packing Date</label>
                                 <input
                                     type="date"
-                                    className="w-full p-2 rounded-md bg-lightG"
+                                    className="w-full p-2 rounded-md bg-lightG dark:bg-bOne"
                                     value={packingDate}
                                     onChange={(e) => setPackingDate(e.target.value)}
                                 />
@@ -251,7 +251,7 @@ const ViewPacking = () => {
                             <div className="mb-4">
                                 <label className="block text-xl font-bold mb-2">Current Status</label>
                                 <select
-                                    className="w-full p-2 rounded-md bg-lightG"
+                                    className="w-full p-2 rounded-md bg-lightG dark:bg-bOne"
                                     value={currentStatus}
                                     onChange={(e) => setCurrentStatus(e.target.value)}
                                 >
@@ -264,14 +264,14 @@ const ViewPacking = () => {
                             <div className="flex justify-between">
                                 <button
                                     type="button"
-                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 dark:bg-cOne"
                                     onClick={handleUpdatePacking}
                                 >
                                     Save Changes
                                 </button>
                                 <button
                                     type="button"
-                                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 dark:bg-cOne"
                                     onClick={clearForm}
                                 >
                                     Cancel
