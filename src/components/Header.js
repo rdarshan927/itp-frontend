@@ -1,3 +1,8 @@
+/**
+ * Licensed under the Shepora Flower Plant Management System License (v1.0)
+ * See the LICENSE.txt file for more details.
+ */
+
 import React from "react";
 import { Link } from 'react-router-dom';
 import { useDarkMode } from "../config/darkMode";
